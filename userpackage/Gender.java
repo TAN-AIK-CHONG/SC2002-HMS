@@ -1,3 +1,5 @@
+package userpackage;
+
 public enum Gender {
     MALE, FEMALE;
 

@@ -1,8 +1,12 @@
+package utilitypackage;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+
+import userpackage.BloodType;
+import userpackage.Gender;
 
 public class MedicalRecordsManager {
 

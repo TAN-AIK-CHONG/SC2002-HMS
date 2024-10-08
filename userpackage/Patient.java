@@ -1,3 +1,7 @@
+package userpackage;
+
+import utilitypackage.MedicalRecords;
+
 public class Patient extends User {
     private MedicalRecords medicalRecords;
 
