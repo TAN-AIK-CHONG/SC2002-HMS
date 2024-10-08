@@ -1,15 +1,15 @@
 public abstract class User {
-    private int username;
+    private String username;
     private String password;
     private String role; 
 
-    public User(int username, String password, String role) {
+    public User(String username, String password, String role) {
         this.username = username;
         this.password = password;
         this.role = role;
     }
 
-    public int getUsername() {
+    public String getUsername() {
         return username;
     }
 

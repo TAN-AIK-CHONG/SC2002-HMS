@@ -1,7 +1,7 @@
 import java.util.List;
 
 public class MedicalRecords {
-    private int patientID;
+    private String patientID;
     private String name;
     private String dateOfBirth;
     private Gender gender;
@@ -11,11 +11,12 @@ public class MedicalRecords {
     private List<String> diagnoses;
     private List<String> prescribedMedications;
     private List<String> treatmentPlans;
+    private String password;
 
-    public MedicalRecords(int patientID, String name, String dateOfBirth, Gender gender, 
+    public MedicalRecords(String patientID, String name, String dateOfBirth, Gender gender, 
                           String emailAddress, String phoneNumber, BloodType bloodType, 
                           List<String> pastDiagnoses, List<String> prescribedMedications, 
-                          List<String> treatmentPlans) {
+                          List<String> treatmentPlans, String password) {
         this.patientID = patientID;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
@@ -26,11 +27,12 @@ public class MedicalRecords {
         this.diagnoses = pastDiagnoses;
         this.prescribedMedications = prescribedMedications;
         this.treatmentPlans = treatmentPlans;
+        this.password = password;
     }
 
 
     //getters
-    public int getPatientID(){
+    public String getPatientID(){
         return this.patientID;
     }
 
@@ -70,6 +72,10 @@ public class MedicalRecords {
         return this.treatmentPlans;
     }
 
+    public String getPassword(){
+        return this.password;
+    }
+
     //setters    
     public void setEmailAdd(String newAddress){
         this.emailAddress = newAddress; //for patient
@@ -89,5 +95,9 @@ public class MedicalRecords {
 
     public void addTreatmentPlan(String newTreatment){
         this.treatmentPlans.add(newTreatment); //for doctor
+    }
+
+    public void setNewPassword(String newPassword){
+        this.password = newPassword; //for patient
     }
 }

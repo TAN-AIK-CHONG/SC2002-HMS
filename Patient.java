@@ -1,7 +1,7 @@
 public class Patient extends User {
     private MedicalRecords medicalRecords;
 
-    public Patient(int patientID, String password, MedicalRecords patientRecords) {
+    public Patient(String patientID, String password, MedicalRecords patientRecords) {
         super(patientID, password, "Patient");
         this.medicalRecords = patientRecords;
     }
@@ -33,12 +33,10 @@ public class Patient extends User {
         System.out.println("Treatments: " + medicalRecords.getTreatmentPlans());
     }
 
-    public void updateEmail(String newAddress){
+    public void updateInfo(String newAddress, String newNumber){
         medicalRecords.setEmailAdd(newAddress);
-    }
-
-    public void updatePhoneNum(String newNumber){
         medicalRecords.setPhoneNum(newNumber);
     }
+
 
 }
