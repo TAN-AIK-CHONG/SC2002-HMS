@@ -1,4 +1,9 @@
+package utilitypackage;
+
 import java.util.List;
+
+import userpackage.BloodType;
+import userpackage.Gender;
 
 public class MedicalRecords {
     private String patientID;
