@@ -1,5 +1,13 @@
 import java.util.Scanner;
 
+import userpackage.Doctor;
+import userpackage.Patient;
+import utilitypackage.LoginManager;
+import utilitypackage.MedicalRecords;
+import utilitypackage.MedicalRecordsManager;
+import utilitypackage.StaffRecords;
+import utilitypackage.StaffRecordsManager;
+
 public class HMSmain {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -27,42 +35,28 @@ public class HMSmain {
             }
             System.out.println("Invalid credentials. Please try again.");
         }
-    
-        Patient newPatient = new Patient(hospitalID, password, MedicalRecordsManager.loadRecords(hospitalID));
+        
+        //Display correct menu for logged in user
         System.out.println("Login successful! Welcome to the system.");
-        newPatient.displayMenu();  
-        while(true){
-            int choice = sc.nextInt();
-            sc.nextLine();
-            switch (choice){
-                case 1: 
-                    newPatient.viewMedicalRecords();
-                    break;
-                case 2:
-                    System.out.println("What is your new email address?");
-                    String newAdd = sc.nextLine();
-                    System.out.println("What is your new phone number?");
-                    String newNumber = sc.nextLine();
-                    newPatient.updateInfo(newAdd, newNumber);
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    break;
-                case 7:
-                    break;
-                case 8:
-                    break;
-                case 9:
-                    System.out.println("You have been logged out.");
-                    sc.close();
-                    System.exit(0);
-            }
-            System.out.print("Choose another option: ");
+        if(isPatient){
+            MedicalRecords ownRecord = MedicalRecordsManager.loadRecords(hospitalID);
+            Patient newPatient = new Patient(hospitalID, password, ownRecord);
+            newPatient.displayMenu();
         }
+        else{
+            StaffRecords staffInfo = StaffRecordsManager.loadRecords(hospitalID);
+            String role = staffInfo.getRole().toLowerCase();
+            switch (role){
+                case "doctor":
+                    Doctor newDoc = new Doctor(hospitalID, password);
+                    newDoc.displayMenu();
+                    break;
+                case "pharmacist":
+                    break;
+                case "administrator":
+                    break;
+            }
+        }
+
     }
 }
