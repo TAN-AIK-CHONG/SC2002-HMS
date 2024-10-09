@@ -1,3 +1,5 @@
+package utilitypackage;
+
 public class LoginManager {
     public static boolean authenticateUser(String hospitalID, String password, boolean isPatient) {
         if(isPatient){
@@ -7,7 +9,10 @@ public class LoginManager {
             }
             return false;
         }
-        //implement staff records later
+        StaffRecords newRecord = StaffRecordsManager.loadRecords(hospitalID);
+        if (newRecord != null && newRecord.getStaffID().equals(hospitalID) && newRecord.getPassword().equals(password)){
+            return true;
+        }
         return false;
     }
 }
