@@ -57,6 +57,7 @@ public class HMSmain {
                     break;
             }
         }
+        sc.close();
 
     }
 }
