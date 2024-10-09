@@ -13,4 +13,16 @@ public enum Gender {
                 throw new IllegalArgumentException("Unknown gender: " + genderStr);
         }
     }
+
+    @Override
+    public String toString() {
+        switch (this) {
+            case MALE:
+                return "Male";
+            case FEMALE:
+                return "Female";
+            default:
+                throw new AssertionError("Unknown gender: " + this);
+        }
+    }
 }

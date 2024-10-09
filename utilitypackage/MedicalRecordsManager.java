@@ -1,7 +1,6 @@
 package utilitypackage;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+
+import java.io.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,12 +8,11 @@ import userpackage.BloodType;
 import userpackage.Gender;
 
 public class MedicalRecordsManager {
+    private static final String PATIENT_CSV_FILE = "database\\PatientList.csv";
 
     //load records from csv 
     public static MedicalRecords loadRecords(String patientID){
-        String filePath = "database\\PatientList.csv";
-
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))){
+        try (BufferedReader br = new BufferedReader(new FileReader(PATIENT_CSV_FILE))){
             String currentLine;
 
             while((currentLine=br.readLine())!= null){
@@ -49,4 +47,52 @@ public class MedicalRecordsManager {
         }
         return null;
     }
+
+    //change records in csv
+    public static void updateRecords(String patientID, MedicalRecords updatedRecord) {
+        File inputFile = new File(PATIENT_CSV_FILE);
+        File tempFile = new File("temp.csv"); // Temporary file to store updated records
+
+        try (BufferedReader br = new BufferedReader(new FileReader(inputFile));
+             BufferedWriter bw = new BufferedWriter(new FileWriter(tempFile))) {
+
+            String currentLine;
+
+            while ((currentLine=br.readLine())!=null) {
+                String[] data = currentLine.split(",");
+
+                // Update the line if it matches the patient ID
+                if (data[0].equals(patientID)) {
+                    String updatedLine = String.join(",",
+                            updatedRecord.getPatientID(),
+                            updatedRecord.getPatientName(),
+                            updatedRecord.getDOB(),
+                            updatedRecord.getGender().toString(),
+                            updatedRecord.getBloodType().toString(),
+                            updatedRecord.getEmailAdd(),
+                            updatedRecord.getPhoneNum(),
+                            String.join(";", updatedRecord.getDiagnoses()),
+                            String.join(";", updatedRecord.getPrescribedMedications()),
+                            String.join(";", updatedRecord.getTreatmentPlans()),
+                            updatedRecord.getPassword());
+                    bw.write(updatedLine);
+                } else {
+                    // Write the original line to the temp file
+                    bw.write(currentLine);
+                }
+                bw.newLine(); 
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred while updating the patient record: " + e.getMessage());
+            e.printStackTrace();
+        }
+        // Replace the original file with the updated file
+        if (!inputFile.delete()) {
+            System.out.println("Could not delete original file.");
+            return;
+        }
+        if (!tempFile.renameTo(inputFile)) {
+            System.out.println("Could not rename temp file.");
+        }
+    } 
 }
