@@ -1,4 +1,4 @@
-# What's implememted already?
+# What's implemented already?
 
 1. Log in system has been implemented. It will work even as we add future staff classes (currently admin and pharmacist not implemented).
 2. Patient has been implemented partially. The patient is able to view their medical records and also update their info. The csv file will be appropriately updated.
@@ -13,3 +13,6 @@
 1. Need to implement the appointment system. quite complicated, explore java.time for dates and time slots logic.
 2. Need to implement inventory manager as well, which Pharmacist and Admins interact with.
 3. Appointment Outcome Records should also be implemented. I suggest a separate csv file for this? Accessed by Patients, Doctors and Pharmacists.
+
+## Contributing
+Remember to create a separate branch and commit to that branch instead of committing to main branch directly. Just discuss with the team what parts we are all working on etc so we don't overlap!
