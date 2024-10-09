@@ -105,4 +105,18 @@ public class MedicalRecords {
     public void setNewPassword(String newPassword){
         this.password = newPassword; //for patient
     }
+
+    //view records
+    public void viewRecords(){
+        System.out.println("Patient ID: " + this.patientID);
+        System.out.println("Name: " + this.name);
+        System.out.println("Date of Birth " + this.dateOfBirth);
+        System.out.println("Gender: " + this.gender);
+        System.out.println("Email Address: " + this.emailAddress);
+        System.out.println("Phone Number: " + this.phoneNumber);
+        System.out.println("Blood Type: " + this.bloodType);
+        System.out.println("Past Diagnoses: " + this.diagnoses);
+        System.out.println("Prescribed Medications: " + this.prescribedMedications);
+        System.out.println("Treatments: " + this.treatmentPlans);
+    }
 }

@@ -12,7 +12,7 @@ public class MedicalRecordsManager {
 
     //load records from csv 
     public static MedicalRecords loadRecords(String patientID){
-        String filePath = "PatientList.csv";
+        String filePath = "database\\PatientList.csv";
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))){
             String currentLine;
