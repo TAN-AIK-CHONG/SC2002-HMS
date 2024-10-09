@@ -25,16 +25,7 @@ public class Patient extends User {
     }
 
     public void viewMedicalRecords(){
-        System.out.println("The following are your records:");
-        System.out.println("Patient ID: " + medicalRecords.getPatientID());
-        System.out.println("Name: " + medicalRecords.getPatientName());
-        System.out.println("Date of Birth " + medicalRecords.getDOB());
-        System.out.println("Gender: " + medicalRecords.getGender());
-        System.out.println("Email Address: " + medicalRecords.getEmailAdd());
-        System.out.println("Phone Number: " + medicalRecords.getPhoneNum());
-        System.out.println("Blood Type: " + medicalRecords.getBloodType());
-        System.out.println("Past Diagnoses: " + medicalRecords.getDiagnoses());
-        System.out.println("Treatments: " + medicalRecords.getTreatmentPlans());
+        medicalRecords.viewRecords();
     }
 
     public void updateInfo(String newAddress, String newNumber){
