@@ -100,7 +100,7 @@ public class Doctor implements IMenu{
         }
     }
 
-    //temp to check compilation issue
+    //For admin to view
     public void viewRecord(){
         this.record.view();
     }
