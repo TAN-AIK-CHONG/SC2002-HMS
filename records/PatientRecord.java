@@ -2,6 +2,7 @@
 
 package records;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PatientRecord implements IRecord{
@@ -28,9 +29,9 @@ public class PatientRecord implements IRecord{
         this.emailAddress = emailAddress;
         this.phoneNumber = phoneNumber;
         this.bloodType = bloodType;
-        this.diagnoses = pastDiagnoses;
-        this.prescribedMedications = prescribedMedications;
-        this.treatmentPlans = treatmentPlans;
+        this.diagnoses = new ArrayList<>(pastDiagnoses);
+        this.prescribedMedications = new ArrayList<>(prescribedMedications);
+        this.treatmentPlans = new ArrayList<>(treatmentPlans);
         this.password = password;
     }
 
