@@ -6,9 +6,10 @@
 # What has been implemented already?
 1. Loggin in for ALL classes (future proof)
 2. Patients can view and also update their own records
+3. Doctors can view and update patient information
 
 # What's next?
-1. Doctors must be able to view and update patient information
+1. ~Doctors must be able to view and update patient information~
 2. Admin / Pharmacist
 3. Appointment system
    - Interacted with by Patient, Doctor and Admin
