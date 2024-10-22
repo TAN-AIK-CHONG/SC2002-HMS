@@ -12,7 +12,7 @@ public class Patient implements IMenu {
         this.record = record;
     }
 
-    public void updateInfo(String newAddress, String newNumber){
+    private void updateInfo(String newAddress, String newNumber){
         this.record.setEmailAdd(newAddress);
         this.record.setPhoneNum(newNumber);
         PatientRecManager.store(record.getPatientID(), record);
@@ -57,5 +57,10 @@ public class Patient implements IMenu {
             choice = sc.nextInt();
             sc.nextLine();
         }
+    }
+
+    //For admin to view
+    public void viewRecord(){
+        this.record.view();
     }
 }
