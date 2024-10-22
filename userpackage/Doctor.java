@@ -13,6 +13,11 @@ public class Doctor implements IMenu{
         this.record = record;
     }
 
+    private void viewPatientRecord(String patientID){
+        PatientRecord record = PatientRecManager.load(patientID);
+        record.view();
+    }
+
     private void addDiagnosis(String patientID, String newDiagnosis){
         PatientRecord record = PatientRecManager.load(patientID);
         record.addDiagnosis(newDiagnosis);
@@ -52,8 +57,7 @@ public class Doctor implements IMenu{
                 case 1:
                     System.out.println("Input PatientID: ");
                     patientID = sc.nextLine();
-                    PatientRecord record = PatientRecManager.load(patientID);
-                    record.view();
+                    viewPatientRecord(patientID);
                     break;
                 case 2:
                     String newInfo;
