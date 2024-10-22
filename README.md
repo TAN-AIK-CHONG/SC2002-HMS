@@ -7,16 +7,17 @@
 1. Loggin in for ALL classes (future proof)
 2. Patients can view and also update their own records
 3. Doctors can view and update patient information
+4. Pharmacist can view inventory
 
 # What's next?
 1. ~Doctors must be able to view and update patient information~
-2. Admin / Pharmacist
+2. Admin / ~Pharmacist~
 3. Appointment system
    - Interacted with by Patient, Doctor and Admin
 4. Past Appointment Outcome Records
    - Needs a separate database
    - Interacted with by Patient, Doctor and Pharmacist
 5. Inventory Manager
-   - Allows Pharmacist to update actual DB, same category as other DBManagers
-   - Admin approves Pharmacist request, but does not need to know about the DBManager
+   - Allows Admin to update actual DB, same category as other DBManagers
+   - Admin approves Pharmacist request, only needs to call DBManager
 
