@@ -1,19 +1,23 @@
-package userpackage;
+package userPackage;
 
 import java.util.Scanner;
 
-import utilitypackage.MedicalRecords;
-import utilitypackage.MedicalRecordsManager;
+import DBManagers.PatientRecManager;
+import records.PatientRecord;
 
-public class Patient extends User {
-    private MedicalRecords medicalRecords;
+public class Patient implements IMenu {
+    private PatientRecord record;
 
-    public Patient(String patientID, String password, MedicalRecords patientRecords) {
-        super(patientID, password, "Patient");
-        this.medicalRecords = patientRecords;
+    public Patient(PatientRecord record){
+        this.record = record;
     }
 
-    @Override
+    public void updateInfo(String newAddress, String newNumber){
+        this.record.setEmailAdd(newAddress);
+        this.record.setPhoneNum(newNumber);
+        PatientRecManager.store(record.getPatientID(), record);
+    }
+
     public void displayMenu() {
         System.out.println("Patient Menu:");
         System.out.println("1. View Medical Record");
@@ -32,7 +36,7 @@ public class Patient extends User {
         while(true){
             switch (choice) {
                 case 1:
-                    viewMedicalRecords();
+                    this.record.view();
                     break;
                 case 2:
                     System.out.println("New email address: ");
@@ -53,18 +57,5 @@ public class Patient extends User {
             choice = sc.nextInt();
             sc.nextLine();
         }
-
-
-    }
-    
-
-    public void viewMedicalRecords(){
-        medicalRecords.viewRecords();
-    }
-
-    public void updateInfo(String newAddress, String newNumber){
-        medicalRecords.setEmailAdd(newAddress);
-        medicalRecords.setPhoneNum(newNumber);
-        MedicalRecordsManager.updateRecords(super.getUsername(), this.medicalRecords);
     }
 }
