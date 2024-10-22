@@ -85,7 +85,7 @@ public class Admin implements IMenu {
                             System.out.print("Enter initial stock quantity: ");
                             int quantity = sc.nextInt();
                             sc.nextLine(); 
-                            System.out.print("Enter low stock alert level:");
+                            System.out.print("Enter low stock alert level: ");
                             int alert = sc.nextInt();
                             sc.nextLine();
                             addInventory(inventory, newMed, quantity, alert);
@@ -96,7 +96,7 @@ public class Admin implements IMenu {
                             removeInventory(inventory, removedMed);
                             break;
                         case 3:
-                            System.out.print("Enter medication to be updated:");
+                            System.out.print("Enter medication to be updated: ");
                             String updatedMed = sc.nextLine();
                             System.out.print("Enter new stock level: ");
                             int newLevel = sc.nextInt();
