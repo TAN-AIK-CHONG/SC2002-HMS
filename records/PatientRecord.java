@@ -1,11 +1,10 @@
-package utilitypackage;
+//NEED TO INCLUDE GETTERS AND SETTERS FOR ALL
+
+package records;
 
 import java.util.List;
 
-import userpackage.BloodType;
-import userpackage.Gender;
-
-public class MedicalRecords {
+public class PatientRecord implements IRecord{
     private String patientID;
     private String name;
     private String dateOfBirth;
@@ -18,7 +17,7 @@ public class MedicalRecords {
     private List<String> treatmentPlans;
     private String password;
 
-    public MedicalRecords(String patientID, String name, String dateOfBirth, Gender gender, 
+    public PatientRecord(String patientID, String name, String dateOfBirth, Gender gender, 
                           String emailAddress, String phoneNumber, BloodType bloodType, 
                           List<String> pastDiagnoses, List<String> prescribedMedications, 
                           List<String> treatmentPlans, String password) {
@@ -35,13 +34,25 @@ public class MedicalRecords {
         this.password = password;
     }
 
+    public void view(){
+        System.out.println("Patient ID: " + this.patientID);
+        System.out.println("Name: " + this.name);
+        System.out.println("Date of Birth " + this.dateOfBirth);
+        System.out.println("Gender: " + this.gender);
+        System.out.println("Email Address: " + this.emailAddress);
+        System.out.println("Phone Number: " + this.phoneNumber);
+        System.out.println("Blood Type: " + this.bloodType);
+        System.out.println("Past Diagnoses: " + this.diagnoses);
+        System.out.println("Prescribed Medications: " + this.prescribedMedications);
+        System.out.println("Treatments: " + this.treatmentPlans);
+    }
 
     //getters
     public String getPatientID(){
         return this.patientID;
     }
 
-    public String getPatientName(){
+    public String getName(){
         return this.name;
     }
 
@@ -104,19 +115,5 @@ public class MedicalRecords {
 
     public void setNewPassword(String newPassword){
         this.password = newPassword; //for patient
-    }
-
-    //view records
-    public void viewRecords(){
-        System.out.println("Patient ID: " + this.patientID);
-        System.out.println("Name: " + this.name);
-        System.out.println("Date of Birth " + this.dateOfBirth);
-        System.out.println("Gender: " + this.gender);
-        System.out.println("Email Address: " + this.emailAddress);
-        System.out.println("Phone Number: " + this.phoneNumber);
-        System.out.println("Blood Type: " + this.bloodType);
-        System.out.println("Past Diagnoses: " + this.diagnoses);
-        System.out.println("Prescribed Medications: " + this.prescribedMedications);
-        System.out.println("Treatments: " + this.treatmentPlans);
     }
 }

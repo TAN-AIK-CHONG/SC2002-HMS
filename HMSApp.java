@@ -1,14 +1,15 @@
 import java.util.Scanner;
 
-import userpackage.Doctor;
-import userpackage.Patient;
-import utilitypackage.LoginManager;
-import utilitypackage.MedicalRecords;
-import utilitypackage.MedicalRecordsManager;
-import utilitypackage.StaffRecords;
-import utilitypackage.StaffRecordsManager;
+import utility.LoginManager;
+import DBManagers.PatientRecManager;
+import DBManagers.StaffRecManager;
+import records.PatientRecord;
+import records.StaffRecord;
+import userPackage.Patient;
+import userPackage.Doctor;
 
-public class HMSmain {
+
+public class HMSApp {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Please log in to the Hospital Management System");
@@ -39,16 +40,16 @@ public class HMSmain {
         //Display correct menu for logged in user
         System.out.println("Login successful! Welcome to the system.");
         if(isPatient){
-            MedicalRecords ownRecord = MedicalRecordsManager.loadRecords(hospitalID);
-            Patient newPatient = new Patient(hospitalID, password, ownRecord);
+            PatientRecord PRecord = PatientRecManager.load(hospitalID);
+            Patient newPatient = new Patient(PRecord);
             newPatient.displayMenu();
         }
         else{
-            StaffRecords staffInfo = StaffRecordsManager.loadRecords(hospitalID);
+            StaffRecord staffInfo = StaffRecManager.load(hospitalID);
             String role = staffInfo.getRole().toLowerCase();
             switch (role){
                 case "doctor":
-                    Doctor newDoc = new Doctor(hospitalID, password);
+                    Doctor newDoc = new Doctor(staffInfo);
                     newDoc.displayMenu();
                     break;
                 case "pharmacist":

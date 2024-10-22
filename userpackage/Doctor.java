@@ -1,31 +1,20 @@
-package userpackage;
+package userPackage;
 
-import utilitypackage.MedicalRecords;
-import utilitypackage.MedicalRecordsManager;
+import records.StaffRecord;
 
-public class Doctor extends User {
+public class Doctor implements IMenu{
+    private StaffRecord record;
 
-    public Doctor(String doctorID, String password){
-        super(doctorID, password, "Doctor");
+    public Doctor(StaffRecord record){
+        this.record = record;
     }
 
-    @Override
     public void displayMenu(){
         System.out.println("not implemented yet");
     }
 
-    public void viewPatientRecords(String patientID){
-        MedicalRecords patientRecord = MedicalRecordsManager.loadRecords(patientID);
-        patientRecord.viewRecords();
-    }
-
-    public void addDiagnosis(String patientID, String newDiagnosis){
-        MedicalRecords patientRecord = MedicalRecordsManager.loadRecords(patientID);
-        patientRecord.addDiagnosis(newDiagnosis);
-    }
-
-    public void addPrescription(String patientID, String newPrescription){
-        MedicalRecords patientRecord = MedicalRecordsManager.loadRecords(patientID);
-        patientRecord.addPrescription(newPrescription);
+    //temp to check compilation issue
+    public void viewRecord(){
+        this.record.view();
     }
 }

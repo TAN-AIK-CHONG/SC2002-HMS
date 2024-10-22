@@ -1,4 +1,4 @@
-package userpackage;
+package records;
 
 public enum Gender {
     MALE, FEMALE;

@@ -1,17 +1,26 @@
-package utilitypackage;
+//NEED TO WRITE CUSTOM EXCEPTIONS
 
-import java.io.*;
+package DBManagers;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import userpackage.BloodType;
-import userpackage.Gender;
+import records.BloodType;
+import records.Gender;
+import records.PatientRecord;
 
-public class MedicalRecordsManager {
-    private static final String PATIENT_CSV_FILE = "database\\PatientList.csv";
+public class PatientRecManager{
+    //file path to the patient database
+    private static final String PATIENT_CSV_FILE = "database\\PatientDatabase.csv";
 
-    //load records from csv 
-    public static MedicalRecords loadRecords(String patientID){
+    //load record from CSV
+    public static PatientRecord load(String patientID){
         try (BufferedReader br = new BufferedReader(new FileReader(PATIENT_CSV_FILE))){
             String currentLine;
 
@@ -34,10 +43,10 @@ public class MedicalRecordsManager {
                     String password = data[10];
 
                     //Create new MedicalRecord for this patient
-                    MedicalRecords patientRecords = new MedicalRecords(storedPatientID, name, dateOfBirth, gender, 
+                    PatientRecord record = new PatientRecord(storedPatientID, name, dateOfBirth, gender, 
                                     emailAddress, phoneNumber, bloodType, diagnoses, medications, treatmentPlans, password);
 
-                    return patientRecords;
+                    return record;
 
                 }
 
@@ -48,8 +57,8 @@ public class MedicalRecordsManager {
         return null;
     }
 
-    //change records in csv
-    public static void updateRecords(String patientID, MedicalRecords updatedRecord) {
+    //store record to CSV
+    public static void store(String patientID, PatientRecord updatedRecord) {
         File inputFile = new File(PATIENT_CSV_FILE);
         File tempFile = new File("temp.csv"); // Temporary file to store updated records
 
@@ -65,7 +74,7 @@ public class MedicalRecordsManager {
                 if (data[0].equals(patientID)) {
                     String updatedLine = String.join(",",
                             updatedRecord.getPatientID(),
-                            updatedRecord.getPatientName(),
+                            updatedRecord.getName(),
                             updatedRecord.getDOB(),
                             updatedRecord.getGender().toString(),
                             updatedRecord.getBloodType().toString(),
@@ -95,4 +104,31 @@ public class MedicalRecordsManager {
             System.out.println("Could not rename temp file.");
         }
     } 
+
+    //authenticate user
+    public static boolean authenticate(String patientID, String inputPW){
+        try (BufferedReader br = new BufferedReader(new FileReader(PATIENT_CSV_FILE))){
+            String currentLine;
+
+            while((currentLine=br.readLine())!= null){
+                String[] data = currentLine.split(",");
+
+                String storedPatientID = data[0];
+
+                //check if patient exists
+                if(storedPatientID.equals(patientID)){
+                    String password = data[10];
+                    if (inputPW.equals(password)){
+                        return true;
+                    }
+                    return false;
+                }
+
+            }
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+        //patient does not exist
+        return false;
+    }
 }
