@@ -1,7 +1,9 @@
 package DBManagers;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,5 +37,27 @@ public class MedicationRecManager {
         }
 
         return inventory;
+    }
+
+     // Store medication inventory back to CSV
+    public static void store(List<MedicationRecord> inventory) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(MEDICINE_CSV_FILE))) {
+            // Write header row
+            bw.write("Medicine Name,Current Stock,Low Stock Level Alert");
+            bw.newLine();
+
+            // Write each medication record to the CSV (overwrite)
+            for (MedicationRecord med : inventory) {
+                String line = med.getName() + "," + med.getQuantity() + "," + med.getAlertLevel();
+                bw.write(line);
+                bw.newLine();
+            }
+
+            System.out.println("Medication inventory saved successfully.");
+
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing to the file.");
+            e.printStackTrace();
+        }
     }
 }

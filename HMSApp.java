@@ -7,6 +7,7 @@ import records.PatientRecord;
 import records.StaffRecord;
 import userPackage.Patient;
 import userPackage.Pharmacist;
+import userPackage.Admin;
 import userPackage.Doctor;
 
 
@@ -58,6 +59,8 @@ public class HMSApp {
                     newPharma.displayMenu();
                     break;
                 case "administrator":
+                    Admin newAdmin = new Admin(staffInfo);
+                    newAdmin.displayMenu();
                     break;
             }
         }
