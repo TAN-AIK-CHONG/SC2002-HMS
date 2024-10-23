@@ -103,14 +103,17 @@ public class PatientRecord implements IRecord{
     }
 
     public void addDiagnosis(String newDiagnosis){
+        this.diagnoses.removeIf(String::isEmpty);
         this.diagnoses.add(newDiagnosis); //for doctor
     }
 
     public void addPrescription(String newPrescription){
+        this.prescribedMedications.removeIf(String::isEmpty);
         this.prescribedMedications.add(newPrescription); //for doctor
     }
 
     public void addTreatmentPlan(String newTreatment){
+        this.treatmentPlans.removeIf(String::isEmpty);
         this.treatmentPlans.add(newTreatment); //for doctor
     }
 
