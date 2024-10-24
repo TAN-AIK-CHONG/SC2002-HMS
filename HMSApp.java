@@ -1,14 +1,17 @@
 import java.util.Scanner;
 
+import dbinterfaces.PatientRepository;
+import dbinterfaces.StaffRepository;
 import utility.LoginManager;
-import DBManagers.PatientRecManager;
-import DBManagers.StaffRecManager;
-import records.PatientRecord;
-import records.StaffRecord;
-import userPackage.Patient;
-import userPackage.Pharmacist;
-import userPackage.Admin;
-import userPackage.Doctor;
+import entities.Patient;
+import entities.Pharmacist;
+import entities.Doctor;
+import entities.Staff;
+import entities.Admin;
+import userinterfaces.AdminMenu;
+import userinterfaces.DoctorMenu;
+import userinterfaces.PatientMenu;
+import userinterfaces.PharmacistMenu;
 
 
 public class HMSApp {
@@ -42,26 +45,27 @@ public class HMSApp {
         //Display correct menu for logged in user
         System.out.println("Login successful! Welcome to the system.");
         if(isPatient){
-            PatientRecord PRecord = PatientRecManager.load(hospitalID);
-            Patient newPatient = new Patient(PRecord);
-            newPatient.displayMenu();
+            Patient patient = PatientRepository.load(hospitalID);
+            PatientMenu patientMenu = new PatientMenu(patient);
+            patientMenu.displayMenu();
         }
         else{
-            StaffRecord staffInfo = StaffRecManager.load(hospitalID);
-            String role = staffInfo.getRole().toLowerCase();
-            switch (role){
-                case "doctor":
-                    Doctor newDoc = new Doctor(staffInfo);
-                    newDoc.displayMenu();
-                    break;
-                case "pharmacist":
-                    Pharmacist newPharma = new Pharmacist(staffInfo);
-                    newPharma.displayMenu();
-                    break;
-                case "administrator":
-                    Admin newAdmin = new Admin(staffInfo);
-                    newAdmin.displayMenu();
-                    break;
+            Staff staff = StaffRepository.load(hospitalID);
+
+            if (staff instanceof Doctor){
+                Doctor doctor = (Doctor) staff;
+                DoctorMenu docMenu = new DoctorMenu(doctor);
+                docMenu.displayMenu();
+            }
+            else if (staff instanceof Pharmacist){
+                Pharmacist Pharma = (Pharmacist) staff;
+                PharmacistMenu pharmaMenu = new PharmacistMenu(Pharma);
+                pharmaMenu.displayMenu();
+            }
+            else if (staff instanceof Admin){
+                Admin admin = (Admin) staff;
+                AdminMenu adminMenu = new AdminMenu(admin);
+                adminMenu.displayMenu();
             }
         }
         sc.close();

@@ -1,26 +1,20 @@
-package userPackage;
+package userinterfaces;
 
 import java.util.List;
 import java.util.Scanner;
 
-import DBManagers.MedicationRecManager;
-import records.MedicationRecord;
-import records.StaffRecord;
+import controllers.InventoryManager;
+import dbinterfaces.InventoryRepository;
+import entities.Medication;
+import entities.Staff;
 
-public class Pharmacist implements IMenu {
-    private StaffRecord record;
+public class PharmacistMenu implements IMenu {
+    private Staff record;
 
-    public Pharmacist(StaffRecord record){
+    public PharmacistMenu(Staff record){
         this.record = record;
     }
 
-    private void viewInventory(){
-        List<MedicationRecord> inventory = MedicationRecManager.load();
-        System.out.println("Medication Inventory:");
-        for (MedicationRecord med : inventory) {
-            med.view();
-        }
-    }
     public void displayMenu(){
         System.out.println("Pharmacist Menu");
         System.out.println("1. View Appointment Outcome Record");
@@ -40,7 +34,8 @@ public class Pharmacist implements IMenu {
                 case 2:
                     break;
                 case 3:
-                    viewInventory();
+                    List<Medication> inventory = InventoryRepository.load();
+                    InventoryManager.viewInventory(inventory);
                     break;
                 case 4:
                     break;
@@ -60,6 +55,6 @@ public class Pharmacist implements IMenu {
 
     //for admin to view
     public void viewRecord(){
-        this.record.view();
+        this.record.viewRecords();
     }
 }

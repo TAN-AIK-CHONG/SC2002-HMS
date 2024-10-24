@@ -1,6 +1,6 @@
 //NEED TO WRITE CUSTOM EXCEPTIONS
 
-package DBManagers;
+package dbinterfaces;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -11,16 +11,16 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import records.BloodType;
-import records.Gender;
-import records.PatientRecord;
+import entities.BloodType;
+import entities.Gender;
+import entities.Patient;
 
-public class PatientRecManager{
+public class PatientRepository{
     //file path to the patient database
     private static final String PATIENT_CSV_FILE = "database\\PatientDatabase.csv";
 
     //load record from CSV
-    public static PatientRecord load(String patientID){
+    public static Patient load(String patientID){
         try (BufferedReader br = new BufferedReader(new FileReader(PATIENT_CSV_FILE))){
             String currentLine;
 
@@ -29,7 +29,7 @@ public class PatientRecManager{
 
                 String storedPatientID = data[0];
 
-                //Load csv data into new MedicalRecord once we locate the patient
+                //Load csv data into Patient
                 if(storedPatientID.equals(patientID)){
                     String name = data[1];
                     String dateOfBirth = data[2];
@@ -42,11 +42,11 @@ public class PatientRecManager{
                     List<String> treatmentPlans = Arrays.asList(data[9].split(";"));
                     String password = data[10];
 
-                    //Create new MedicalRecord for this patient
-                    PatientRecord record = new PatientRecord(storedPatientID, name, dateOfBirth, gender, 
-                                    emailAddress, phoneNumber, bloodType, diagnoses, medications, treatmentPlans, password);
+                    //Create new patient
+                    Patient patient = new Patient(patientID, name, dateOfBirth, gender, bloodType,
+                                                    emailAddress, phoneNumber, diagnoses, medications, treatmentPlans, password);
 
-                    return record;
+                    return patient;
 
                 }
 
@@ -58,7 +58,7 @@ public class PatientRecManager{
     }
 
     //store record to CSV
-    public static void store(String patientID, PatientRecord updatedRecord) {
+    public static void store(Patient updated) {
         File inputFile = new File(PATIENT_CSV_FILE);
         File tempFile = new File("temp.csv"); // Temporary file to store updated records
 
@@ -71,19 +71,19 @@ public class PatientRecManager{
                 String[] data = currentLine.split(",");
 
                 // Update the line if it matches the patient ID
-                if (data[0].equals(patientID)) {
+                if (data[0].equals(updated.getUserID())) {
                     String updatedLine = String.join(",",
-                            updatedRecord.getPatientID(),
-                            updatedRecord.getName(),
-                            updatedRecord.getDOB(),
-                            updatedRecord.getGender().toString(),
-                            updatedRecord.getBloodType().toString(),
-                            updatedRecord.getEmailAdd(),
-                            updatedRecord.getPhoneNum(),
-                            String.join(";", updatedRecord.getDiagnoses()),
-                            String.join(";", updatedRecord.getPrescribedMedications()),
-                            String.join(";", updatedRecord.getTreatmentPlans()),
-                            updatedRecord.getPassword());
+                            updated.getUserID(),
+                            updated.getName(),
+                            updated.getDateOfBirth(),
+                            updated.getGender().toString(),
+                            updated.getBloodType().toString(),
+                            updated.getEmailAddress(),
+                            updated.getPhoneNumber(),
+                            String.join(";", updated.getDiagnoses()),
+                            String.join(";", updated.getPrescribedMedications()),
+                            String.join(";", updated.getTreatmentPlans()),
+                            updated.getPassword());
                     bw.write(updatedLine);
                 } else {
                     // Write the original line to the temp file
@@ -104,31 +104,4 @@ public class PatientRecManager{
             System.out.println("Could not rename temp file.");
         }
     } 
-
-    //authenticate user
-    public static boolean authenticate(String patientID, String inputPW){
-        try (BufferedReader br = new BufferedReader(new FileReader(PATIENT_CSV_FILE))){
-            String currentLine;
-
-            while((currentLine=br.readLine())!= null){
-                String[] data = currentLine.split(",");
-
-                String storedPatientID = data[0];
-
-                //check if patient exists
-                if(storedPatientID.equals(patientID)){
-                    String password = data[10];
-                    if (inputPW.equals(password)){
-                        return true;
-                    }
-                    return false;
-                }
-
-            }
-        } catch(IOException e){
-            e.printStackTrace();
-        }
-        //patient does not exist
-        return false;
-    }
 }

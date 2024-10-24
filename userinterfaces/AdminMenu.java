@@ -1,53 +1,18 @@
-package userPackage;
+package userinterfaces;
 
 import java.util.List;
 import java.util.Scanner;
 
-import DBManagers.MedicationRecManager;
-import records.MedicationRecord;
-import records.StaffRecord;
+import dbinterfaces.InventoryRepository;
+import controllers.InventoryManager;
+import entities.Admin;
+import entities.Medication;
 
-public class Admin implements IMenu {
-    private StaffRecord record;
+public class AdminMenu implements IMenu {
+    private Admin admin;
     
-    public Admin(StaffRecord record){
-        this.record = record;
-    }
-
-    private void viewInventory(List<MedicationRecord> inventory){
-        System.out.println("Medication Inventory:");
-        for (MedicationRecord med : inventory) {
-            med.view();
-        }
-    }
-
-    private void addInventory(List<MedicationRecord> inventory, String medName, int qty, int alert){
-        MedicationRecord newMed = new MedicationRecord(medName, qty, alert);
-        inventory.add(newMed);
-        System.out.println("Added new medication: " + medName);
-    }
-
-    private void removeInventory(List<MedicationRecord> inventory, String medName){
-        for (int i = 0; i < inventory.size(); i++) {
-            MedicationRecord med = inventory.get(i);
-            if (med.getName().equalsIgnoreCase(medName)) {
-                inventory.remove(i); 
-                System.out.println("Removed medication: " + medName);
-                return;
-            }
-        }
-        System.out.println("No such medication found");
-    }
-
-    private void updateInventory(List<MedicationRecord> inventory, String medName, int newLevel){
-        for (int i = 0; i < inventory.size(); i++) {
-            MedicationRecord med = inventory.get(i);
-            if (med.getName().equalsIgnoreCase(medName)) {
-                med.setQuantity(newLevel);
-                return;
-            }
-        }
-        System.out.println("No such medication found");
+    public AdminMenu(Admin admin){
+        this.admin = admin;
     }
 
     public void displayMenu(){
@@ -69,8 +34,8 @@ public class Admin implements IMenu {
                 case 2:
                     break;
                 case 3:
-                    List<MedicationRecord> inventory = MedicationRecManager.load();
-                    viewInventory(inventory);
+                    List<Medication> inventory = InventoryRepository.load();
+                    InventoryManager.viewInventory(inventory);
                     System.out.println("1. Add new medication");
                     System.out.println("2. Remove a medication");
                     System.out.println("3. Update stock level of medication");
@@ -81,19 +46,20 @@ public class Admin implements IMenu {
                     switch(inventoryAction){
                         case 1:
                             System.out.print("Enter new medication: ");
-                            String newMed = sc.nextLine();
+                            String medName = sc.nextLine();
                             System.out.print("Enter initial stock quantity: ");
                             int quantity = sc.nextInt();
                             sc.nextLine(); 
                             System.out.print("Enter low stock alert level: ");
                             int alert = sc.nextInt();
                             sc.nextLine();
-                            addInventory(inventory, newMed, quantity, alert);
+                            Medication newMed = new Medication(medName, quantity, alert);
+                            InventoryManager.addInventory(inventory, newMed);
                             break;
                         case 2:
                             System.out.print("Enter medication to be removed: ");
                             String removedMed = sc.nextLine();
-                            removeInventory(inventory, removedMed);
+                            InventoryManager.removeInventory(inventory, removedMed);
                             break;
                         case 3:
                             System.out.print("Enter medication to be updated: ");
@@ -101,7 +67,7 @@ public class Admin implements IMenu {
                             System.out.print("Enter new stock level: ");
                             int newLevel = sc.nextInt();
                             sc.nextLine();
-                            updateInventory(inventory, updatedMed, newLevel);
+                            InventoryManager.updateInventory(inventory, updatedMed, newLevel);
                             break;
                         case 4:
                             break;
@@ -109,7 +75,7 @@ public class Admin implements IMenu {
                             System.out.println("Please choose a valid option (1-3)");
                             break;
                     }
-                    MedicationRecManager.store(inventory);
+                    InventoryRepository.store(inventory);
                     break;
                 case 4:
                     break;
@@ -129,6 +95,6 @@ public class Admin implements IMenu {
 
     //For admin to view
     public void viewRecord(){
-        this.record.view();
+        this.admin.viewRecords();
     }
 }

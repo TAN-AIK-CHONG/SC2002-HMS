@@ -1,39 +1,17 @@
-package userPackage;
+package userinterfaces;
 
 import java.util.Scanner;
 
-import DBManagers.PatientRecManager;
-import records.PatientRecord;
-import records.StaffRecord;
+import controllers.PatientManager;
+import dbinterfaces.PatientRepository;
+import entities.Doctor;
+import entities.Patient;
 
-public class Doctor implements IMenu{
-    private StaffRecord record;
+public class DoctorMenu implements IMenu{
+    private Doctor doctor;
 
-    public Doctor(StaffRecord record){
-        this.record = record;
-    }
-
-    private void viewPatientRecord(String patientID){
-        PatientRecord record = PatientRecManager.load(patientID);
-        record.view();
-    }
-
-    private void addDiagnosis(String patientID, String newDiagnosis){
-        PatientRecord record = PatientRecManager.load(patientID);
-        record.addDiagnosis(newDiagnosis);
-        PatientRecManager.store(patientID, record);
-    }
-
-    private void addPrescription(String patientID, String newPrescription){
-        PatientRecord record = PatientRecManager.load(patientID);
-        record.addPrescription(newPrescription);
-        PatientRecManager.store(patientID, record);
-    }
-
-    private void addTreatment(String patientID, String newTreatment){
-        PatientRecord record = PatientRecManager.load(patientID);
-        record.addTreatmentPlan(newTreatment);
-        PatientRecManager.store(patientID, record);
+    public DoctorMenu(Doctor doctor){
+        this.doctor = doctor;
     }
 
     public void displayMenu(){
@@ -57,12 +35,14 @@ public class Doctor implements IMenu{
                 case 1:
                     System.out.println("Input PatientID: ");
                     patientID = sc.nextLine();
-                    viewPatientRecord(patientID);
+                    Patient view = PatientRepository.load(patientID);
+                    PatientManager.viewRecord(view);
                     break;
                 case 2:
                     String newInfo;
                     System.out.println("Input PatientID: ");
                     patientID = sc.nextLine();
+                    Patient edit = PatientRepository.load(patientID);
                     System.out.println("1. Add a new diagnosis");
                     System.out.println("2. Add a new prescription");
                     System.out.println("3. Add a new treatment plan");
@@ -73,17 +53,17 @@ public class Doctor implements IMenu{
                         case 1: 
                             System.out.println("Diagnosis:");
                             newInfo = sc.nextLine();
-                            addDiagnosis(patientID, newInfo);
+                            PatientManager.addDiagnosis(edit, newInfo);
                             break;
                         case 2:
                             System.out.println("Prescription:");
                             newInfo = sc.nextLine();
-                            addPrescription(patientID, newInfo);
+                            PatientManager.addMedication(edit, newInfo);
                             break;
                         case 3:
                             System.out.println("Treatment Plan:");
                             newInfo = sc.nextLine();
-                            addTreatment(patientID, newInfo);
+                            PatientManager.addTreatment(edit, newInfo);
                             break;
                         default: 
                             System.out.println("Please choose a valid option (1-3)");
@@ -106,6 +86,6 @@ public class Doctor implements IMenu{
 
     //For admin to view
     public void viewRecord(){
-        this.record.view();
+        this.doctor.viewRecords();
     }
 }

@@ -1,6 +1,6 @@
 //NEED TO WRITE CUSTOM EXCEPTIONS
 
-package DBManagers;
+package dbinterfaces;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -9,15 +9,18 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import records.Gender;
-import records.StaffRecord;
+import entities.Admin;
+import entities.Doctor;
+import entities.Gender;
+import entities.Pharmacist;
+import entities.Staff;
 
-public class StaffRecManager {
+public class StaffRepository {
     //file path to the staff database
     private static final String STAFF_CSV_FILE = "database\\StaffDatabase.csv";
 
     //load record from CSV
-    public static StaffRecord load(String staffID){
+    public static Staff load(String staffID){
         try (BufferedReader br = new BufferedReader(new FileReader(STAFF_CSV_FILE))){
             String currentLine;
 
@@ -32,8 +35,16 @@ public class StaffRecManager {
                     int age = Integer.parseInt(data[4]);
                     String password = data[5];
 
-                    StaffRecord staffInfo = new StaffRecord(storedStaffID, name, role, gender, age, password);
-                    return staffInfo;
+                    switch (role.toLowerCase()) {
+                        case "doctor":
+                            return new Doctor(staffID, name, gender, age, password);
+                        case "pharmacist":
+                            return new Pharmacist(staffID, name, gender, age, password);
+                        case "administrator":
+                            return new Admin(staffID, name, gender, age, password);
+                        default:
+                            return new Staff(staffID, password, name, gender, age, role);  // Default to generic staff
+                    }
                 }
             }
         }
@@ -44,7 +55,7 @@ public class StaffRecManager {
     }
 
     //store record to CSV
-    public static void store(String staffID, StaffRecord updatedRecord) {
+    public static void store(String staffID, Staff updated) {
         File inputFile = new File(STAFF_CSV_FILE);
         File tempFile = new File("temp.csv"); // Temporary file to store updated records
 
@@ -59,12 +70,12 @@ public class StaffRecManager {
                 // Update the line if it matches the patient ID
                 if (data[0].equals(staffID)) {
                     String updatedLine = String.join(",",
-                            updatedRecord.getStaffID(),
-                            updatedRecord.getName(),
-                            updatedRecord.getRole(),
-                            updatedRecord.getGender().toString(),
-                            String.valueOf(updatedRecord.getAge()),
-                            updatedRecord.getPassword());
+                            updated.getUserID(),
+                            updated.getName(),
+                            updated.getRole(),
+                            updated.getGender().toString(),
+                            String.valueOf(updated.getAge()),
+                            updated.getPassword());
                     bw.write(updatedLine);
                 } else {
                     // Write the original line to the temp file
@@ -85,31 +96,4 @@ public class StaffRecManager {
             System.out.println("Could not rename temp file.");
         }
     } 
-
-    //authenticate staff
-    public static boolean authenticate(String staffID, String inputPW){
-        try (BufferedReader br = new BufferedReader(new FileReader(STAFF_CSV_FILE))){
-            String currentLine;
-
-            while((currentLine=br.readLine())!= null){
-                String[] data = currentLine.split(",");
-
-                String storedStaffID = data[0];
-
-                //check if staff exists
-                if(storedStaffID.equals(staffID)){
-                    String password = data[5];
-                    if (inputPW.equals(password)){
-                        return true;
-                    }
-                    return false;
-                }
-
-            }
-        } catch(IOException e){
-            e.printStackTrace();
-        }
-        //staff does not exist
-        return false;
-    }
 }
