@@ -1,21 +1,15 @@
-package userPackage;
+package userinterfaces;
 
 import java.util.Scanner;
 
-import DBManagers.PatientRecManager;
-import records.PatientRecord;
+import controllers.PatientManager;
+import entities.Patient;
 
-public class Patient implements IMenu {
-    private PatientRecord record;
+public class PatientMenu implements IMenu {
+    private Patient patient;
 
-    public Patient(PatientRecord record){
-        this.record = record;
-    }
-
-    private void updateInfo(String newAddress, String newNumber){
-        this.record.setEmailAdd(newAddress);
-        this.record.setPhoneNum(newNumber);
-        PatientRecManager.store(record.getPatientID(), record);
+    public PatientMenu(Patient patient){
+        this.patient = patient;
     }
 
     public void displayMenu() {
@@ -36,19 +30,34 @@ public class Patient implements IMenu {
         while(true){
             switch (choice) {
                 case 1:
-                    this.record.view();
+                    PatientManager.viewRecord(patient);
                     break;
                 case 2:
-                    System.out.println("New email address: ");
-                    String newAddy = sc.nextLine();
-                    System.out.println("New phone number: ");
-                    String newNumber = sc.nextLine();
-                    updateInfo(newAddy, newNumber);
+                    System.out.println("1. Update email address");
+                    System.out.println("2. Update phone number");
+                    int newInfoChoice = sc.nextInt();
+                    sc.nextLine();
+                    switch (newInfoChoice) {
+                        case 1:
+                            System.out.print("New email address: ");
+                            String newAddress = sc.nextLine();
+                            PatientManager.updateEmail(patient, newAddress);
+                            break;
+                        case 2:
+                            System.out.print("New phone number: ");
+                            String newNumber = sc.nextLine();
+                            PatientManager.updatePhoneNumber(patient, newNumber);
+                            break;
+                        default:
+                            System.out.println("Please choose a valid option (1-2)");
+                            break;
+                    }
                     break;
                 case 9:
                     sc.close();
                     System.out.println("Logging out...");
                     System.exit(0);
+                    break;
                 default:
                     System.out.println("Please choose a valid option instead");
                     break;
@@ -57,10 +66,5 @@ public class Patient implements IMenu {
             choice = sc.nextInt();
             sc.nextLine();
         }
-    }
-
-    //For admin to view
-    public void viewRecord(){
-        this.record.view();
     }
 }

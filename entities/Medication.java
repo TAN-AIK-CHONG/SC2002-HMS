@@ -1,11 +1,11 @@
-package records;
+package entities;
 
-public class MedicationRecord implements IRecord{
+public class Medication {
     private String medicineName;
     private int quantity;
     private int alertLevel;
 
-    public MedicationRecord(String medicineName, int quantity, int alertLevel){
+    public Medication(String medicineName, int quantity, int alertLevel){
         this.medicineName = medicineName;
         this.quantity = quantity;
         this.alertLevel = alertLevel;

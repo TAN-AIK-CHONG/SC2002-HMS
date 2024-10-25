@@ -1,13 +1,17 @@
 package utility;
 
-import DBManagers.PatientRecManager;
-import DBManagers.StaffRecManager;
+import dbinterfaces.PatientRepository;
+import dbinterfaces.StaffRepository;
+import entities.Patient;
+import entities.Staff;
 
 public class LoginManager {
     public static boolean authenticateUser(String hospitalID, String password, boolean isPatient) {
         if(isPatient){
-            return PatientRecManager.authenticate(hospitalID,password);
+            Patient patient = PatientRepository.load(hospitalID);
+            return patient.authenticate(password);
         }
-        return StaffRecManager.authenticate(hospitalID,password);
+        Staff staff = StaffRepository.load(hospitalID);
+        return staff.authenticate(password);
     }
 }

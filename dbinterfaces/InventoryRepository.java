@@ -1,4 +1,4 @@
-package DBManagers;
+package dbinterfaces;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -8,15 +8,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import records.MedicationRecord;
+import entities.Medication;
 
-public class MedicationRecManager {
+public class InventoryRepository {
     // File path to medication inventory
     private static final String MEDICINE_CSV_FILE = "database/MedicineDatabase.csv";
 
     // Load medication inventory from the CSV file
-    public static List<MedicationRecord> load() {
-        List<MedicationRecord> inventory = new ArrayList<>();
+    public static List<Medication> load() {
+        List<Medication> inventory = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(MEDICINE_CSV_FILE))) {
             br.readLine(); //skip the header
@@ -29,7 +29,7 @@ public class MedicationRecManager {
                 int quantity = Integer.parseInt(data[1]);
                 int alertLevel = Integer.parseInt(data[2]);
 
-                MedicationRecord med = new MedicationRecord(medName, quantity,alertLevel);
+                Medication med = new Medication(medName, quantity,alertLevel);
                 inventory.add(med);
             }
         } catch (IOException e) {
@@ -40,14 +40,14 @@ public class MedicationRecManager {
     }
 
      // Store medication inventory back to CSV
-    public static void store(List<MedicationRecord> inventory) {
+    public static void store(List<Medication> inventory) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(MEDICINE_CSV_FILE))) {
             // Write header row
             bw.write("Medicine Name,Current Stock,Low Stock Level Alert");
             bw.newLine();
 
             // Write each medication record to the CSV (overwrite)
-            for (MedicationRecord med : inventory) {
+            for (Medication med : inventory) {
                 String line = med.getName() + "," + med.getQuantity() + "," + med.getAlertLevel();
                 bw.write(line);
                 bw.newLine();
