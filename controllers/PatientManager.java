@@ -16,6 +16,12 @@ public class PatientManager {
         PatientRepository.store(patient);
     }
 
+    //MOVE THIS METHOD TO A CONTROLLER CLASS THAT IS THE PARENT OF STAFF AND PATIENT IN THE FUTURE
+    public static void updatePassword(Patient patient, String newPW){
+        patient.setPassword(newPW);
+        PatientRepository.store(patient);
+    }
+
     public static void updatePhoneNumber(Patient patient, String newNumber){
         patient.setPhoneNumber(newNumber);
         PatientRepository.store(patient);

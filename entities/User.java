@@ -1,4 +1,7 @@
 package entities;
+
+import utility.Hash;
+
 public abstract class User {
     private String userID;
     private String password;
@@ -13,7 +16,11 @@ public abstract class User {
     }
 
     public boolean authenticate(String InputPW){
-        return InputPW.equals(this.password);
+        return Hash.hashWith256(InputPW).equals(this.password);
+    }
+
+    public boolean isDefault(){
+        return Hash.hashWith256("password").equals(this.password);
     }
 
     public abstract void viewRecords();
@@ -32,7 +39,7 @@ public abstract class User {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = Hash.hashWith256(password);
     }
 
     public String getName() {

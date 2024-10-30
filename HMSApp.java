@@ -1,5 +1,7 @@
 import java.util.Scanner;
 
+import controllers.PatientManager;
+import controllers.StaffManager;
 import dbinterfaces.PatientRepository;
 import dbinterfaces.StaffRepository;
 import utility.LoginManager;
@@ -20,23 +22,19 @@ public class HMSApp {
         System.out.println("Please log in to the Hospital Management System");
         System.out.println("----------------------------------------------");
 
-        boolean loggedIn = false;
-
         System.out.print("Are you a patient or staff? (Enter P for Patient, S for Staff): ");
         String userType = sc.nextLine().toUpperCase();
         boolean isPatient = userType.equals("P");
         String hospitalID = null;
         String password = null;
-        while (!loggedIn) { 
+        while (true) { 
             System.out.print("Hospital ID: ");
             hospitalID = sc.nextLine();
 
             System.out.print("Password: ");
             password = sc.nextLine(); 
 
-            
-            loggedIn = LoginManager.authenticateUser(hospitalID, password, isPatient);
-            if(loggedIn){
+            if(LoginManager.authenticateUser(hospitalID, password, isPatient)){
                 break;
             }
             System.out.println("Invalid credentials. Please try again.");
@@ -46,11 +44,19 @@ public class HMSApp {
         System.out.println("Login successful! Welcome to the system.");
         if(isPatient){
             Patient patient = PatientRepository.load(hospitalID);
+            if (patient.isDefault()){
+                String newPW = sc.nextLine();
+                PatientManager.updatePassword(patient, newPW);
+            }
             PatientMenu patientMenu = new PatientMenu(patient);
             patientMenu.displayMenu();
         }
         else{
             Staff staff = StaffRepository.load(hospitalID);
+            if (staff.isDefault()){
+                String newPW = sc.nextLine();
+                StaffManager.updatePassword(staff, newPW);
+            }
 
             if (staff instanceof Doctor){
                 Doctor doctor = (Doctor) staff;
@@ -69,6 +75,5 @@ public class HMSApp {
             }
         }
         sc.close();
-
     }
 }
