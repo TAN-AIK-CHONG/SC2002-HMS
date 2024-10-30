@@ -55,7 +55,7 @@ public class StaffRepository {
     }
 
     //store record to CSV
-    public static void store(String staffID, Staff updated) {
+    public static void store(Staff updated) {
         File inputFile = new File(STAFF_CSV_FILE);
         File tempFile = new File("temp.csv"); // Temporary file to store updated records
 
@@ -68,7 +68,7 @@ public class StaffRepository {
                 String[] data = currentLine.split(",");
 
                 // Update the line if it matches the patient ID
-                if (data[0].equals(staffID)) {
+                if (data[0].equals(updated.getUserID())) {
                     String updatedLine = String.join(",",
                             updated.getUserID(),
                             updated.getName(),
