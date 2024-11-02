@@ -1,4 +1,8 @@
 package entities;
+import controllers.AppointmentManager;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 public class Patient extends User{
@@ -9,7 +13,7 @@ public class Patient extends User{
     private List<String> diagnoses;
     private List<String> prescribedMedications;
     private List<String> treatmentPlans;
-
+    private String patientId;
     public Patient(String patientID, String name, String dateOfBirth, Gender gender, 
                           BloodType bloodType, String emailAddress, String phoneNumber,  
                           List<String> pastDiagnoses, List<String> prescribedMedications, 
@@ -36,10 +40,30 @@ public class Patient extends User{
         System.out.println("Prescribed Medications: " + this.prescribedMedications);
         System.out.println("Treatments: " + this.treatmentPlans);
     }
+    public void viewAvailableSlots(AppointmentManager manager) {
+        for (Appointment appointment : manager.getAllAppointments()) {
+            System.out.println(appointment);
+        }
+    }
 
+    public void scheduleAppointment(AppointmentManager manager, String doctorId, LocalDate date, LocalTime time, String typeOfService) {
+        manager.scheduleAppointment(patientId, doctorId, date, time, typeOfService);
+    }
+
+    public void rescheduleAppointment(AppointmentManager manager, int appointmentId, LocalDate newDate, LocalTime newTime) {
+        manager.rescheduleAppointment(appointmentId, newDate, newTime);
+    }
+
+    public void cancelAppointment(AppointmentManager manager, int appointmentId) {
+        manager.cancelAppointment(appointmentId);
+    }
     //getters and setters
     public String getDateOfBirth() {
         return dateOfBirth;
+    }
+
+    public String getPatientId() {
+        return patientId;
     }
 
     public void setDateOfBirth(String dateOfBirth) {

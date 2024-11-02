@@ -1,0 +1,6 @@
+appointmentId,patientId,doctorId,date,time,status,typeOfService,notes,prescriptions
+1,P1001,D2001,2024-11-10,09:00,completed,consultation,Follow-up in 2 weeks,Aspirin:pending
+2,P1002,D2002,2024-11-11,10:30,confirmed,blood test,,Ibuprofen:dispensed
+3,P1003,D2003,2024-11-12,08:45,canceled,consultation,,
+4,P1001,D2001,2024-11-13,11:00,completed,X-ray,Check for fractures,Paracetamol:dispensed
+5,P1004,D2004,2024-11-14,15:00,pending,consultation,,

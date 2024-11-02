@@ -1,5 +1,6 @@
 import java.util.Scanner;
 
+import controllers.AppointmentManager;
 import controllers.PatientManager;
 import controllers.StaffManager;
 import dbinterfaces.PatientRepository;
@@ -19,6 +20,7 @@ import userinterfaces.PharmacistMenu;
 public class HMSApp {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        AppointmentManager appointmentManager = new AppointmentManager();
         System.out.println("Please log in to the Hospital Management System");
         System.out.println("----------------------------------------------");
 
@@ -46,6 +48,7 @@ public class HMSApp {
             PatientRepository patientRepository = new PatientRepository();
             Patient patient = patientRepository.load(hospitalID);
             if (patient.isDefault()){
+                System.out.print("Please set a new password: ");
                 String newPW = sc.nextLine();
                 PatientManager patientManager = new PatientManager(patientRepository);
                 patientManager.updatePassword(patient, newPW);
@@ -57,6 +60,7 @@ public class HMSApp {
             StaffRepository staffRepository = new StaffRepository();
             Staff staff = staffRepository.load(hospitalID);
             if (staff.isDefault()){
+                System.out.print("Please set a new password: ");
                 String newPW = sc.nextLine();
                 StaffManager staffManager= new StaffManager(staffRepository);
                 staffManager.updatePassword(staff, newPW);

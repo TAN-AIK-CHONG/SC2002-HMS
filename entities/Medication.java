@@ -4,11 +4,13 @@ public class Medication {
     private String medicineName;
     private int quantity;
     private int alertLevel;
+    private int replenishmentQuantity;
 
     public Medication(String medicineName, int quantity, int alertLevel){
         this.medicineName = medicineName;
         this.quantity = quantity;
         this.alertLevel = alertLevel;
+        this.replenishmentQuantity = 0;
     }
 
     public void view(){
@@ -40,5 +42,12 @@ public class Medication {
 
     public void setAlertLevel(int newLevel){
         this.alertLevel = newLevel;
+    }
+
+    public void setReplenishmentQuantity(int replenishmentQuantity) {
+        this.replenishmentQuantity = replenishmentQuantity;
+    }
+    public int getReplenishmentQuantity(){
+        return this.replenishmentQuantity;
     }
 }

@@ -1,19 +1,26 @@
 package userinterfaces;
 
+import java.util.List;
 import java.util.Scanner;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import controllers.PatientManager;
 import dbinterfaces.PatientRepository;
+import entities.Appointment;
 import entities.Doctor;
 import entities.Patient;
+import controllers.AppointmentManager;
+import entities.User;
 
 public class DoctorMenu implements IMenu{
     private Doctor doctor;
+    private AppointmentManager appointmentManager;
 
-    public DoctorMenu(Doctor doctor){
+    public DoctorMenu(Doctor doctor) {
         this.doctor = doctor;
+        this.appointmentManager = appointmentManager;
     }
-
     public void displayMenu(){
         System.out.println("Doctor Menu");
         System.out.println("1. View Patient Medical Record");
@@ -72,6 +79,21 @@ public class DoctorMenu implements IMenu{
                             break;
                     }
                     break;
+                case 3:
+                    viewPersonalSchedule();
+                    break;
+                case 4:
+                    setAvailability(sc);
+                    break;
+                case 5:
+                    manageAppointmentRequests(sc);
+                    break;
+                case 6:
+                    viewUpcomingAppointments();
+                    break;
+                case 7:
+                    recordAppointmentOutcome(sc);
+                    break;
                 case 8:
                     sc.close();
                     System.out.println("Logging out...");
@@ -85,9 +107,67 @@ public class DoctorMenu implements IMenu{
             sc.nextLine();
         }
     }
+    private void viewPersonalSchedule() {
+        List<Appointment> schedule = appointmentManager.getUpcomingAppointmentsForDoctor(doctor.getUserID());
+        System.out.println("\nPersonal Schedule:");
+        for (Appointment appointment : schedule) {
+            System.out.println(appointment);
+        }
+    }
 
-    //For admin to view
-    public void viewRecord(){
+    private void setAvailability(Scanner sc) {
+        System.out.print("Enter available date (YYYY-MM-DD): ");
+        String date = sc.nextLine();
+        System.out.print("Enter available time (HH:MM): ");
+        String time = sc.nextLine();
+        System.out.println("Availability set for " + date + " at " + time);
+    }
+
+    private void manageAppointmentRequests(Scanner sc) {
+        List<Appointment> pendingRequests = appointmentManager.getPendingAppointmentsForDoctor(doctor.getUserID());
+        System.out.println("\nPending Appointment Requests:");
+        for (Appointment appointment : pendingRequests) {
+            System.out.println(appointment);
+            System.out.print("Accept appointment (Y/N)? ");
+            String response = sc.nextLine().toUpperCase();
+            if (response.equals("Y")) {
+                appointmentManager.updateAppointmentStatus(appointment.getAppointmentId(), "confirmed");
+                System.out.println("Appointment confirmed.");
+            } else {
+                appointmentManager.updateAppointmentStatus(appointment.getAppointmentId(), "canceled");
+                System.out.println("Appointment declined.");
+            }
+        }
+    }
+
+    private void viewUpcomingAppointments() {
+        List<Appointment> upcomingAppointments = appointmentManager.getUpcomingAppointmentsForDoctor(doctor.getUserID());
+        System.out.println("\nUpcoming Appointments:");
+        for (Appointment appointment : upcomingAppointments) {
+            System.out.println(appointment);
+        }
+    }
+
+    private void recordAppointmentOutcome(Scanner sc) {
+        System.out.print("Enter Appointment ID to record outcome: ");
+        int appointmentId = sc.nextInt();
+        sc.nextLine(); // consume newline
+
+        System.out.print("Enter type of service provided (e.g., consultation): ");
+        String serviceType = sc.nextLine();
+
+        System.out.print("Enter consultation notes: ");
+        String notes = sc.nextLine();
+
+        System.out.print("Enter medication prescribed (separate by commas if multiple): ");
+        String[] medications = sc.nextLine().split(",");
+
+        appointmentManager.recordAppointmentOutcome(appointmentId, serviceType, notes, List.of(medications));
+        System.out.println("Outcome recorded successfully.");
+    }
+
+    // For admin to view
+    public void viewRecord() {
         this.doctor.viewRecords();
     }
 }
