@@ -14,13 +14,14 @@ import entities.Doctor;
 import entities.Gender;
 import entities.Pharmacist;
 import entities.Staff;
+import entities.User;
 
-public class StaffRepository {
+public class StaffRepository implements UserRepository{
     //file path to the staff database
     private static final String STAFF_CSV_FILE = "database\\StaffDatabase.csv";
 
     //load record from CSV
-    public static Staff load(String staffID){
+    public Staff load(String staffID){
         try (BufferedReader br = new BufferedReader(new FileReader(STAFF_CSV_FILE))){
             String currentLine;
 
@@ -55,7 +56,7 @@ public class StaffRepository {
     }
 
     //store record to CSV
-    public static void store(Staff updated) {
+    public void store(User user) {
         File inputFile = new File(STAFF_CSV_FILE);
         File tempFile = new File("temp.csv"); // Temporary file to store updated records
 
@@ -63,7 +64,10 @@ public class StaffRepository {
              BufferedWriter bw = new BufferedWriter(new FileWriter(tempFile))) {
 
             String currentLine;
-
+            if (!(user instanceof Staff)) {
+                throw new IllegalArgumentException("The provided User is not a Staff instance.");
+            }
+            Staff updated = (Staff) user;
             while ((currentLine=br.readLine())!=null) {
                 String[] data = currentLine.split(",");
 

@@ -43,19 +43,23 @@ public class HMSApp {
         //Display correct menu for logged in user
         System.out.println("Login successful! Welcome to the system.");
         if(isPatient){
-            Patient patient = PatientRepository.load(hospitalID);
+            PatientRepository patientRepository = new PatientRepository();
+            Patient patient = patientRepository.load(hospitalID);
             if (patient.isDefault()){
                 String newPW = sc.nextLine();
-                PatientManager.updatePassword(patient, newPW);
+                PatientManager patientManager = new PatientManager(patientRepository);
+                patientManager.updatePassword(patient, newPW);
             }
             PatientMenu patientMenu = new PatientMenu(patient);
             patientMenu.displayMenu();
         }
         else{
-            Staff staff = StaffRepository.load(hospitalID);
+            StaffRepository staffRepository = new StaffRepository();
+            Staff staff = staffRepository.load(hospitalID);
             if (staff.isDefault()){
                 String newPW = sc.nextLine();
-                StaffManager.updatePassword(staff, newPW);
+                StaffManager staffManager= new StaffManager(staffRepository);
+                staffManager.updatePassword(staff, newPW);
             }
 
             if (staff instanceof Doctor){
