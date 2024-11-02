@@ -3,6 +3,7 @@ package userinterfaces;
 import java.util.Scanner;
 
 import controllers.PatientManager;
+import dbinterfaces.PatientRepository;
 import entities.Patient;
 
 public class PatientMenu implements IMenu {
@@ -13,6 +14,8 @@ public class PatientMenu implements IMenu {
     }
 
     public void displayMenu() {
+        PatientRepository patientRepository = new PatientRepository();
+        PatientManager patientManager = new PatientManager(patientRepository);
         System.out.println("Patient Menu:");
         System.out.println("1. View Medical Record");
         System.out.println("2. Update Personal Information");
@@ -41,12 +44,12 @@ public class PatientMenu implements IMenu {
                         case 1:
                             System.out.print("New email address: ");
                             String newAddress = sc.nextLine();
-                            PatientManager.updateEmail(patient, newAddress);
+                            patientManager.updateEmail(patient, newAddress);
                             break;
                         case 2:
                             System.out.print("New phone number: ");
                             String newNumber = sc.nextLine();
-                            PatientManager.updatePhoneNumber(patient, newNumber);
+                            patientManager.updatePhoneNumber(patient, newNumber);
                             break;
                         default:
                             System.out.println("Please choose a valid option (1-2)");

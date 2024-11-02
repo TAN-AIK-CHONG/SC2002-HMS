@@ -11,16 +11,14 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import entities.BloodType;
-import entities.Gender;
-import entities.Patient;
+import entities.*;
 
-public class PatientRepository{
+public class PatientRepository implements UserRepository{
     //file path to the patient database
     private static final String PATIENT_CSV_FILE = "database\\PatientDatabase.csv";
 
     //load record from CSV
-    public static Patient load(String patientID){
+    public Patient load(String patientID){
         try (BufferedReader br = new BufferedReader(new FileReader(PATIENT_CSV_FILE))){
             String currentLine;
 
@@ -58,7 +56,7 @@ public class PatientRepository{
     }
 
     //store record to CSV
-    public static void store(Patient updated) {
+    public void store(User user) {
         File inputFile = new File(PATIENT_CSV_FILE);
         File tempFile = new File("temp.csv"); // Temporary file to store updated records
 
@@ -66,6 +64,10 @@ public class PatientRepository{
              BufferedWriter bw = new BufferedWriter(new FileWriter(tempFile))) {
 
             String currentLine;
+            if (!(user instanceof Patient)) {
+                throw new IllegalArgumentException("The provided User is not a Patient instance.");
+            }
+            Patient updated = (Patient) user;
 
             while ((currentLine=br.readLine())!=null) {
                 String[] data = currentLine.split(",");

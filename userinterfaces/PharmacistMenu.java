@@ -35,7 +35,8 @@ public class PharmacistMenu implements IMenu {
                     break;
                 case 3:
                     List<Medication> inventory = InventoryRepository.load();
-                    InventoryManager.viewInventory(inventory);
+                    InventoryManager inventoryManager=new InventoryManager();
+                    inventoryManager.viewInventory(inventory);
                     break;
                 case 4:
                     break;

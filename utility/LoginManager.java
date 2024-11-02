@@ -8,10 +8,12 @@ import entities.Staff;
 public class LoginManager {
     public static boolean authenticateUser(String hospitalID, String password, boolean isPatient) {
         if(isPatient){
-            Patient patient = PatientRepository.load(hospitalID);
+            PatientRepository patientRepository = new PatientRepository();
+            Patient patient = patientRepository.load(hospitalID);
             return patient.authenticate(password);
         }
-        Staff staff = StaffRepository.load(hospitalID);
+        StaffRepository staffRepository = new StaffRepository();
+        Staff staff = staffRepository.load(hospitalID);
         return staff.authenticate(password);
     }
 }

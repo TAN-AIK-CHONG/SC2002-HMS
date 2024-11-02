@@ -1,0 +1,5 @@
+Staff ID,Name,Role,Gender,Age,password
+D001,John Smith,doctor,Male,45,5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
+D002,Emily Clarke,Doctor,Female,38,5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
+P001,Mark Lee,Pharmacist,Male,29,5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
+A001,Sarah Lee,Administrator,Female,40,5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8

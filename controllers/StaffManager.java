@@ -1,12 +1,17 @@
 package controllers;
 
+import dbinterfaces.PatientRepository;
 import dbinterfaces.StaffRepository;
 import entities.Staff;
 
-public class StaffManager {
-    //MOVE THIS METHOD TO A CONTROLLER CLASS THAT IS THE PARENT OF STAFF AND PATIENT IN THE FUTURE
-    public static void updatePassword(Staff staff, String newPW){
-        staff.setPassword(newPW);
-        StaffRepository.store(staff);
+//METHODS WILL BE IMPLEMENTED BY AC SOON
+
+public class StaffManager extends UserManager{
+    private StaffRepository staffRepository;
+
+    //constructor
+    public StaffManager(StaffRepository staffRepository) {
+        super(staffRepository);
+        this.staffRepository = staffRepository;
     }
 }

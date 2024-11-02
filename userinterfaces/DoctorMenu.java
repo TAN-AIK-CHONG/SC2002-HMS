@@ -30,19 +30,21 @@ public class DoctorMenu implements IMenu{
         sc.nextLine();
 
         String patientID;
+        PatientRepository patientRepository = new PatientRepository();
+        PatientManager patientManager = new PatientManager(patientRepository);
         while(true){
             switch (choice) {
                 case 1:
                     System.out.println("Input PatientID: ");
                     patientID = sc.nextLine();
-                    Patient view = PatientRepository.load(patientID);
+                    Patient view = patientRepository.load(patientID);
                     PatientManager.viewRecord(view);
                     break;
                 case 2:
                     String newInfo;
                     System.out.println("Input PatientID: ");
                     patientID = sc.nextLine();
-                    Patient edit = PatientRepository.load(patientID);
+                    Patient edit = patientRepository.load(patientID);
                     System.out.println("1. Add a new diagnosis");
                     System.out.println("2. Add a new prescription");
                     System.out.println("3. Add a new treatment plan");
@@ -53,17 +55,17 @@ public class DoctorMenu implements IMenu{
                         case 1: 
                             System.out.println("Diagnosis:");
                             newInfo = sc.nextLine();
-                            PatientManager.addDiagnosis(edit, newInfo);
+                            patientManager.addDiagnosis(edit, newInfo);
                             break;
                         case 2:
                             System.out.println("Prescription:");
                             newInfo = sc.nextLine();
-                            PatientManager.addMedication(edit, newInfo);
+                            patientManager.addMedication(edit, newInfo);
                             break;
                         case 3:
                             System.out.println("Treatment Plan:");
                             newInfo = sc.nextLine();
-                            PatientManager.addTreatment(edit, newInfo);
+                            patientManager.addTreatment(edit, newInfo);
                             break;
                         default: 
                             System.out.println("Please choose a valid option (1-3)");
