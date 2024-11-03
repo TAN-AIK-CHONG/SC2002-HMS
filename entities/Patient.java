@@ -40,23 +40,7 @@ public class Patient extends User{
         System.out.println("Prescribed Medications: " + this.prescribedMedications);
         System.out.println("Treatments: " + this.treatmentPlans);
     }
-    public void viewAvailableSlots(AppointmentManager manager) {
-        for (Appointment appointment : manager.getAllAppointments()) {
-            System.out.println(appointment);
-        }
-    }
 
-    public void scheduleAppointment(AppointmentManager manager, String doctorId, LocalDate date, LocalTime time, String typeOfService) {
-        manager.scheduleAppointment(patientId, doctorId, date, time, typeOfService);
-    }
-
-    public void rescheduleAppointment(AppointmentManager manager, int appointmentId, LocalDate newDate, LocalTime newTime) {
-        manager.rescheduleAppointment(appointmentId, newDate, newTime);
-    }
-
-    public void cancelAppointment(AppointmentManager manager, int appointmentId) {
-        manager.cancelAppointment(appointmentId);
-    }
     //getters and setters
     public String getDateOfBirth() {
         return dateOfBirth;
