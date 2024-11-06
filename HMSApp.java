@@ -1,15 +1,16 @@
 import java.util.Scanner;
 
+import controllers.AppointmentManager;
 import controllers.InventoryManager;
 import controllers.PatientManager;
 import controllers.StaffManager;
-import dbinterfaces.PatientRepository;
-import dbinterfaces.StaffRepository;
 import utility.LoginManager;
 import entities.Patient;
 import entities.Pharmacist;
 import entities.Doctor;
 import entities.Staff;
+import filehandlers.PatientRepository;
+import filehandlers.StaffRepository;
 import entities.Admin;
 import userinterfaces.AdminMenu;
 import userinterfaces.DoctorMenu;
@@ -46,6 +47,7 @@ public class HMSApp {
 
         InventoryManager inventoryManager = new InventoryManager();
         PatientManager patientManager = new PatientManager();
+        AppointmentManager appointmentManager = new AppointmentManager();
 
 
         if(isPatient){
@@ -70,7 +72,7 @@ public class HMSApp {
 
             if (staff instanceof Doctor){
                 Doctor doctor = (Doctor) staff;
-                DoctorMenu docMenu = new DoctorMenu(doctor, patientManager);
+                DoctorMenu docMenu = new DoctorMenu(doctor, patientManager, appointmentManager);
                 docMenu.displayMenu();
             }
             else if (staff instanceof Pharmacist){

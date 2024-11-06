@@ -20,11 +20,12 @@ public class ApptSlot {
         this.time = time;
         this.doctorID = doctorID;
         this.patientID = null;
-        this.status = ApptStatus.Available;
+        this.status = ApptStatus.AVAILABLE;
     }
 
-    public ApptSlot(LocalDate date, LocalTime time, String doctorID, String patientID, ApptStatus status) {
-        this.apptID = IDGenerator.generateID(5);
+    //loaded
+    public ApptSlot(String apptID, LocalDate date, LocalTime time, String doctorID, String patientID, ApptStatus status) {
+        this.apptID = apptID;
         this.date = date;
         this.time = time;
         this.doctorID = doctorID;
@@ -32,13 +33,13 @@ public class ApptSlot {
         this.status = status;
     }
 
-    public void adminView(){
-        System.out.println("Appointment ID: " + this.apptID);
-        System.out.println("Date: " + this.date);
-        System.out.println("Time: " + this.time);
-        System.out.println("Doctor ID: " + this.doctorID);
-        System.out.println("Patient ID: " + this.patientID);
-        System.out.println("Status " + this.status.toString());
+    public void view(){
+        System.out.print("Appointment ID: " + this.apptID);
+        System.out.print(", Date: " + this.date);
+        System.out.print(", Time: " + this.time);
+        System.out.print(", Doctor ID: " + this.doctorID);
+        System.out.print(", Patient ID: " + this.patientID);
+        System.out.print(", Status: " + this.status.toString());
     }
 
     //setters and getters

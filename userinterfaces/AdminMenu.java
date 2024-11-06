@@ -1,9 +1,7 @@
 package userinterfaces;
 
-import java.util.List;
 import java.util.Scanner;
 
-import dbinterfaces.InventoryRepository;
 import controllers.InventoryManager;
 import entities.Admin;
 import entities.Medication;
@@ -36,8 +34,7 @@ public class AdminMenu implements IMenu {
                 case 2:
                     break;
                 case 3:
-                    List<Medication> inventory = InventoryRepository.load();
-                    inventoryManager.viewInventory(inventory);
+                    inventoryManager.viewInventory();
                     System.out.println("1. Add new medication");
                     System.out.println("2. Remove a medication");
                     System.out.println("3. Update stock level of medication");
@@ -56,12 +53,12 @@ public class AdminMenu implements IMenu {
                             int alert = sc.nextInt();
                             sc.nextLine();
                             Medication newMed = new Medication(medName, quantity, alert);
-                            inventoryManager.addInventory(inventory, newMed);
+                            inventoryManager.addInventory(newMed);
                             break;
                         case 2:
                             System.out.print("Enter medication to be removed: ");
                             String removedMed = sc.nextLine();
-                            inventoryManager.removeInventory(inventory, removedMed);
+                            inventoryManager.removeInventory(removedMed);
                             break;
                         case 3:
                             System.out.print("Enter medication to be updated: ");
@@ -69,7 +66,7 @@ public class AdminMenu implements IMenu {
                             System.out.print("Enter new stock level: ");
                             int newLevel = sc.nextInt();
                             sc.nextLine();
-                            inventoryManager.updateInventory(inventory, updatedMed, newLevel);
+                            inventoryManager.updateInventory(updatedMed, newLevel);
                             break;
                         case 4:
                             break;
@@ -77,7 +74,6 @@ public class AdminMenu implements IMenu {
                             System.out.println("Please choose a valid option (1-3)");
                             break;
                     }
-                    InventoryRepository.store(inventory);
                     break;
                 case 4:
                     break;

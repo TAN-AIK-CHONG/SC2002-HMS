@@ -1,25 +1,31 @@
 package userinterfaces;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
+import controllers.AppointmentManager;
 import controllers.PatientManager;
-import dbinterfaces.PatientRepository;
 import entities.Doctor;
 import entities.Patient;
+import entities.appointments.ApptStatus;
+import filehandlers.PatientRepository;
 
 public class DoctorMenu implements IMenu{
     private Doctor doctor;
     private PatientManager patientManager;
+    private AppointmentManager apptManager;
 
-    public DoctorMenu(Doctor doctor, PatientManager patientManager){
+    public DoctorMenu(Doctor doctor, PatientManager patientManager, AppointmentManager apptManager){
         this.doctor = doctor;
         this.patientManager = patientManager;
+        this.apptManager = apptManager;
     }
 
     public void displayMenu(){
         Scanner sc = new Scanner(System.in);
         int choice;
-        String patientID;
         do{
             menuItems();
             choice = sc.nextInt();
@@ -27,51 +33,33 @@ public class DoctorMenu implements IMenu{
             switch (choice) {
                 case 1:
                     System.out.println();
-                    patientManager.viewAllPatients();
-                    System.out.println();
-                    System.out.print("Input PatientID: ");
-                    patientID = sc.nextLine();
-                    System.out.println();
-                    Patient view = PatientRepository.load(patientID);
-                    patientManager.viewRecord(view);
+                    viewPatientRecord(sc);
                     System.out.println();
                     break;
                 case 2:
-                    String newInfo;
                     System.out.println();
-                    patientManager.viewAllPatients();
+                    updatePatientRecord(sc);
                     System.out.println();
-                    System.out.print("Input PatientID: ");
-                    patientID = sc.nextLine();
+                    break;
+                case 3:
                     System.out.println();
-                    Patient edit = PatientRepository.load(patientID);
-                    System.out.println("1. Add a new diagnosis");
-                    System.out.println("2. Add a new prescription");
-                    System.out.println("3. Add a new treatment plan");
+                    viewPersonalSchedule();
                     System.out.println();
-                    System.out.print("Choose an option: ");
-                    int newInfoChoice = sc.nextInt();
-                    sc.nextLine();
-                    switch(newInfoChoice){
-                        case 1: 
-                            System.out.print("Diagnosis: ");
-                            newInfo = sc.nextLine();
-                            patientManager.addDiagnosis(edit, newInfo);
-                            break;
-                        case 2:
-                            System.out.print("Prescription: ");
-                            newInfo = sc.nextLine();
-                            patientManager.addMedication(edit, newInfo);
-                            break;
-                        case 3:
-                            System.out.print("Treatment Plan: ");
-                            newInfo = sc.nextLine();
-                            patientManager.addTreatment(edit, newInfo);
-                            break;
-                        default: 
-                            System.out.println("Please choose a valid option (1-3)");
-                            break;
-                    }
+                    break;
+                case 4:
+                    System.out.println();
+                    setAvailableAppts(sc);
+                    System.out.println();
+                    break;
+                case 5:
+                    System.out.println();
+                    chooseAppointment(sc);
+                    System.out.println();
+                    break;
+                case 6: 
+                    System.out.println();
+                    viewUpcomingAppts();
+                    System.out.println();
                     break;
                 case 8:
                     sc.close();
@@ -104,5 +92,98 @@ public class DoctorMenu implements IMenu{
     //For admin to view
     public void viewRecord(){
         this.doctor.viewRecords();
+    }
+
+    private void viewPatientRecord(Scanner sc){
+        patientManager.viewAllPatients();
+        System.out.println();
+        System.out.print("Input PatientID: ");
+        String patientID = sc.nextLine();
+        System.out.println();
+        Patient view = PatientRepository.load(patientID);
+        patientManager.viewRecord(view);
+    }
+
+    private void updatePatientRecord(Scanner sc){
+        String newInfo;
+
+        System.out.println();
+        patientManager.viewAllPatients();
+        System.out.println();
+        System.out.print("Input PatientID: ");
+        String patientID = sc.nextLine();
+        System.out.println();
+
+        Patient edit = PatientRepository.load(patientID);
+        System.out.println("1. Add a new diagnosis");
+        System.out.println("2. Add a new prescription");
+        System.out.println("3. Add a new treatment plan");
+        System.out.println();
+        System.out.print("Choose an option: ");
+        int choice = sc.nextInt();
+        sc.nextLine();
+        switch(choice){
+            case 1: 
+                System.out.print("Diagnosis: ");
+                newInfo = sc.nextLine();
+                patientManager.addDiagnosis(edit, newInfo);
+                break;
+            case 2:
+                System.out.print("Prescription: ");
+                newInfo = sc.nextLine();
+                patientManager.addMedication(edit, newInfo);
+                break;
+            case 3:
+                System.out.print("Treatment Plan: ");
+                newInfo = sc.nextLine();
+                patientManager.addTreatment(edit, newInfo);
+                break;
+            default: 
+                System.out.println("Please choose a valid option (1-3)");
+                break;
+        }
+    }
+
+    private void setAvailableAppts(Scanner sc){
+        System.out.print("Please input the available date (YYYY-MM-DD): ");
+        LocalDate date = LocalDate.parse(sc.nextLine());
+        System.out.print("Please choose the time slot (HH:MM): ");
+        LocalTime time = LocalTime.parse(sc.nextLine(), DateTimeFormatter.ofPattern("HH:mm"));
+        apptManager.setAvailable(doctor.getUserID(), date , time);
+    }
+
+    private void viewUpcomingAppts(){
+        System.out.println("Here are your upcoming confirmed appointments:");
+        apptManager.viewByFilterDoc(doctor.getUserID(), ApptStatus.CONFIRMED);
+    }
+
+    private void viewPersonalSchedule(){
+        System.out.println("Here are the slots you have made available:");
+        apptManager.viewByFilterDoc(doctor.getUserID(), ApptStatus.AVAILABLE);
+    }
+
+    private void chooseAppointment(Scanner sc){
+        apptManager.viewByFilterDoc(doctor.getUserID(), ApptStatus.PENDING);
+        System.out.println();
+        System.out.print("Input Appointment ID ");
+        String apptID = sc.nextLine();
+        System.out.println("1. Accept Appointment");
+        System.out.println("2. Decline Appointment");
+        System.out.println();
+        System.out.print("Choose an option: ");
+        int option = sc.nextInt();
+        sc.nextLine();
+        switch (option) {
+            case 1:
+                apptManager.handlePending(apptID, ApptStatus.CONFIRMED);
+                break;
+            case 2:
+                apptManager.handlePending(apptID, ApptStatus.CANCELLED);
+                break;
+            default:
+                System.out.println("Please choose a valid option (1-2)");
+                break;
+        }
+
     }
 }

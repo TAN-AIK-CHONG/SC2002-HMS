@@ -1,11 +1,8 @@
 package userinterfaces;
 
-import java.util.List;
 import java.util.Scanner;
 
 import controllers.InventoryManager;
-import dbinterfaces.InventoryRepository;
-import entities.Medication;
 import entities.Staff;
 
 public class PharmacistMenu implements IMenu {
@@ -36,8 +33,7 @@ public class PharmacistMenu implements IMenu {
                 case 2:
                     break;
                 case 3:
-                    List<Medication> inventory = InventoryRepository.load();
-                    inventoryManager.viewInventory(inventory);
+                    inventoryManager.viewInventory();
                     break;
                 case 4:
                     break;

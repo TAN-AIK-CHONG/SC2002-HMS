@@ -3,8 +3,8 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import dbinterfaces.PatientRepository;
 import entities.Patient;
+import filehandlers.PatientRepository;
 
 public class PatientManager {
     public void viewAllPatients(){

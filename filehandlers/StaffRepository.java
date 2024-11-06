@@ -1,6 +1,6 @@
 //NEED TO WRITE CUSTOM EXCEPTIONS
 
-package dbinterfaces;
+package filehandlers;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -84,7 +84,7 @@ public class StaffRepository {
                 bw.newLine(); 
             }
         } catch (IOException e) {
-            System.out.println("An error occurred while updating the patient record: " + e.getMessage());
+            System.out.println("An error occurred while updating the staff record: " + e.getMessage());
             e.printStackTrace();
         }
         // Replace the original file with the updated file

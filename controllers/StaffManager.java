@@ -1,7 +1,7 @@
 package controllers;
 
-import dbinterfaces.StaffRepository;
 import entities.Staff;
+import filehandlers.StaffRepository;
 
 public class StaffManager {
     //MOVE THIS METHOD TO A CONTROLLER CLASS THAT IS THE PARENT OF STAFF AND PATIENT IN THE FUTURE
@@ -9,4 +9,6 @@ public class StaffManager {
         staff.setPassword(newPW);
         StaffRepository.store(staff);
     }
+
+    
 }

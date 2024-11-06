@@ -1,9 +1,9 @@
 package utility;
 
-import dbinterfaces.PatientRepository;
-import dbinterfaces.StaffRepository;
 import entities.Patient;
 import entities.Staff;
+import filehandlers.PatientRepository;
+import filehandlers.StaffRepository;
 
 public class LoginManager {
     public static boolean authenticateUser(String hospitalID, String password, boolean isPatient) {

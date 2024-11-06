@@ -2,33 +2,54 @@ package controllers;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import entities.appointments.ApptSlot;
+import entities.appointments.ApptStatus;
+import filehandlers.ApptSlotRepository;
 
 public class AppointmentManager {
     // FOR BOTH
-    public void seeUpcoming(String userID){
-        //sort by ID and by status confirmed
+    public void viewByFilterDoc(String doctorID, ApptStatus status){
+        List<ApptSlot> slots = ApptSlotRepository.load();
+        for (ApptSlot appointment : slots){
+            if (doctorID.equals(appointment.getDoctorID()) && appointment.getStatus() == status){
+                appointment.view();
+                System.out.println();
+            }
+        }
+    }
+
+    public void viewByFilterPatient(String patientID, ApptStatus status){
+        List<ApptSlot> slots = ApptSlotRepository.load();
+        for (ApptSlot appointment : slots){
+            if (patientID.equals(appointment.getPatientID()) && appointment.getStatus() == status){
+                appointment.view();
+                System.out.println();
+            }
+        }
     }
 
     // FOR DOCTORS
     public void setAvailable(String doctorID, LocalDate date, LocalTime time){
-        ApptSlot newSlot = new ApptSlot(date, time, doctorID);
-        //store new slot into csv
+        List<ApptSlot> slots = new ArrayList<>(ApptSlotRepository.load());
+        ApptSlot newAppt = new ApptSlot(date, time, doctorID);
+        slots.add(newAppt);
+        ApptSlotRepository.store(slots);
     }
 
-    public void seeAvailable(String doctorID){
-        //sort by doctor ID and by status available
-    }
-
-    public void accept(String apptID){
-        //set status to confirmed for that appt id
-        //store in csv
-    }
-
-    public void decline(String apptID){
-        //set status to cancelled for that appt id
-        //store in csv
+    public void handlePending(String apptID, ApptStatus status){
+        List<ApptSlot> slots = new ArrayList<>(ApptSlotRepository.load());
+        for (int i = 0; i < slots.size(); i++) {
+            ApptSlot appointment = slots.get(i);
+            if (appointment.getApptID().equals(apptID) && appointment.getStatus().equals(ApptStatus.PENDING)) {
+                appointment.setStatus(status);
+                ApptSlotRepository.store(slots);
+                return;
+            }
+        }
+        System.out.println("No such appointment found");
     }
 
     public void makeAOR(String apptID){
@@ -37,10 +58,6 @@ public class AppointmentManager {
     }
 
     // FOR PATIENTS
-    public void seeAvailable(){
-        //sort by status available
-    }
-
     public void schedule(String apptID, String patientID){
         //set status pending for that appt ID
         //set patient ID for that appt ID
@@ -55,6 +72,10 @@ public class AppointmentManager {
     public void cancel(String apptID){
         //set status to cancelled for that appt ID
         //store in csv
+    }
+
+    public void viewAOR(String apptID){
+        //view AOR for that appt ID
     }
     
 }
