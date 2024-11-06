@@ -10,9 +10,11 @@ import entities.Medication;
 
 public class AdminMenu implements IMenu {
     private Admin admin;
+    private InventoryManager inventoryManager;
     
-    public AdminMenu(Admin admin){
+    public AdminMenu(Admin admin, InventoryManager inventoryManager){
         this.admin = admin;
+        this.inventoryManager = inventoryManager;
     }
 
     public void displayMenu(){
@@ -35,7 +37,7 @@ public class AdminMenu implements IMenu {
                     break;
                 case 3:
                     List<Medication> inventory = InventoryRepository.load();
-                    InventoryManager.viewInventory(inventory);
+                    inventoryManager.viewInventory(inventory);
                     System.out.println("1. Add new medication");
                     System.out.println("2. Remove a medication");
                     System.out.println("3. Update stock level of medication");
@@ -54,12 +56,12 @@ public class AdminMenu implements IMenu {
                             int alert = sc.nextInt();
                             sc.nextLine();
                             Medication newMed = new Medication(medName, quantity, alert);
-                            InventoryManager.addInventory(inventory, newMed);
+                            inventoryManager.addInventory(inventory, newMed);
                             break;
                         case 2:
                             System.out.print("Enter medication to be removed: ");
                             String removedMed = sc.nextLine();
-                            InventoryManager.removeInventory(inventory, removedMed);
+                            inventoryManager.removeInventory(inventory, removedMed);
                             break;
                         case 3:
                             System.out.print("Enter medication to be updated: ");
@@ -67,7 +69,7 @@ public class AdminMenu implements IMenu {
                             System.out.print("Enter new stock level: ");
                             int newLevel = sc.nextInt();
                             sc.nextLine();
-                            InventoryManager.updateInventory(inventory, updatedMed, newLevel);
+                            inventoryManager.updateInventory(inventory, updatedMed, newLevel);
                             break;
                         case 4:
                             break;

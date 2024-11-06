@@ -1,5 +1,6 @@
 import java.util.Scanner;
 
+import controllers.InventoryManager;
 import controllers.PatientManager;
 import controllers.StaffManager;
 import dbinterfaces.PatientRepository;
@@ -41,39 +42,49 @@ public class HMSApp {
         }
         
         //Display correct menu for logged in user
-        System.out.println("Login successful! Welcome to the system.");
+        System.out.println("Login successful! Welcome to the system, " + hospitalID);
+
+        InventoryManager inventoryManager = new InventoryManager();
+        PatientManager patientManager = new PatientManager();
+
+
         if(isPatient){
             Patient patient = PatientRepository.load(hospitalID);
             if (patient.isDefault()){
+                System.out.println("This is your first login. Please update your password.");
+                System.out.print("New password: ");
                 String newPW = sc.nextLine();
                 PatientManager.updatePassword(patient, newPW);
             }
-            PatientMenu patientMenu = new PatientMenu(patient);
+            PatientMenu patientMenu = new PatientMenu(patient, patientManager);
             patientMenu.displayMenu();
         }
         else{
             Staff staff = StaffRepository.load(hospitalID);
             if (staff.isDefault()){
+                System.out.println("This is your first login. Please update your password.");
+                System.out.print("New password: ");
                 String newPW = sc.nextLine();
                 StaffManager.updatePassword(staff, newPW);
             }
 
             if (staff instanceof Doctor){
                 Doctor doctor = (Doctor) staff;
-                DoctorMenu docMenu = new DoctorMenu(doctor);
+                DoctorMenu docMenu = new DoctorMenu(doctor, patientManager);
                 docMenu.displayMenu();
             }
             else if (staff instanceof Pharmacist){
                 Pharmacist Pharma = (Pharmacist) staff;
-                PharmacistMenu pharmaMenu = new PharmacistMenu(Pharma);
+                PharmacistMenu pharmaMenu = new PharmacistMenu(Pharma, inventoryManager);
                 pharmaMenu.displayMenu();
             }
             else if (staff instanceof Admin){
                 Admin admin = (Admin) staff;
-                AdminMenu adminMenu = new AdminMenu(admin);
+                AdminMenu adminMenu = new AdminMenu(admin, inventoryManager);
                 adminMenu.displayMenu();
             }
         }
         sc.close();
+        System.out.println("program exit");
     }
 }

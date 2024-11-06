@@ -10,9 +10,11 @@ import entities.Staff;
 
 public class PharmacistMenu implements IMenu {
     private Staff record;
+    private InventoryManager inventoryManager;
 
-    public PharmacistMenu(Staff record){
+    public PharmacistMenu(Staff record, InventoryManager inventoryManager){
         this.record = record;
+        this.inventoryManager = inventoryManager;
     }
 
     public void displayMenu(){
@@ -35,7 +37,7 @@ public class PharmacistMenu implements IMenu {
                     break;
                 case 3:
                     List<Medication> inventory = InventoryRepository.load();
-                    InventoryManager.viewInventory(inventory);
+                    inventoryManager.viewInventory(inventory);
                     break;
                 case 4:
                     break;
