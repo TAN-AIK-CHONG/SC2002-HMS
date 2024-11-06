@@ -7,6 +7,13 @@ import dbinterfaces.PatientRepository;
 import entities.Patient;
 
 public class PatientManager {
+    public void viewAllPatients(){
+        List<Patient> patientList = PatientRepository.loadAllPatients();
+        for (Patient patient : patientList){
+            System.out.println(patient.getUserID() + " - " + patient.getName());
+        }
+
+    }
     public void viewRecord(Patient patient){
         patient.viewRecords();
     }

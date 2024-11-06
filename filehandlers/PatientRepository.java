@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -104,4 +105,40 @@ public class PatientRepository{
             System.out.println("Could not rename temp file.");
         }
     } 
+
+    public static List<Patient> loadAllPatients(){
+        List<Patient> patientList = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(PATIENT_CSV_FILE))){
+            String currentLine;
+            br.readLine(); //skip header line
+
+            while((currentLine=br.readLine())!= null){
+                String[] data = currentLine.split(",");
+
+                String patientID = data[0];
+                String name = data[1];
+                String dateOfBirth = data[2];
+                Gender gender = Gender.fromString(data[3]);
+                BloodType bloodType = BloodType.fromString(data[4]);
+                String emailAddress = data[5];
+                String phoneNumber = data[6];
+                List<String> diagnoses = Arrays.asList(data[7].split(";"));
+                List<String> medications = Arrays.asList(data[8].split(";"));
+                List<String> treatmentPlans = Arrays.asList(data[9].split(";"));
+                String password = data[10];
+
+                //Create new patient
+                Patient patient = new Patient(patientID, name, dateOfBirth, gender, bloodType,
+                                                    emailAddress, phoneNumber, diagnoses, medications, treatmentPlans, password);
+
+                patientList.add(patient);
+                }
+
+            return patientList;
+            } catch(IOException e){
+            e.printStackTrace();
+            }
+        return null;
+    }
 }

@@ -1,5 +1,5 @@
 package entities.appointments;
 
 public enum ApptStatus {
-    Confirmed, Pending, Canceled, Completed;
+    Available, Pending, Confirmed, Canceled, Completed;
 }

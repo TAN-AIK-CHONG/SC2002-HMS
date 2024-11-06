@@ -27,6 +27,8 @@ public class DoctorMenu implements IMenu{
             switch (choice) {
                 case 1:
                     System.out.println();
+                    patientManager.viewAllPatients();
+                    System.out.println();
                     System.out.print("Input PatientID: ");
                     patientID = sc.nextLine();
                     System.out.println();
@@ -35,8 +37,10 @@ public class DoctorMenu implements IMenu{
                     System.out.println();
                     break;
                 case 2:
-                    System.out.println();
                     String newInfo;
+                    System.out.println();
+                    patientManager.viewAllPatients();
+                    System.out.println();
                     System.out.print("Input PatientID: ");
                     patientID = sc.nextLine();
                     System.out.println();

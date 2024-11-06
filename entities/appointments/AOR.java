@@ -5,10 +5,10 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Appointment {
+public class AOR {
     private int apptID;
     private String patientID;
-    private String DoctorID;
+    private String doctorID;
     private LocalDate date;
     private LocalTime time;
     private ApptStatus status;
@@ -16,11 +16,11 @@ public class Appointment {
     private String consultationNotes;
     private List<ApptPrescription> prescriptions;
 
-    public Appointment(int apptID, String patientID, String doctorID, LocalDate date, LocalTime time, ApptStatus status,
+    public AOR(int apptID, String patientID, String doctorID, LocalDate date, LocalTime time, ApptStatus status,
             TypeOfService tos, String consultationNotes, List<ApptPrescription> prescriptions) {
         this.apptID = apptID;
         this.patientID = patientID;
-        DoctorID = doctorID;
+        this.doctorID = doctorID;
         this.date = date;
         this.time = time;
         this.status = status;
@@ -46,11 +46,11 @@ public class Appointment {
     }
 
     public String getDoctorID() {
-        return DoctorID;
+        return doctorID;
     }
 
     public void setDoctorID(String doctorID) {
-        DoctorID = doctorID;
+        this.doctorID = doctorID;
     }
 
     public LocalDate getDate() {
