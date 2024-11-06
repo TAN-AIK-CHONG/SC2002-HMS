@@ -61,6 +61,10 @@ public class DoctorMenu implements IMenu{
                     viewUpcomingAppts();
                     System.out.println();
                     break;
+                case 7:
+                    System.out.println();
+                    System.out.println();
+                    break;
                 case 8:
                     sc.close();
                     System.out.println("Logging out...");

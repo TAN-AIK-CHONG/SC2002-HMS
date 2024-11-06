@@ -2,16 +2,20 @@ package userinterfaces;
 
 import java.util.Scanner;
 
+import controllers.AppointmentManager;
 import controllers.PatientManager;
 import entities.Patient;
+import entities.appointments.ApptStatus;
 
 public class PatientMenu implements IMenu {
     private Patient patient;
     private PatientManager patientManager;
+    private AppointmentManager apptManager;
 
-    public PatientMenu(Patient patient, PatientManager patientManager){
+    public PatientMenu(Patient patient, PatientManager patientManager, AppointmentManager apptManager){
         this.patient = patient;
         this.patientManager = patientManager;
+        this.apptManager = apptManager;
     }
 
     public void displayMenu() {
@@ -24,12 +28,37 @@ public class PatientMenu implements IMenu {
             switch (choice) {
                 case 1:
                     System.out.println();
-                    patientManager.viewRecord(patient);
+                    viewRecord();
                     System.out.println();
                     break;
                 case 2:
                     System.out.println();
                     updatePersonalInformation(sc);
+                    System.out.println();
+                    break;
+                case 3:
+                    System.out.println();
+                    viewAvailable();
+                    System.out.println();
+                    break;
+                case 4: 
+                    System.out.println();
+                    scheduleAppt(sc);
+                    System.out.println();
+                    break;
+                case 5:
+                    System.out.println();
+                    rescheduleAppt(sc);
+                    System.out.println();
+                    break;
+                case 6: 
+                    System.out.println();
+                    cancelAppt(sc);
+                    System.out.println();
+                    break;
+                case 7:
+                    System.out.println();
+                    viewUpcoming();
                     System.out.println();
                     break;
                 case 9:
@@ -61,6 +90,11 @@ public class PatientMenu implements IMenu {
         System.out.print("Choose an option: ");
     }
 
+    private void viewRecord(){
+        System.out.println("Your Medical Records: ");
+        patient.viewRecords();
+    }
+
     private void updatePersonalInformation(Scanner sc) {
         System.out.println("1. Update email address");
         System.out.println("2. Update phone number");
@@ -85,6 +119,37 @@ public class PatientMenu implements IMenu {
                 System.out.println("Please choose a valid option (1-2)");
                 break;
         }
+    }
+
+    private void viewAvailable(){
+        System.out.println("All available slots: ");
+        apptManager.viewByFilter(ApptStatus.AVAILABLE);
+    }
+
+    private void scheduleAppt(Scanner sc){
+        System.out.print("Appointment ID: ");
+        String apptID = sc.nextLine();
+        apptManager.schedule(apptID, patient.getUserID());
+    }
+
+    private void rescheduleAppt(Scanner sc){
+        System.out.println("Please input the appointment ID of the appointment you want to reschedule:");
+        System.out.print("Appointment ID: ");
+        String prevApptID = sc.nextLine();
+        System.out.print("Please choose a new appointment slot: ");
+        String newApptID = sc.nextLine();
+        apptManager.reschedule(prevApptID, newApptID);
+    }
+
+    private void cancelAppt(Scanner sc){
+        System.out.println("Please input the appointment you wish to cancel: ");
+        System.out.print("Appointment ID: ");
+        String cancelledID = sc.nextLine();
+        apptManager.cancel(cancelledID);
+    }
+
+    private void viewUpcoming(){
+        apptManager.viewByFilterPatient(patient.getUserID(), ApptStatus.CONFIRMED);
     }
 
 }

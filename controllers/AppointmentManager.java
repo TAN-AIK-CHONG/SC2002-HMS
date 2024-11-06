@@ -11,6 +11,16 @@ import filehandlers.ApptSlotRepository;
 
 public class AppointmentManager {
     // FOR BOTH
+    public void viewByFilter(ApptStatus status){
+        List<ApptSlot> slots = ApptSlotRepository.load();
+        for (ApptSlot appointment : slots){
+            if (appointment.getStatus() == status){
+                appointment.view();
+                System.out.println();
+            }
+        }
+    }
+    
     public void viewByFilterDoc(String doctorID, ApptStatus status){
         List<ApptSlot> slots = ApptSlotRepository.load();
         for (ApptSlot appointment : slots){
@@ -59,19 +69,49 @@ public class AppointmentManager {
 
     // FOR PATIENTS
     public void schedule(String apptID, String patientID){
-        //set status pending for that appt ID
-        //set patient ID for that appt ID
+        List<ApptSlot> slots = new ArrayList<>(ApptSlotRepository.load());
+        for (int i = 0; i < slots.size(); i++) {
+            ApptSlot appointment = slots.get(i);
+            if (appointment.getApptID().equals(apptID) && appointment.getStatus() == ApptStatus.AVAILABLE) {
+                appointment.setStatus(ApptStatus.PENDING);
+                appointment.setPatientID(patientID);
+                ApptSlotRepository.store(slots);
+                return;
+            }
+        }
+        System.out.println("No such appointment found");
     }
 
     public void reschedule(String prevApptID, String newApptID){
-        //set status available for prev appt ID
-        //set patient ID = null for prev appt ID
-        //set status pending for new appt ID
+        String patientID=null;
+        List<ApptSlot> slots = new ArrayList<>(ApptSlotRepository.load());
+        for (int i = 0; i < slots.size(); i++) {
+            ApptSlot appointment = slots.get(i);
+            if (appointment.getApptID().equals(prevApptID) && 
+                (appointment.getStatus() == ApptStatus.CONFIRMED || appointment.getStatus() == ApptStatus.PENDING)) {
+                appointment.setStatus(ApptStatus.AVAILABLE);
+                patientID = appointment.getPatientID();
+                appointment.setPatientID(null);
+            }
+            else if(appointment.getApptID().equals(newApptID) && appointment.getStatus() == ApptStatus.AVAILABLE){
+                appointment.setStatus(ApptStatus.PENDING);
+                appointment.setPatientID(patientID);
+            }
+        }
+        ApptSlotRepository.store(slots);
     }
 
     public void cancel(String apptID){
-        //set status to cancelled for that appt ID
-        //store in csv
+        List<ApptSlot> slots = new ArrayList<>(ApptSlotRepository.load());
+        for (int i = 0; i < slots.size(); i++) {
+            ApptSlot appointment = slots.get(i);
+            if (appointment.getApptID().equals(apptID) && appointment.getStatus() == ApptStatus.CONFIRMED) {
+                appointment.setStatus(ApptStatus.CANCELLED);
+                ApptSlotRepository.store(slots);
+                return;
+            }
+        }
+        System.out.println("No such appointment found");
     }
 
     public void viewAOR(String apptID){

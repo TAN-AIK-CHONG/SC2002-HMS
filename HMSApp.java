@@ -58,7 +58,7 @@ public class HMSApp {
                 String newPW = sc.nextLine();
                 PatientManager.updatePassword(patient, newPW);
             }
-            PatientMenu patientMenu = new PatientMenu(patient, patientManager);
+            PatientMenu patientMenu = new PatientMenu(patient, patientManager, appointmentManager);
             patientMenu.displayMenu();
         }
         else{
