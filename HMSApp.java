@@ -47,6 +47,7 @@ public class HMSApp {
 
         InventoryManager inventoryManager = new InventoryManager();
         PatientManager patientManager = new PatientManager();
+        StaffManager staffManager = new StaffManager();
         AppointmentManager appointmentManager = new AppointmentManager();
 
 
@@ -82,7 +83,7 @@ public class HMSApp {
             }
             else if (staff instanceof Admin){
                 Admin admin = (Admin) staff;
-                AdminMenu adminMenu = new AdminMenu(admin, inventoryManager);
+                AdminMenu adminMenu = new AdminMenu(admin, inventoryManager, staffManager);
                 adminMenu.displayMenu();
             }
         }

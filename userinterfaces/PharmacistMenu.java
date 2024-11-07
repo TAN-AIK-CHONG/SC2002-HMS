@@ -40,7 +40,7 @@ public class PharmacistMenu implements IMenu {
                 case 5:
                     sc.close();
                     System.out.println("Logging out...");
-                    System.exit(0);
+                    return;
                 default:
                     System.out.println("Please choose a valid option instead");
                     break;

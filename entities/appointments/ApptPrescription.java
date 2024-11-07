@@ -1,14 +1,14 @@
 package entities.appointments;
 
 public class ApptPrescription {
-    enum Status {Pending, Dispensed};
+    enum Status {PENDING, DISPENSED};
 
     private String medicationName;
     private Status status;
 
     public ApptPrescription(String medicationName) {
         this.medicationName = medicationName;
-        this.status = Status.Pending; // Default status
+        this.status = Status.PENDING; // Default status
     }
 
     // getters and setters

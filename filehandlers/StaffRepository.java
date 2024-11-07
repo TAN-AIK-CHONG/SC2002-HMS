@@ -4,10 +4,11 @@ package filehandlers;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import entities.Admin;
 import entities.Doctor;
@@ -55,45 +56,53 @@ public class StaffRepository {
     }
 
     //store record to CSV
-    public static void store(Staff updated) {
-        File inputFile = new File(STAFF_CSV_FILE);
-        File tempFile = new File("temp.csv"); // Temporary file to store updated records
+    public static void store(List<Staff> staffList) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(STAFF_CSV_FILE))) {
+            // Write header row
+            bw.write("StaffID,Name,Role,Gender,Age,Password");
+            bw.newLine();
 
-        try (BufferedReader br = new BufferedReader(new FileReader(inputFile));
-             BufferedWriter bw = new BufferedWriter(new FileWriter(tempFile))) {
-
-            String currentLine;
-
-            while ((currentLine=br.readLine())!=null) {
-                String[] data = currentLine.split(",");
-
-                // Update the line if it matches the patient ID
-                if (data[0].equals(updated.getUserID())) {
-                    String updatedLine = String.join(",",
-                            updated.getUserID(),
-                            updated.getName(),
-                            updated.getRole(),
-                            updated.getGender().toString(),
-                            String.valueOf(updated.getAge()),
-                            updated.getPassword());
-                    bw.write(updatedLine);
-                } else {
-                    // Write the original line to the temp file
-                    bw.write(currentLine);
-                }
-                bw.newLine(); 
+            // Write each medication record to the CSV (overwrite)
+            for (Staff staff : staffList) {
+                String line = staff.getUserID() + "," + staff.getName() + "," + staff.getRole() + "," 
+                            + staff.getGender().toString() + "," + Integer.toString(staff.getAge()) + "," + staff.getPassword();
+                bw.write(line);
+                bw.newLine();
             }
+
         } catch (IOException e) {
-            System.out.println("An error occurred while updating the staff record: " + e.getMessage());
+            System.out.println("An error occurred while writing to the file.");
             e.printStackTrace();
         }
-        // Replace the original file with the updated file
-        if (!inputFile.delete()) {
-            System.out.println("Could not delete original file.");
-            return;
-        }
-        if (!tempFile.renameTo(inputFile)) {
-            System.out.println("Could not rename temp file.");
-        }
-    } 
+    }
+
+    public static List<Staff> loadAllStaff(){
+        List<Staff> staffList = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(STAFF_CSV_FILE))){
+            String currentLine;
+            br.readLine(); //skip header line
+
+            while((currentLine=br.readLine())!= null){
+                String[] data = currentLine.split(",");
+
+                String staffID = data[0];
+                String name = data[1];
+                String role = data[2];
+                Gender gender = Gender.fromString(data[3]);
+                int age = Integer.parseInt(data[4]);
+                String password = data[5];
+
+                //Create new patient
+                Staff staff = new Staff(staffID, password, name, gender, age, role);
+
+                staffList.add(staff);
+                }
+
+            return staffList;
+            } catch(IOException e){
+            e.printStackTrace();
+            }
+        return null;
+    }
 }

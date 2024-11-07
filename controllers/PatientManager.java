@@ -12,7 +12,6 @@ public class PatientManager {
         for (Patient patient : patientList){
             System.out.println(patient.getUserID() + " - " + patient.getName());
         }
-
     }
     public void viewRecord(Patient patient){
         patient.viewRecords();
