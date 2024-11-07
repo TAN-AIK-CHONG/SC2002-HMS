@@ -1,21 +1,21 @@
+import java.util.Scanner;
+
 import controllers.AppointmentManager;
 import controllers.InventoryManager;
 import controllers.PatientManager;
 import controllers.StaffManager;
-import entities.Admin;
-import entities.Doctor;
+import utility.LoginManager;
 import entities.Patient;
 import entities.Pharmacist;
+import entities.Doctor;
 import entities.Staff;
 import filehandlers.PatientRepository;
 import filehandlers.StaffRepository;
-import java.util.Scanner;
+import entities.Admin;
 import userinterfaces.AdminMenu;
 import userinterfaces.DoctorMenu;
 import userinterfaces.PatientMenu;
 import userinterfaces.PharmacistMenu;
-import utility.LoginManager;
-
 
 public class HMSApp {
     public static void main(String[] args) {
@@ -28,20 +28,20 @@ public class HMSApp {
         boolean isPatient = userType.equals("P");
         String hospitalID = null;
         String password = null;
-        while (true) { 
+        while (true) {
             System.out.print("Hospital ID: ");
             hospitalID = sc.nextLine();
 
             System.out.print("Password: ");
-            password = sc.nextLine(); 
+            password = sc.nextLine();
 
-            if(LoginManager.authenticateUser(hospitalID, password, isPatient)){
+            if (LoginManager.authenticateUser(hospitalID, password, isPatient)) {
                 break;
             }
             System.out.println("Invalid credentials. Please try again.");
         }
-        
-        //Display correct menu for logged in user
+
+        // Display correct menu for logged in user
         System.out.println("Login successful! Welcome to the system, " + hospitalID);
 
         InventoryManager inventoryManager = new InventoryManager();
@@ -49,10 +49,9 @@ public class HMSApp {
         StaffManager staffManager = new StaffManager();
         AppointmentManager appointmentManager = new AppointmentManager();
 
-
-        if(isPatient){
+        if (isPatient) {
             Patient patient = PatientRepository.load(hospitalID);
-            if (patient.isDefault()){
+            if (patient.isDefault()) {
                 System.out.println("This is your first login. Please update your password.");
                 System.out.print("New password: ");
                 String newPW = sc.nextLine();
@@ -60,27 +59,24 @@ public class HMSApp {
             }
             PatientMenu patientMenu = new PatientMenu(patient.getUserID(), patientManager, appointmentManager);
             patientMenu.displayMenu();
-        }
-        else{
+        } else {
             Staff staff = StaffRepository.load(hospitalID);
-            if (staff.isDefault()){
+            if (staff.isDefault()) {
                 System.out.println("This is your first login. Please update your password.");
                 System.out.print("New password: ");
                 String newPW = sc.nextLine();
                 StaffManager.updatePassword(staff, newPW);
             }
 
-            if (staff instanceof Doctor){
+            if (staff instanceof Doctor) {
                 Doctor doctor = (Doctor) staff;
                 DoctorMenu docMenu = new DoctorMenu(doctor.getUserID(), patientManager, appointmentManager);
                 docMenu.displayMenu();
-            }
-            else if (staff instanceof Pharmacist){
+            } else if (staff instanceof Pharmacist) {
                 Pharmacist Pharma = (Pharmacist) staff;
                 PharmacistMenu pharmaMenu = new PharmacistMenu(Pharma, inventoryManager);
                 pharmaMenu.displayMenu();
-            }
-            else if (staff instanceof Admin){
+            } else if (staff instanceof Admin) {
                 Admin admin = (Admin) staff;
                 AdminMenu adminMenu = new AdminMenu(admin, inventoryManager, staffManager);
                 adminMenu.displayMenu();

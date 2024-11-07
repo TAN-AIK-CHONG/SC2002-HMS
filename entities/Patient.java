@@ -1,7 +1,8 @@
 package entities;
+
 import java.util.List;
 
-public class Patient extends User{
+public class Patient extends User {
     private String dateOfBirth;
     private String emailAddress;
     private String phoneNumber;
@@ -10,10 +11,10 @@ public class Patient extends User{
     private List<String> prescribedMedications;
     private List<String> treatmentPlans;
 
-    public Patient(String patientID, String name, String dateOfBirth, Gender gender, 
-                          BloodType bloodType, String emailAddress, String phoneNumber,  
-                          List<String> pastDiagnoses, List<String> prescribedMedications, 
-                          List<String> treatmentPlans, String password) {
+    public Patient(String patientID, String name, String dateOfBirth, Gender gender,
+            BloodType bloodType, String emailAddress, String phoneNumber,
+            List<String> pastDiagnoses, List<String> prescribedMedications,
+            List<String> treatmentPlans, String password) {
         super(patientID, password, name, gender);
         this.dateOfBirth = dateOfBirth;
         this.emailAddress = emailAddress;
@@ -24,7 +25,7 @@ public class Patient extends User{
         this.treatmentPlans = treatmentPlans;
     }
 
-    public void viewRecords(){
+    public void viewRecords() {
         System.out.println("Patient ID: " + super.getUserID());
         System.out.println("Name: " + super.getName());
         System.out.println("Date of Birth " + this.dateOfBirth);
@@ -37,7 +38,7 @@ public class Patient extends User{
         System.out.println("Treatments: " + this.treatmentPlans);
     }
 
-    //getters and setters
+    // getters and setters
     public String getDateOfBirth() {
         return dateOfBirth;
     }
@@ -94,5 +95,4 @@ public class Patient extends User{
         this.treatmentPlans = treatmentPlans;
     }
 
-    
 }

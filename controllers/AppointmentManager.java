@@ -15,30 +15,30 @@ import utility.Hash;
 
 public class AppointmentManager {
     // FOR BOTH
-    public void viewByFilter(ApptStatus status){
+    public void viewByFilter(ApptStatus status) {
         List<ApptSlot> slots = ApptSlotRepository.load();
-        for (ApptSlot appointment : slots){
-            if (appointment.getStatus() == status){
-                appointment.view();
-                System.out.println();
-            }
-        }
-    }
-    
-    public void viewByFilterDoc(String doctorID, ApptStatus status){
-        List<ApptSlot> slots = ApptSlotRepository.load();
-        for (ApptSlot appointment : slots){
-            if (doctorID.equals(appointment.getDoctorID()) && appointment.getStatus() == status){
+        for (ApptSlot appointment : slots) {
+            if (appointment.getStatus() == status) {
                 appointment.view();
                 System.out.println();
             }
         }
     }
 
-    public void viewByFilterPatient(String patientID, ApptStatus status){
+    public void viewByFilterDoc(String doctorID, ApptStatus status) {
         List<ApptSlot> slots = ApptSlotRepository.load();
-        for (ApptSlot appointment : slots){
-            if (patientID.equals(appointment.getPatientID()) && appointment.getStatus() == status){
+        for (ApptSlot appointment : slots) {
+            if (doctorID.equals(appointment.getDoctorID()) && appointment.getStatus() == status) {
+                appointment.view();
+                System.out.println();
+            }
+        }
+    }
+
+    public void viewByFilterPatient(String patientID, ApptStatus status) {
+        List<ApptSlot> slots = ApptSlotRepository.load();
+        for (ApptSlot appointment : slots) {
+            if (patientID.equals(appointment.getPatientID()) && appointment.getStatus() == status) {
                 appointment.view();
                 System.out.println();
             }
@@ -46,14 +46,14 @@ public class AppointmentManager {
     }
 
     // FOR DOCTORS
-    public void setAvailable(String doctorID, LocalDate date, LocalTime time){
+    public void setAvailable(String doctorID, LocalDate date, LocalTime time) {
         List<ApptSlot> slots = new ArrayList<>(ApptSlotRepository.load());
         ApptSlot newAppt = new ApptSlot(date, time, doctorID);
         slots.add(newAppt);
         ApptSlotRepository.store(slots);
     }
 
-    public void handlePending(String apptID, ApptStatus status){
+    public void handlePending(String apptID, ApptStatus status) {
         List<ApptSlot> slots = new ArrayList<>(ApptSlotRepository.load());
         for (int i = 0; i < slots.size(); i++) {
             ApptSlot appointment = slots.get(i);
@@ -67,13 +67,16 @@ public class AppointmentManager {
     }
 
     public void makeAOR(String apptID, String notes, String tos, List<ApptPrescription> prescription) {
-        //make AOR for that appt ID
-        //store aor in csv
+        // make AOR for that appt ID
+        // store aor in csv
         List<ApptSlot> slots = ApptSlotRepository.load();
 
         for (ApptSlot appointment : slots) {
-            if (appointment.getApptID().equals(apptID) && (appointment.getStatus() == ApptStatus.CONFIRMED || appointment.getStatus() == ApptStatus.COMPLETED)) {
-                AOR aor = new AOR(appointment.getApptID(), appointment.getPatientID(), appointment.getDoctorID(), appointment.getDate(), appointment.getTime(), appointment.getStatus(), TypeOfService.fromString(tos), notes, prescription);
+            if (appointment.getApptID().equals(apptID) && (appointment.getStatus() == ApptStatus.CONFIRMED
+                    || appointment.getStatus() == ApptStatus.COMPLETED)) {
+                AOR aor = new AOR(appointment.getApptID(), appointment.getPatientID(), appointment.getDoctorID(),
+                        appointment.getDate(), appointment.getTime(), appointment.getStatus(),
+                        TypeOfService.fromString(tos), notes, prescription);
                 List<AOR> aorList = AORRepository.load();
                 aorList.add(aor);
                 AORRepository.store(aorList);
@@ -84,9 +87,8 @@ public class AppointmentManager {
         System.out.println("No such confirmed or completed appointment.");
     }
 
-
     // FOR PATIENTS
-    public void schedule(String apptID, String patientID){
+    public void schedule(String apptID, String patientID) {
         List<ApptSlot> slots = new ArrayList<>(ApptSlotRepository.load());
         for (int i = 0; i < slots.size(); i++) {
             ApptSlot appointment = slots.get(i);
@@ -100,18 +102,18 @@ public class AppointmentManager {
         System.out.println("No such appointment found");
     }
 
-    public void reschedule(String prevApptID, String newApptID){
-        String patientID=null;
+    public void reschedule(String prevApptID, String newApptID) {
+        String patientID = null;
         List<ApptSlot> slots = new ArrayList<>(ApptSlotRepository.load());
         for (int i = 0; i < slots.size(); i++) {
             ApptSlot appointment = slots.get(i);
-            if (appointment.getApptID().equals(prevApptID) && 
-                (appointment.getStatus() == ApptStatus.CONFIRMED || appointment.getStatus() == ApptStatus.PENDING)) {
+            if (appointment.getApptID().equals(prevApptID) &&
+                    (appointment.getStatus() == ApptStatus.CONFIRMED
+                            || appointment.getStatus() == ApptStatus.PENDING)) {
                 appointment.setStatus(ApptStatus.AVAILABLE);
                 patientID = appointment.getPatientID();
                 appointment.setPatientID(null);
-            }
-            else if(appointment.getApptID().equals(newApptID) && appointment.getStatus() == ApptStatus.AVAILABLE){
+            } else if (appointment.getApptID().equals(newApptID) && appointment.getStatus() == ApptStatus.AVAILABLE) {
                 appointment.setStatus(ApptStatus.PENDING);
                 appointment.setPatientID(patientID);
             }
@@ -119,7 +121,7 @@ public class AppointmentManager {
         ApptSlotRepository.store(slots);
     }
 
-    public void cancel(String apptID){
+    public void cancel(String apptID) {
         List<ApptSlot> slots = new ArrayList<>(ApptSlotRepository.load());
         for (int i = 0; i < slots.size(); i++) {
             ApptSlot appointment = slots.get(i);
@@ -132,26 +134,25 @@ public class AppointmentManager {
         System.out.println("No such appointment found");
     }
 
-    public void viewAOR(String apptID){
-        //view AOR for that appt ID
+    public void viewAOR(String apptID) {
+        // view AOR for that appt ID
         List<AOR> aors = AORRepository.load(); // Load all AORs from the repository
 
-            for (AOR aor : aors) {
-                if (String.valueOf(aor.getApptID()).equals(apptID)) {
-                    System.out.println("Appointment Outcome Record for Appointment ID: " + apptID);
-                    System.out.println("Patient ID: " + aor.getPatientID());
-                    System.out.println("Doctor ID: " + aor.getDoctorID());
-                    System.out.println("Date: " + aor.getDate());
-                    System.out.println("Time: " + aor.getTime());
-                    System.out.println("Status: " + aor.getStatus());
-                    System.out.println("Type of Service: " + aor.getTos());
-                    System.out.println("Consultation Notes: " + aor.getConsultationNotes());
-                    System.out.println("Prescriptions: " + aor.getPrescriptions());
-                    return;
-                }
+        for (AOR aor : aors) {
+            if (String.valueOf(aor.getApptID()).equals(apptID)) {
+                System.out.println("Appointment Outcome Record for Appointment ID: " + apptID);
+                System.out.println("Patient ID: " + aor.getPatientID());
+                System.out.println("Doctor ID: " + aor.getDoctorID());
+                System.out.println("Date: " + aor.getDate());
+                System.out.println("Time: " + aor.getTime());
+                System.out.println("Status: " + aor.getStatus());
+                System.out.println("Type of Service: " + aor.getTos());
+                System.out.println("Consultation Notes: " + aor.getConsultationNotes());
+                System.out.println("Prescriptions: " + aor.getPrescriptions());
+                return;
             }
-            System.out.println("No Appointment Outcome Record found for Appointment ID: " + apptID);
         }
+        System.out.println("No Appointment Outcome Record found for Appointment ID: " + apptID);
+    }
 
 }
-

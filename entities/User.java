@@ -15,17 +15,17 @@ public abstract class User {
         this.gender = gender;
     }
 
-    public boolean authenticate(String InputPW){
+    public boolean authenticate(String InputPW) {
         return Hash.hashWith256(InputPW).equals(this.password);
     }
 
-    public boolean isDefault(){
+    public boolean isDefault() {
         return Hash.hashWith256("password").equals(this.password);
     }
 
     public abstract void viewRecords();
 
-    //getters and setters
+    // getters and setters
     public String getUserID() {
         return userID;
     }

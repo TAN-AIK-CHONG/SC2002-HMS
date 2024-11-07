@@ -15,22 +15,22 @@ import entities.BloodType;
 import entities.Gender;
 import entities.Patient;
 
-public class PatientRepository{
-    //file path to the patient database
+public class PatientRepository {
+    // file path to the patient database
     private static final String PATIENT_CSV_FILE = "database\\PatientDatabase.csv";
 
-    //load single patient 
-    public static Patient load(String patientID){
-        try (BufferedReader br = new BufferedReader(new FileReader(PATIENT_CSV_FILE))){
+    // load single patient
+    public static Patient load(String patientID) {
+        try (BufferedReader br = new BufferedReader(new FileReader(PATIENT_CSV_FILE))) {
             String currentLine;
 
-            while((currentLine=br.readLine())!= null){
+            while ((currentLine = br.readLine()) != null) {
                 String[] data = currentLine.split(",");
 
                 String storedPatientID = data[0];
 
-                //Load csv data into Patient
-                if(storedPatientID.equals(patientID)){
+                // Load csv data into Patient
+                if (storedPatientID.equals(patientID)) {
                     String name = data[1];
                     String dateOfBirth = data[2];
                     Gender gender = Gender.fromString(data[3]);
@@ -42,30 +42,30 @@ public class PatientRepository{
                     List<String> treatmentPlans = Arrays.asList(data[9].split(";"));
                     String password = data[10];
 
-                    //Create new patient
+                    // Create new patient
                     Patient patient = new Patient(patientID, name, dateOfBirth, gender, bloodType,
-                                                    emailAddress, phoneNumber, diagnoses, medications, treatmentPlans, password);
+                            emailAddress, phoneNumber, diagnoses, medications, treatmentPlans, password);
 
                     return patient;
 
                 }
 
             }
-        } catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    //load list of patients
-    public static List<Patient> load(){
+    // load list of patients
+    public static List<Patient> load() {
         List<Patient> patientList = new ArrayList<>();
 
-        try (BufferedReader br = new BufferedReader(new FileReader(PATIENT_CSV_FILE))){
+        try (BufferedReader br = new BufferedReader(new FileReader(PATIENT_CSV_FILE))) {
             String currentLine;
-            br.readLine(); //skip header line
+            br.readLine(); // skip header line
 
-            while((currentLine=br.readLine())!= null){
+            while ((currentLine = br.readLine()) != null) {
                 String[] data = currentLine.split(",");
 
                 String patientID = data[0];
@@ -80,34 +80,36 @@ public class PatientRepository{
                 List<String> treatmentPlans = Arrays.asList(data[9].split(";"));
                 String password = data[10];
 
-                //Create new patient
+                // Create new patient
                 Patient patient = new Patient(patientID, name, dateOfBirth, gender, bloodType,
-                                                    emailAddress, phoneNumber, diagnoses, medications, treatmentPlans, password);
+                        emailAddress, phoneNumber, diagnoses, medications, treatmentPlans, password);
 
                 patientList.add(patient);
-                }
+            }
 
             return patientList;
-            } catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
-            }
+        }
         return null;
     }
-    
-    //store list of patients
+
+    // store list of patients
     public static void store(List<Patient> patientList) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(PATIENT_CSV_FILE))) {
             // Write header row
-            bw.write("Patient ID,Name,Date of Birth,Gender,Blood Type,Contact Information,Phone Number,Diagnoses,Medications,Treatment,Password");
+            bw.write(
+                    "Patient ID,Name,Date of Birth,Gender,Blood Type,Contact Information,Phone Number,Diagnoses,Medications,Treatment,Password");
             bw.newLine();
 
             // Write each patient record to the CSV (overwrite)
             for (Patient patient : patientList) {
-                String line = patient.getUserID() + "," + patient.getName() + "," + patient.getDateOfBirth() + "," 
-                            + patient.getGender().toString() + "," + patient.getBloodType().toString() + "," 
-                            + patient.getEmailAddress() + "," + patient.getPhoneNumber() + "," 
-                            + String.join(";", patient.getDiagnoses()) + "," + String.join(";", patient.getPrescribedMedications())
-                            + "," + String.join(";", patient.getTreatmentPlans()) + "," + patient.getPassword();
+                String line = patient.getUserID() + "," + patient.getName() + "," + patient.getDateOfBirth() + ","
+                        + patient.getGender().toString() + "," + patient.getBloodType().toString() + ","
+                        + patient.getEmailAddress() + "," + patient.getPhoneNumber() + ","
+                        + String.join(";", patient.getDiagnoses()) + ","
+                        + String.join(";", patient.getPrescribedMedications())
+                        + "," + String.join(";", patient.getTreatmentPlans()) + "," + patient.getPassword();
                 bw.write(line);
                 bw.newLine();
             }

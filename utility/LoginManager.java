@@ -7,7 +7,7 @@ import filehandlers.StaffRepository;
 
 public class LoginManager {
     public static boolean authenticateUser(String hospitalID, String password, boolean isPatient) {
-        if(isPatient){
+        if (isPatient) {
             Patient patient = PatientRepository.load(hospitalID);
             return patient.authenticate(password);
         }

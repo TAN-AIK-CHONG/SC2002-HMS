@@ -18,8 +18,8 @@ public class InventoryRepository {
         List<Medication> inventory = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(MEDICINE_CSV_FILE))) {
-            br.readLine(); //skip the header
-            
+            br.readLine(); // skip the header
+
             String currentLine;
 
             while ((currentLine = br.readLine()) != null) {
@@ -30,7 +30,7 @@ public class InventoryRepository {
                 int original = Integer.parseInt(data[3]);
                 boolean request = Boolean.parseBoolean(data[4]);
 
-                Medication med = new Medication(medName, quantity,alertLevel, original, request);
+                Medication med = new Medication(medName, quantity, alertLevel, original, request);
                 inventory.add(med);
             }
         } catch (IOException e) {
@@ -40,7 +40,7 @@ public class InventoryRepository {
         return inventory;
     }
 
-     // Store medication inventory back to CSV
+    // Store medication inventory back to CSV
     public static void store(List<Medication> inventory) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(MEDICINE_CSV_FILE))) {
             // Write header row
@@ -49,8 +49,8 @@ public class InventoryRepository {
 
             // Write each medication record to the CSV (overwrite)
             for (Medication med : inventory) {
-                String line = med.getName() + "," + med.getQuantity() + "," + med.getAlertLevel()+ ","
-                             + med.getOriginal() + "," + med.getRequest();
+                String line = med.getName() + "," + med.getQuantity() + "," + med.getAlertLevel() + ","
+                        + med.getOriginal() + "," + med.getRequest();
                 bw.write(line);
                 bw.newLine();
             }

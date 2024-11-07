@@ -3,6 +3,8 @@ package userinterfaces;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import controllers.AppointmentManager;
@@ -25,50 +27,55 @@ public class DoctorMenu implements IMenu {
         int choice;
         do {
             menuItems();
-            choice = sc.nextInt();
-            sc.nextLine();
-            switch (choice) {
-                case 1:
-                    System.out.println();
-                    viewPatientRecord(sc);
-                    System.out.println();
-                    break;
-                case 2:
-                    System.out.println();
-                    updatePatientRecord(sc);
-                    System.out.println();
-                    break;
-                case 3:
-                    System.out.println();
-                    viewPersonalSchedule();
-                    System.out.println();
-                    break;
-                case 4:
-                    System.out.println();
-                    setAvailableAppts(sc);
-                    System.out.println();
-                    break;
-                case 5:
-                    System.out.println();
-                    chooseAppointment(sc);
-                    System.out.println();
-                    break;
-                case 6:
-                    System.out.println();
-                    viewUpcomingAppts();
-                    System.out.println();
-                    break;
-                case 7:
-                    System.out.println();
-                    System.out.println();
-                    break;
-                case 8:
-                    sc.close();
-                    System.out.println("Logging out...");
-                    return;
-                default:
-                    System.out.println("Please choose a valid option  (1-8)");
-                    break;
+            try {
+                choice = sc.nextInt();
+                sc.nextLine();
+                switch (choice) {
+                    case 1:
+                        System.out.println();
+                        viewPatientRecord(sc);
+                        System.out.println();
+                        break;
+                    case 2:
+                        System.out.println();
+                        updatePatientRecord(sc);
+                        System.out.println();
+                        break;
+                    case 3:
+                        System.out.println();
+                        viewPersonalSchedule();
+                        System.out.println();
+                        break;
+                    case 4:
+                        System.out.println();
+                        setAvailableAppts(sc);
+                        System.out.println();
+                        break;
+                    case 5:
+                        System.out.println();
+                        chooseAppointment(sc);
+                        System.out.println();
+                        break;
+                    case 6:
+                        System.out.println();
+                        viewUpcomingAppts();
+                        System.out.println();
+                        break;
+                    case 7:
+                        System.out.println();
+                        System.out.println();
+                        break;
+                    case 8:
+                        sc.close();
+                        System.out.println("Logging out...");
+                        return;
+                    default:
+                        System.out.println("Please choose a valid option  (1-8)");
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter an integer.");
+                sc.nextLine(); // this is to clear the invalid input
             }
         } while (true);
     }
@@ -112,9 +119,22 @@ public class DoctorMenu implements IMenu {
         System.out.println("2. Add a new prescription");
         System.out.println("3. Add a new treatment plan");
         System.out.println();
-        System.out.print("Choose an option: ");
-        int choice = sc.nextInt();
-        sc.nextLine();
+
+        int choice = -1;
+        boolean validInput = false;
+
+        while (!validInput) {
+            try {
+                System.out.print("Choose an option: ");
+                choice = sc.nextInt();
+                sc.nextLine(); // Clear the buffer
+                validInput = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a number between 1 and 3.");
+                sc.nextLine(); // Clear invalid input from scanner buffer
+            }
+        }
+
         switch (choice) {
             case 1:
                 System.out.print("Diagnosis: ");
@@ -138,10 +158,26 @@ public class DoctorMenu implements IMenu {
     }
 
     private void setAvailableAppts(Scanner sc) {
-        System.out.print("Please input the available date (YYYY-MM-DD): ");
-        LocalDate date = LocalDate.parse(sc.nextLine());
-        System.out.print("Please choose the time slot (HH:MM): ");
-        LocalTime time = LocalTime.parse(sc.nextLine(), DateTimeFormatter.ofPattern("HH:mm"));
+        LocalDate date = null;
+        LocalTime time = null;
+
+        while (date == null) {
+            try {
+                System.out.print("Please input the available date (YYYY-MM-DD): ");
+                date = LocalDate.parse(sc.nextLine());
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid date format. Please enter the date in YYYY-MM-DD format.");
+            }
+        }
+
+        while (time == null) {
+            try {
+                System.out.print("Please choose the time slot (HH:MM): ");
+                time = LocalTime.parse(sc.nextLine(), DateTimeFormatter.ofPattern("HH:MM"));
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid time format. Please enter the time in HH:MM format.");
+            }
+        }
         apptManager.setAvailable(doctorID, date, time);
     }
 

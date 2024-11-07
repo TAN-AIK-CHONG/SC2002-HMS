@@ -41,7 +41,8 @@ public class AORRepository {
                     }
                 }
 
-                AOR aor = new AOR(apptID, patientID, doctorID, date, time, status, tos, consultationNotes, prescriptions);
+                AOR aor = new AOR(apptID, patientID, doctorID, date, time, status, tos, consultationNotes,
+                        prescriptions);
                 aorList.add(aor);
             }
 
@@ -51,7 +52,6 @@ public class AORRepository {
 
         return aorList;
     }
-
 
     public static void store(List<AOR> aorList) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(AOR_CSV_FILE))) {
@@ -68,12 +68,14 @@ public class AORRepository {
                         + aor.getTos().toString() + ","
                         + aor.getConsultationNotes() + ",";
 
-                /*if (aor.getPrescriptions() != null && !aor.getPrescriptions().isEmpty()) {
-                    String prescriptions = String.join(";", aor.getPrescriptions().stream()
-                            .map(prescription -> prescription.getMedicationName())
-                            .toArray(String[]::new));
-                    line += prescriptions;
-                }*/
+                /*
+                 * if (aor.getPrescriptions() != null && !aor.getPrescriptions().isEmpty()) {
+                 * String prescriptions = String.join(";", aor.getPrescriptions().stream()
+                 * .map(prescription -> prescription.getMedicationName())
+                 * .toArray(String[]::new));
+                 * line += prescriptions;
+                 * }
+                 */
 
                 bw.write(line);
                 bw.newLine();

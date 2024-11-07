@@ -22,8 +22,8 @@ public class ApptSlotRepository {
         List<ApptSlot> slots = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(APPT_CSV_FILE))) {
-            br.readLine(); //skip the header
-            
+            br.readLine(); // skip the header
+
             String currentLine;
 
             while ((currentLine = br.readLine()) != null) {
@@ -45,7 +45,7 @@ public class ApptSlotRepository {
         return slots;
     }
 
-     // Store all appointments back to CSV
+    // Store all appointments back to CSV
     public static void store(List<ApptSlot> slots) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(APPT_CSV_FILE))) {
             // Write header row
@@ -54,8 +54,8 @@ public class ApptSlotRepository {
 
             // Write each medication record to the CSV (overwrite)
             for (ApptSlot appt : slots) {
-                String line = appt.getApptID() + "," + appt.getDate().toString() + "," + appt.getTime().toString() + "," 
-                            + appt.getDoctorID() + "," + appt.getPatientID() + "," + appt.getStatus().toString();
+                String line = appt.getApptID() + "," + appt.getDate().toString() + "," + appt.getTime().toString() + ","
+                        + appt.getDoctorID() + "," + appt.getPatientID() + "," + appt.getStatus().toString();
                 bw.write(line);
                 bw.newLine();
             }
