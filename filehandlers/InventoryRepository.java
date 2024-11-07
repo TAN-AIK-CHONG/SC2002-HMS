@@ -44,12 +44,12 @@ public class InventoryRepository {
     public static void store(List<Medication> inventory) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(MEDICINE_CSV_FILE))) {
             // Write header row
-            bw.write("Medicine Name,Current Stock,Low Stock Level Alert");
+            bw.write("Medicine Name,Current Stock,Low Stock Level Alert,Original,Request");
             bw.newLine();
 
             // Write each medication record to the CSV (overwrite)
             for (Medication med : inventory) {
-                String line = med.getName() + "," + med.getQuantity() + "," + med.getAlertLevel();
+                String line = med.getName() + "," + med.getQuantity() + "," + med.getAlertLevel()+ "," + med.getOriginal() + "," + med.getRequest();
                 bw.write(line);
                 bw.newLine();
             }

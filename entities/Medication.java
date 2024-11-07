@@ -38,7 +38,7 @@ public class Medication {
         return this.original;
     }
 
-    public boolean request()
+    public boolean getRequest()
     {
         return this.request;
     }
