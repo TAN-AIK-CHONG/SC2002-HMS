@@ -35,7 +35,7 @@ public class PharmacistMenu implements IMenu {
                     inventoryManager.viewInventory();
                     break;
                 case 4:
-                    submitRequest();
+                    submitRequest(sc);
                     break;
                 case 5:
                     sc.close();
@@ -57,10 +57,9 @@ public class PharmacistMenu implements IMenu {
     }
     
 
-    private void submitRequest(){
-        Scanner sc1 = new Scanner(System.in);
+    private void submitRequest(Scanner sc){
         System.out.println("Enter Medicine to be updated");
-        String name = sc1.nextLine();
+        String name = sc.nextLine();
         inventoryManager.submitRequest(name);
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
 
 public class InventoryRepository {
     // File path to medication inventory
-    private static final String MEDICINE_CSV_FILE = "database/MedicineDatabase.csv";
+    private static final String MEDICINE_CSV_FILE = "database\\MedicineDatabase.csv";
 
     // Load medication inventory from the CSV file
     public static List<Medication> load() {
@@ -49,7 +49,8 @@ public class InventoryRepository {
 
             // Write each medication record to the CSV (overwrite)
             for (Medication med : inventory) {
-                String line = med.getName() + "," + med.getQuantity() + "," + med.getAlertLevel()+ "," + med.getOriginal() + "," + med.getRequest();
+                String line = med.getName() + "," + med.getQuantity() + "," + med.getAlertLevel()+ ","
+                             + med.getOriginal() + "," + med.getRequest();
                 bw.write(line);
                 bw.newLine();
             }

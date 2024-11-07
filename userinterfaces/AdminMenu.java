@@ -85,7 +85,7 @@ public class AdminMenu implements IMenu {
                     }
                     break;
                 case 4:
-                    // public approverequests()
+                    approveRequest(sc);
                     break;
                 case 5:
                     sc.close();
@@ -168,8 +168,16 @@ public class AdminMenu implements IMenu {
         }
     }
 
+    public void approveRequest(Scanner sc)
+    {
+        System.out.print("Enter medication name to approve request: ");
+        String medName = sc.nextLine();
+        inventoryManager.approveRequest(medName);
+    }
+
     //For admin to view
-    public void viewRecord(){
+    public void viewRecord()
+    {
         this.admin.viewRecords();
     }
 }
