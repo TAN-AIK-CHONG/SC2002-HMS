@@ -5,9 +5,13 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import entities.appointments.ApptSlot;
-import entities.appointments.ApptStatus;
+import entities.Gender;
+import entities.Staff;
+import entities.appointments.*;
 import filehandlers.ApptSlotRepository;
+import filehandlers.AORRepository;
+import filehandlers.StaffRepository;
+import utility.Hash;
 
 public class AppointmentManager {
     // FOR BOTH
@@ -62,10 +66,24 @@ public class AppointmentManager {
         System.out.println("No such appointment found");
     }
 
-    public void makeAOR(String apptID){
+    public void makeAOR(String apptID, String notes, String tos, List<ApptPrescription> prescription) {
         //make AOR for that appt ID
         //store aor in csv
+        List<ApptSlot> slots = ApptSlotRepository.load();
+
+        for (ApptSlot appointment : slots) {
+            if (appointment.getApptID().equals(apptID) && (appointment.getStatus() == ApptStatus.CONFIRMED || appointment.getStatus() == ApptStatus.COMPLETED)) {
+                AOR aor = new AOR(appointment.getApptID(), appointment.getPatientID(), appointment.getDoctorID(), appointment.getDate(), appointment.getTime(), appointment.getStatus(), TypeOfService.fromString(tos), notes, prescription);
+                List<AOR> aorList = AORRepository.load();
+                aorList.add(aor);
+                AORRepository.store(aorList);
+                System.out.println("Appointment Outcome Record created and stored successfully.");
+                return;
+            }
+        }
+        System.out.println("No such confirmed or completed appointment.");
     }
+
 
     // FOR PATIENTS
     public void schedule(String apptID, String patientID){
@@ -116,6 +134,24 @@ public class AppointmentManager {
 
     public void viewAOR(String apptID){
         //view AOR for that appt ID
-    }
-    
+        List<AOR> aors = AORRepository.load(); // Load all AORs from the repository
+
+            for (AOR aor : aors) {
+                if (String.valueOf(aor.getApptID()).equals(apptID)) {
+                    System.out.println("Appointment Outcome Record for Appointment ID: " + apptID);
+                    System.out.println("Patient ID: " + aor.getPatientID());
+                    System.out.println("Doctor ID: " + aor.getDoctorID());
+                    System.out.println("Date: " + aor.getDate());
+                    System.out.println("Time: " + aor.getTime());
+                    System.out.println("Status: " + aor.getStatus());
+                    System.out.println("Type of Service: " + aor.getTos());
+                    System.out.println("Consultation Notes: " + aor.getConsultationNotes());
+                    System.out.println("Prescriptions: " + aor.getPrescriptions());
+                    return;
+                }
+            }
+            System.out.println("No Appointment Outcome Record found for Appointment ID: " + apptID);
+        }
+
 }
+
