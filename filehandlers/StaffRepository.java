@@ -20,7 +20,38 @@ public class StaffRepository {
     //file path to the staff database
     private static final String STAFF_CSV_FILE = "database\\StaffDatabase.csv";
 
-    //load record from CSV
+        //load list of staff
+        public static List<Staff> load(){
+            List<Staff> staffList = new ArrayList<>();
+    
+            try (BufferedReader br = new BufferedReader(new FileReader(STAFF_CSV_FILE))){
+                String currentLine;
+                br.readLine(); //skip header line
+    
+                while((currentLine=br.readLine())!= null){
+                    String[] data = currentLine.split(",");
+    
+                    String staffID = data[0];
+                    String name = data[1];
+                    String role = data[2];
+                    Gender gender = Gender.fromString(data[3]);
+                    int age = Integer.parseInt(data[4]);
+                    String password = data[5];
+    
+                    //Create new patient
+                    Staff staff = new Staff(staffID, password, name, gender, age, role);
+    
+                    staffList.add(staff);
+                    }
+    
+                return staffList;
+                } catch(IOException e){
+                e.printStackTrace();
+                }
+            return null;
+        }
+
+    //load single staff from CSV
     public static Staff load(String staffID){
         try (BufferedReader br = new BufferedReader(new FileReader(STAFF_CSV_FILE))){
             String currentLine;
@@ -55,7 +86,7 @@ public class StaffRepository {
         return null;
     }
 
-    //store record to CSV
+    //store list of staff to CSV
     public static void store(List<Staff> staffList) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(STAFF_CSV_FILE))) {
             // Write header row
@@ -74,35 +105,5 @@ public class StaffRepository {
             System.out.println("An error occurred while writing to the file.");
             e.printStackTrace();
         }
-    }
-
-    public static List<Staff> loadAllStaff(){
-        List<Staff> staffList = new ArrayList<>();
-
-        try (BufferedReader br = new BufferedReader(new FileReader(STAFF_CSV_FILE))){
-            String currentLine;
-            br.readLine(); //skip header line
-
-            while((currentLine=br.readLine())!= null){
-                String[] data = currentLine.split(",");
-
-                String staffID = data[0];
-                String name = data[1];
-                String role = data[2];
-                Gender gender = Gender.fromString(data[3]);
-                int age = Integer.parseInt(data[4]);
-                String password = data[5];
-
-                //Create new patient
-                Staff staff = new Staff(staffID, password, name, gender, age, role);
-
-                staffList.add(staff);
-                }
-
-            return staffList;
-            } catch(IOException e){
-            e.printStackTrace();
-            }
-        return null;
     }
 }

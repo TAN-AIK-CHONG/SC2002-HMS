@@ -4,16 +4,15 @@ import java.util.Scanner;
 
 import controllers.AppointmentManager;
 import controllers.PatientManager;
-import entities.Patient;
 import entities.appointments.ApptStatus;
 
 public class PatientMenu implements IMenu {
-    private Patient patient;
+    private String patientID;
     private PatientManager patientManager;
     private AppointmentManager apptManager;
 
-    public PatientMenu(Patient patient, PatientManager patientManager, AppointmentManager apptManager){
-        this.patient = patient;
+    public PatientMenu(String patientID, PatientManager patientManager, AppointmentManager apptManager){
+        this.patientID = patientID;
         this.patientManager = patientManager;
         this.apptManager = apptManager;
     }
@@ -66,7 +65,7 @@ public class PatientMenu implements IMenu {
                     System.out.println("Logging out...");
                     return;
                 default:
-                    System.out.println("Please choose a valid option instead");
+                    System.out.println("Please choose a valid option instead (1-9)");
                     break;
             }
         } while(true);
@@ -92,7 +91,7 @@ public class PatientMenu implements IMenu {
 
     private void viewRecord(){
         System.out.println("Your Medical Records: ");
-        patient.viewRecords();
+        patientManager.viewRecord(patientID);
     }
 
     private void updatePersonalInformation(Scanner sc) {
@@ -106,13 +105,13 @@ public class PatientMenu implements IMenu {
             case 1:
                 System.out.print("New email address: ");
                 String newAddress = sc.nextLine();
-                patientManager.updateEmail(patient, newAddress);
+                patientManager.updateEmail(patientID, newAddress);
                 System.out.println("Email updated successfully.");
                 break;
             case 2:
                 System.out.print("New phone number: ");
                 String newNumber = sc.nextLine();
-                patientManager.updatePhoneNumber(patient, newNumber);
+                patientManager.updatePhoneNumber(patientID, newNumber);
                 System.out.println("Phone number updated successfully.");
                 break;
             default:
@@ -129,7 +128,7 @@ public class PatientMenu implements IMenu {
     private void scheduleAppt(Scanner sc){
         System.out.print("Appointment ID: ");
         String apptID = sc.nextLine();
-        apptManager.schedule(apptID, patient.getUserID());
+        apptManager.schedule(apptID, patientID);
     }
 
     private void rescheduleAppt(Scanner sc){
@@ -149,7 +148,7 @@ public class PatientMenu implements IMenu {
     }
 
     private void viewUpcoming(){
-        apptManager.viewByFilterPatient(patient.getUserID(), ApptStatus.CONFIRMED);
+        apptManager.viewByFilterPatient(patientID, ApptStatus.CONFIRMED);
     }
 
 }
