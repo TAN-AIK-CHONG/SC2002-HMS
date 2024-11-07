@@ -4,7 +4,6 @@ package filehandlers;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,13 +14,12 @@ import java.util.List;
 import entities.BloodType;
 import entities.Gender;
 import entities.Patient;
-import entities.Staff;
 
 public class PatientRepository{
     //file path to the patient database
     private static final String PATIENT_CSV_FILE = "database\\PatientDatabase.csv";
 
-    //load record from CSV
+    //load single patient 
     public static Patient load(String patientID){
         try (BufferedReader br = new BufferedReader(new FileReader(PATIENT_CSV_FILE))){
             String currentLine;
@@ -59,78 +57,8 @@ public class PatientRepository{
         return null;
     }
 
-    //store record to CSV
-    public static void store(Patient updated) {
-        File inputFile = new File(PATIENT_CSV_FILE);
-        File tempFile = new File("temp.csv"); // Temporary file to store updated records
-
-        try (BufferedReader br = new BufferedReader(new FileReader(inputFile));
-             BufferedWriter bw = new BufferedWriter(new FileWriter(tempFile))) {
-
-            String currentLine;
-
-            while ((currentLine=br.readLine())!=null) {
-                String[] data = currentLine.split(",");
-
-                // Update the line if it matches the patient ID
-                if (data[0].equals(updated.getUserID())) {
-                    String updatedLine = String.join(",",
-                            updated.getUserID(),
-                            updated.getName(),
-                            updated.getDateOfBirth(),
-                            updated.getGender().toString(),
-                            updated.getBloodType().toString(),
-                            updated.getEmailAddress(),
-                            updated.getPhoneNumber(),
-                            String.join(";", updated.getDiagnoses()),
-                            String.join(";", updated.getPrescribedMedications()),
-                            String.join(";", updated.getTreatmentPlans()),
-                            updated.getPassword());
-                    bw.write(updatedLine);
-                } else {
-                    // Write the original line to the temp file
-                    bw.write(currentLine);
-                }
-                bw.newLine(); 
-            }
-        } catch (IOException e) {
-            System.out.println("An error occurred while updating the patient record: " + e.getMessage());
-            e.printStackTrace();
-        }
-        // Replace the original file with the updated file
-        if (!inputFile.delete()) {
-            System.out.println("Could not delete original file.");
-            return;
-        }
-        if (!tempFile.renameTo(inputFile)) {
-            System.out.println("Could not rename temp file.");
-        }
-    } 
-    
-    public static void store(List<Patient> patientList) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(PATIENT_CSV_FILE))) {
-            // Write header row
-            bw.write("Patient ID,Name,Date of Birth,Gender,Blood Type,Contact Information,Phone Number,Diagnoses,Medications,Treatment,Password");
-            bw.newLine();
-
-            // Write each patient record to the CSV (overwrite)
-            for (Patient patient : patientList) {
-                String line = patient.getUserID() + "," + patient.getName() + "," + patient.getDateOfBirth() + "," 
-                            + patient.getGender().toString() + "," + patient.getBloodType().toString() + "," 
-                            + patient.getEmailAddress() + "," + patient.getPhoneNumber() + "," 
-                            + String.join(";", patient.getDiagnoses()) + "," + String.join(";", patient.getPrescribedMedications())
-                            + "," + String.join(";", patient.getTreatmentPlans()) + "," + patient.getPassword();
-                bw.write(line);
-                bw.newLine();
-            }
-
-        } catch (IOException e) {
-            System.out.println("An error occurred while writing to the file.");
-            e.printStackTrace();
-        }
-    }
-
-    public static List<Patient> loadAllPatients(){
+    //load list of patients
+    public static List<Patient> load(){
         List<Patient> patientList = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(PATIENT_CSV_FILE))){
@@ -164,5 +92,29 @@ public class PatientRepository{
             e.printStackTrace();
             }
         return null;
+    }
+    
+    //store list of patients
+    public static void store(List<Patient> patientList) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(PATIENT_CSV_FILE))) {
+            // Write header row
+            bw.write("Patient ID,Name,Date of Birth,Gender,Blood Type,Contact Information,Phone Number,Diagnoses,Medications,Treatment,Password");
+            bw.newLine();
+
+            // Write each patient record to the CSV (overwrite)
+            for (Patient patient : patientList) {
+                String line = patient.getUserID() + "," + patient.getName() + "," + patient.getDateOfBirth() + "," 
+                            + patient.getGender().toString() + "," + patient.getBloodType().toString() + "," 
+                            + patient.getEmailAddress() + "," + patient.getPhoneNumber() + "," 
+                            + String.join(";", patient.getDiagnoses()) + "," + String.join(";", patient.getPrescribedMedications())
+                            + "," + String.join(";", patient.getTreatmentPlans()) + "," + patient.getPassword();
+                bw.write(line);
+                bw.newLine();
+            }
+
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing to the file.");
+            e.printStackTrace();
+        }
     }
 }
