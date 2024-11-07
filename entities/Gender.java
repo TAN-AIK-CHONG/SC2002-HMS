@@ -1,3 +1,5 @@
+package entities;
+
 public enum Gender {
     MALE, FEMALE;
 
@@ -9,6 +11,18 @@ public enum Gender {
                 return FEMALE;
             default:
                 throw new IllegalArgumentException("Unknown gender: " + genderStr);
+        }
+    }
+
+    @Override
+    public String toString() {
+        switch (this) {
+            case MALE:
+                return "Male";
+            case FEMALE:
+                return "Female";
+            default:
+                throw new AssertionError("Unknown gender: " + this);
         }
     }
 }
