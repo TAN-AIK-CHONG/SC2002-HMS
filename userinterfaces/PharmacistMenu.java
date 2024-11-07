@@ -1,9 +1,8 @@
 package userinterfaces;
 
-import java.util.Scanner;
-
 import controllers.InventoryManager;
 import entities.Staff;
+import java.util.Scanner;
 
 public class PharmacistMenu implements IMenu {
     private Staff record;
@@ -39,6 +38,7 @@ public class PharmacistMenu implements IMenu {
                     inventoryManager.viewInventory();
                     break;
                 case 4:
+                    submitRequest(sc);
                     break;
                 case 5:
                     sc.close();
@@ -57,5 +57,12 @@ public class PharmacistMenu implements IMenu {
     // for admin to view
     public void viewRecord() {
         this.record.viewRecords();
+    }
+    
+
+    private void submitRequest(Scanner sc){
+        System.out.println("Enter Medicine to be updated");
+        String name = sc.nextLine();
+        inventoryManager.submitRequest(name);
     }
 }
