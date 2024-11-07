@@ -12,26 +12,29 @@ public class AdminMenu implements IMenu {
     private Admin admin;
     private InventoryManager inventoryManager;
     private StaffManager staffManager;
-    
-    public AdminMenu(Admin admin, InventoryManager inventoryManager, StaffManager staffManager){
+
+    public AdminMenu(Admin admin, InventoryManager inventoryManager, StaffManager staffManager) {
         this.admin = admin;
         this.inventoryManager = inventoryManager;
         this.staffManager = staffManager;
     }
 
-    public void displayMenu(){
+    public void displayMenu() {
+        System.out.println("========================================");
         System.out.println("Administrator Menu");
         System.out.println("1. View and Manage Hospital Staff");
         System.out.println("2. View Appointments details");
         System.out.println("3. View and Manage Medication Inventory");
         System.out.println("4. Approve Replenishment Requests");
         System.out.println("5. Logout");
+        System.out.println("========================================");
+        System.out.println();
         System.out.print("Choose an option: ");
         Scanner sc = new Scanner(System.in);
         int choice = sc.nextInt();
         sc.nextLine();
 
-        while(true){
+        while (true) {
             switch (choice) {
                 case 1:
                     manageHospitalStaff(sc);
@@ -47,13 +50,13 @@ public class AdminMenu implements IMenu {
                     System.out.print("Choose an option: ");
                     int inventoryAction = sc.nextInt();
                     sc.nextLine();
-                    switch(inventoryAction){
+                    switch (inventoryAction) {
                         case 1:
                             System.out.print("Enter new medication: ");
                             String medName = sc.nextLine();
                             System.out.print("Enter initial stock quantity: ");
                             int quantity = sc.nextInt();
-                            sc.nextLine(); 
+                            sc.nextLine();
                             System.out.print("Enter low stock alert level: ");
                             int alert = sc.nextInt();
                             sc.nextLine();
@@ -131,13 +134,13 @@ public class AdminMenu implements IMenu {
             case 2:
                 System.out.print("Enter Staff ID to Update: ");
                 String staffIdToUpdate = sc.nextLine();
-        
+
                 System.out.print("Enter Role: ");
                 String newRole = sc.nextLine();
-            
+
                 System.out.print("Enter Gender (Male/Female): ");
                 String newGender = sc.nextLine();
-            
+
                 System.out.print("Enter Age: ");
                 int newAge = sc.nextInt();
                 sc.nextLine();
@@ -145,7 +148,7 @@ public class AdminMenu implements IMenu {
                 staffManager.updateStaff(staffIdToUpdate, newRole, newGender, newAge);
 
                 System.out.println("Staff member " + staffIdToUpdate + " updated successfully.");
-                
+
                 break;
             case 3:
                 System.out.print("Enter Staff ID to Remove: ");
@@ -163,8 +166,8 @@ public class AdminMenu implements IMenu {
         }
     }
 
-    //For admin to view
-    public void viewRecord(){
+    // For admin to view
+    public void viewRecord() {
         this.admin.viewRecords();
     }
 }

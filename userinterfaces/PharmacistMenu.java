@@ -9,24 +9,27 @@ public class PharmacistMenu implements IMenu {
     private Staff record;
     private InventoryManager inventoryManager;
 
-    public PharmacistMenu(Staff record, InventoryManager inventoryManager){
+    public PharmacistMenu(Staff record, InventoryManager inventoryManager) {
         this.record = record;
         this.inventoryManager = inventoryManager;
     }
 
-    public void displayMenu(){
+    public void displayMenu() {
+        System.out.println("===================================");
         System.out.println("Pharmacist Menu");
         System.out.println("1. View Appointment Outcome Record");
         System.out.println("2. Update Prescription Status ");
         System.out.println("3. View Medication Inventory");
         System.out.println("4. Submit Replenishment Request");
         System.out.println("5. Logout");
+        System.out.println("===================================");
+        System.out.println();
         System.out.print("Choose an option: ");
         Scanner sc = new Scanner(System.in);
         int choice = sc.nextInt();
         sc.nextLine();
 
-        while(true){
+        while (true) {
             switch (choice) {
                 case 1:
                     break;
@@ -51,8 +54,8 @@ public class PharmacistMenu implements IMenu {
         }
     }
 
-    //for admin to view
-    public void viewRecord(){
+    // for admin to view
+    public void viewRecord() {
         this.record.viewRecords();
     }
 }

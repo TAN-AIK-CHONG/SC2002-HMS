@@ -9,21 +9,21 @@ import controllers.AppointmentManager;
 import controllers.PatientManager;
 import entities.appointments.ApptStatus;
 
-public class DoctorMenu implements IMenu{
+public class DoctorMenu implements IMenu {
     private String doctorID;
     private PatientManager patientManager;
     private AppointmentManager apptManager;
 
-    public DoctorMenu(String doctorID, PatientManager patientManager, AppointmentManager apptManager){
+    public DoctorMenu(String doctorID, PatientManager patientManager, AppointmentManager apptManager) {
         this.doctorID = doctorID;
         this.patientManager = patientManager;
         this.apptManager = apptManager;
     }
 
-    public void displayMenu(){
+    public void displayMenu() {
         Scanner sc = new Scanner(System.in);
         int choice;
-        do{
+        do {
             menuItems();
             choice = sc.nextInt();
             sc.nextLine();
@@ -53,7 +53,7 @@ public class DoctorMenu implements IMenu{
                     chooseAppointment(sc);
                     System.out.println();
                     break;
-                case 6: 
+                case 6:
                     System.out.println();
                     viewUpcomingAppts();
                     System.out.println();
@@ -73,7 +73,7 @@ public class DoctorMenu implements IMenu{
         } while (true);
     }
 
-    private void menuItems(){
+    private void menuItems() {
         System.out.println();
         System.out.println("=========================================");
         System.out.println("Doctor Menu");
@@ -90,7 +90,7 @@ public class DoctorMenu implements IMenu{
         System.out.print("Choose an option: ");
     }
 
-    private void viewPatientRecord(Scanner sc){
+    private void viewPatientRecord(Scanner sc) {
         patientManager.viewAllPatients();
         System.out.println();
         System.out.print("Input PatientID: ");
@@ -99,7 +99,7 @@ public class DoctorMenu implements IMenu{
         patientManager.viewRecord(patientID);
     }
 
-    private void updatePatientRecord(Scanner sc){
+    private void updatePatientRecord(Scanner sc) {
         String newInfo;
 
         System.out.println();
@@ -115,8 +115,8 @@ public class DoctorMenu implements IMenu{
         System.out.print("Choose an option: ");
         int choice = sc.nextInt();
         sc.nextLine();
-        switch(choice){
-            case 1: 
+        switch (choice) {
+            case 1:
                 System.out.print("Diagnosis: ");
                 newInfo = sc.nextLine();
                 patientManager.addDiagnosis(patientID, newInfo);
@@ -131,31 +131,31 @@ public class DoctorMenu implements IMenu{
                 newInfo = sc.nextLine();
                 patientManager.addTreatment(patientID, newInfo);
                 break;
-            default: 
+            default:
                 System.out.println("Please choose a valid option (1-3)");
                 break;
         }
     }
 
-    private void setAvailableAppts(Scanner sc){
+    private void setAvailableAppts(Scanner sc) {
         System.out.print("Please input the available date (YYYY-MM-DD): ");
         LocalDate date = LocalDate.parse(sc.nextLine());
         System.out.print("Please choose the time slot (HH:MM): ");
         LocalTime time = LocalTime.parse(sc.nextLine(), DateTimeFormatter.ofPattern("HH:mm"));
-        apptManager.setAvailable(doctorID, date , time);
+        apptManager.setAvailable(doctorID, date, time);
     }
 
-    private void viewUpcomingAppts(){
+    private void viewUpcomingAppts() {
         System.out.println("Here are your upcoming confirmed appointments:");
         apptManager.viewByFilterDoc(doctorID, ApptStatus.CONFIRMED);
     }
 
-    private void viewPersonalSchedule(){
+    private void viewPersonalSchedule() {
         System.out.println("Here are the slots you have made available:");
         apptManager.viewByFilterDoc(doctorID, ApptStatus.AVAILABLE);
     }
 
-    private void chooseAppointment(Scanner sc){
+    private void chooseAppointment(Scanner sc) {
         apptManager.viewByFilterDoc(doctorID, ApptStatus.PENDING);
         System.out.println();
         System.out.print("Input Appointment ID ");
