@@ -7,18 +7,15 @@ import java.util.Scanner;
 
 import controllers.AppointmentManager;
 import controllers.PatientManager;
-import entities.Doctor;
-import entities.Patient;
 import entities.appointments.ApptStatus;
-import filehandlers.PatientRepository;
 
 public class DoctorMenu implements IMenu{
-    private Doctor doctor;
+    private String doctorID;
     private PatientManager patientManager;
     private AppointmentManager apptManager;
 
-    public DoctorMenu(Doctor doctor, PatientManager patientManager, AppointmentManager apptManager){
-        this.doctor = doctor;
+    public DoctorMenu(String doctorID, PatientManager patientManager, AppointmentManager apptManager){
+        this.doctorID = doctorID;
         this.patientManager = patientManager;
         this.apptManager = apptManager;
     }
@@ -93,19 +90,13 @@ public class DoctorMenu implements IMenu{
         System.out.print("Choose an option: ");
     }
 
-    //For admin to view
-    public void viewRecord(){
-        this.doctor.viewRecords();
-    }
-
     private void viewPatientRecord(Scanner sc){
         patientManager.viewAllPatients();
         System.out.println();
         System.out.print("Input PatientID: ");
         String patientID = sc.nextLine();
         System.out.println();
-        Patient view = PatientRepository.load(patientID);
-        patientManager.viewRecord(view);
+        patientManager.viewRecord(patientID);
     }
 
     private void updatePatientRecord(Scanner sc){
@@ -117,8 +108,6 @@ public class DoctorMenu implements IMenu{
         System.out.print("Input PatientID: ");
         String patientID = sc.nextLine();
         System.out.println();
-
-        Patient edit = PatientRepository.load(patientID);
         System.out.println("1. Add a new diagnosis");
         System.out.println("2. Add a new prescription");
         System.out.println("3. Add a new treatment plan");
@@ -130,17 +119,17 @@ public class DoctorMenu implements IMenu{
             case 1: 
                 System.out.print("Diagnosis: ");
                 newInfo = sc.nextLine();
-                patientManager.addDiagnosis(edit, newInfo);
+                patientManager.addDiagnosis(patientID, newInfo);
                 break;
             case 2:
                 System.out.print("Prescription: ");
                 newInfo = sc.nextLine();
-                patientManager.addMedication(edit, newInfo);
+                patientManager.addMedication(patientID, newInfo);
                 break;
             case 3:
                 System.out.print("Treatment Plan: ");
                 newInfo = sc.nextLine();
-                patientManager.addTreatment(edit, newInfo);
+                patientManager.addTreatment(patientID, newInfo);
                 break;
             default: 
                 System.out.println("Please choose a valid option (1-3)");
@@ -153,21 +142,21 @@ public class DoctorMenu implements IMenu{
         LocalDate date = LocalDate.parse(sc.nextLine());
         System.out.print("Please choose the time slot (HH:MM): ");
         LocalTime time = LocalTime.parse(sc.nextLine(), DateTimeFormatter.ofPattern("HH:mm"));
-        apptManager.setAvailable(doctor.getUserID(), date , time);
+        apptManager.setAvailable(doctorID, date , time);
     }
 
     private void viewUpcomingAppts(){
         System.out.println("Here are your upcoming confirmed appointments:");
-        apptManager.viewByFilterDoc(doctor.getUserID(), ApptStatus.CONFIRMED);
+        apptManager.viewByFilterDoc(doctorID, ApptStatus.CONFIRMED);
     }
 
     private void viewPersonalSchedule(){
         System.out.println("Here are the slots you have made available:");
-        apptManager.viewByFilterDoc(doctor.getUserID(), ApptStatus.AVAILABLE);
+        apptManager.viewByFilterDoc(doctorID, ApptStatus.AVAILABLE);
     }
 
     private void chooseAppointment(Scanner sc){
-        apptManager.viewByFilterDoc(doctor.getUserID(), ApptStatus.PENDING);
+        apptManager.viewByFilterDoc(doctorID, ApptStatus.PENDING);
         System.out.println();
         System.out.print("Input Appointment ID ");
         String apptID = sc.nextLine();
