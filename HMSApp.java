@@ -1,21 +1,20 @@
-import java.util.Scanner;
-
 import controllers.AppointmentManager;
 import controllers.InventoryManager;
 import controllers.PatientManager;
 import controllers.StaffManager;
-import utility.LoginManager;
+import entities.Admin;
+import entities.Doctor;
 import entities.Patient;
 import entities.Pharmacist;
-import entities.Doctor;
 import entities.Staff;
 import filehandlers.PatientRepository;
 import filehandlers.StaffRepository;
-import entities.Admin;
+import java.util.Scanner;
 import userinterfaces.AdminMenu;
 import userinterfaces.DoctorMenu;
 import userinterfaces.PatientMenu;
 import userinterfaces.PharmacistMenu;
+import utility.LoginManager;
 
 
 public class HMSApp {
