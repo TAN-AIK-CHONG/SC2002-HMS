@@ -1,5 +1,6 @@
 package filehandlers;
 
+import entities.Medication;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -7,8 +8,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import entities.Medication;
 
 public class InventoryRepository {
     // File path to medication inventory
@@ -28,8 +27,10 @@ public class InventoryRepository {
                 String medName = data[0];
                 int quantity = Integer.parseInt(data[1]);
                 int alertLevel = Integer.parseInt(data[2]);
+                int original = Integer.parseInt(data[3]);
+                boolean request = Boolean.parseBoolean(data[4]);
 
-                Medication med = new Medication(medName, quantity,alertLevel);
+                Medication med = new Medication(medName, quantity,alertLevel, original, request);
                 inventory.add(med);
             }
         } catch (IOException e) {

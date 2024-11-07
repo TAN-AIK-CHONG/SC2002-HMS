@@ -1,12 +1,11 @@
 package userinterfaces;
 
-import java.util.Scanner;
-
 import controllers.InventoryManager;
 import controllers.StaffManager;
 import entities.Admin;
 import entities.Gender;
 import entities.Medication;
+import java.util.Scanner;
 
 public class AdminMenu implements IMenu {
     private Admin admin;
@@ -57,7 +56,12 @@ public class AdminMenu implements IMenu {
                             System.out.print("Enter low stock alert level: ");
                             int alert = sc.nextInt();
                             sc.nextLine();
-                            Medication newMed = new Medication(medName, quantity, alert);
+                            System.out.print("Enter Original level: ");
+                            int original = sc.nextInt();
+                            sc.nextLine();
+                            System.out.print("Enter Request: ");
+                            boolean request = sc.nextBoolean();
+                            Medication newMed = new Medication(medName, quantity, alert , original , request );
                             inventoryManager.addInventory(newMed);
                             break;
                         case 2:
@@ -81,6 +85,7 @@ public class AdminMenu implements IMenu {
                     }
                     break;
                 case 4:
+                    // public approverequests()
                     break;
                 case 5:
                     sc.close();
