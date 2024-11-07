@@ -59,7 +59,7 @@ public class HMSApp {
                 String newPW = sc.nextLine();
                 PatientManager.updatePassword(patient, newPW);
             }
-            PatientMenu patientMenu = new PatientMenu(patient, patientManager, appointmentManager);
+            PatientMenu patientMenu = new PatientMenu(patient.getUserID(), patientManager, appointmentManager);
             patientMenu.displayMenu();
         }
         else{
@@ -73,7 +73,7 @@ public class HMSApp {
 
             if (staff instanceof Doctor){
                 Doctor doctor = (Doctor) staff;
-                DoctorMenu docMenu = new DoctorMenu(doctor, patientManager, appointmentManager);
+                DoctorMenu docMenu = new DoctorMenu(doctor.getUserID(), patientManager, appointmentManager);
                 docMenu.displayMenu();
             }
             else if (staff instanceof Pharmacist){

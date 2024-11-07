@@ -15,6 +15,7 @@ import java.util.List;
 import entities.BloodType;
 import entities.Gender;
 import entities.Patient;
+import entities.Staff;
 
 public class PatientRepository{
     //file path to the patient database
@@ -105,6 +106,29 @@ public class PatientRepository{
             System.out.println("Could not rename temp file.");
         }
     } 
+    
+    public static void store(List<Patient> patientList) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(PATIENT_CSV_FILE))) {
+            // Write header row
+            bw.write("Patient ID,Name,Date of Birth,Gender,Blood Type,Contact Information,Phone Number,Diagnoses,Medications,Treatment,Password");
+            bw.newLine();
+
+            // Write each patient record to the CSV (overwrite)
+            for (Patient patient : patientList) {
+                String line = patient.getUserID() + "," + patient.getName() + "," + patient.getDateOfBirth() + "," 
+                            + patient.getGender().toString() + "," + patient.getBloodType().toString() + "," 
+                            + patient.getEmailAddress() + "," + patient.getPhoneNumber() + "," 
+                            + String.join(";", patient.getDiagnoses()) + "," + String.join(";", patient.getPrescribedMedications())
+                            + "," + String.join(";", patient.getTreatmentPlans()) + "," + patient.getPassword();
+                bw.write(line);
+                bw.newLine();
+            }
+
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing to the file.");
+            e.printStackTrace();
+        }
+    }
 
     public static List<Patient> loadAllPatients(){
         List<Patient> patientList = new ArrayList<>();
