@@ -60,6 +60,11 @@ public class PatientMenu implements IMenu {
                     viewUpcoming();
                     System.out.println();
                     break;
+                case 8:
+                    System.out.println();
+                    viewPastAOR(sc);
+                    System.out.println();
+                    break;
                 case 9:
                     sc.close();
                     System.out.println("Logging out...");
@@ -151,4 +156,9 @@ public class PatientMenu implements IMenu {
         apptManager.viewByFilterPatient(patientID, ApptStatus.CONFIRMED);
     }
 
+    private void viewPastAOR(Scanner sc){
+        System.out.println("Enter the appointment ID to view past appointment outcome record: ");
+        String apptID = sc.nextLine();
+        apptManager.viewAOR(apptID);
+    }
 }

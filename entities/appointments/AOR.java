@@ -100,6 +100,4 @@ public class AOR {
         this.prescriptions = prescriptions;
     }
 
-
-
 }

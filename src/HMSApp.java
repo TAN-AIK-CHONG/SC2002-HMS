@@ -77,12 +77,12 @@ public class HMSApp {
             }
             else if (staff instanceof Pharmacist){
                 Pharmacist Pharma = (Pharmacist) staff;
-                PharmacistMenu pharmaMenu = new PharmacistMenu(Pharma, inventoryManager);
+                PharmacistMenu pharmaMenu = new PharmacistMenu(Pharma, inventoryManager, appointmentManager);
                 pharmaMenu.displayMenu();
             }
             else if (staff instanceof Admin){
                 Admin admin = (Admin) staff;
-                AdminMenu adminMenu = new AdminMenu(admin, inventoryManager, staffManager);
+                AdminMenu adminMenu = new AdminMenu(admin, inventoryManager, staffManager, appointmentManager);
                 adminMenu.displayMenu();
             }
         }

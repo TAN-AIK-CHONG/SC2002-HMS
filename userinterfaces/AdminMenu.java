@@ -1,21 +1,28 @@
 package userinterfaces;
 
+import controllers.AppointmentManager;
 import controllers.InventoryManager;
 import controllers.StaffManager;
 import entities.Admin;
 import entities.Gender;
 import entities.Medication;
+import entities.appointments.ApptStatus;
+import entities.appointments.ApptSlot;
+import filehandlers.ApptSlotRepository;
 import java.util.Scanner;
+import java.util.List;
 
 public class AdminMenu implements IMenu {
     private Admin admin;
     private InventoryManager inventoryManager;
     private StaffManager staffManager;
-    
-    public AdminMenu(Admin admin, InventoryManager inventoryManager, StaffManager staffManager){
+    private AppointmentManager appointmentManager;
+
+    public AdminMenu(Admin admin, InventoryManager inventoryManager, StaffManager staffManager, AppointmentManager appointmentManager){
         this.admin = admin;
         this.inventoryManager = inventoryManager;
         this.staffManager = staffManager;
+        this.appointmentManager = appointmentManager;
     }
 
     public void displayMenu(){
@@ -36,6 +43,7 @@ public class AdminMenu implements IMenu {
                     manageHospitalStaff(sc);
                     break;
                 case 2:
+                    viewAppointmentDetails(sc);
                     break;
                 case 3:
                     inventoryManager.viewInventory();
@@ -175,9 +183,47 @@ public class AdminMenu implements IMenu {
         inventoryManager.approveRequest(medName);
     }
 
-    //For admin to view
-    public void viewRecord()
-    {
-        this.admin.viewRecords();
+    public void viewAppointmentDetails(Scanner sc) {
+        System.out.println("View Appointment Details");
+
+        System.out.println("Choose an option to filter appointments:");
+        System.out.println("1. View confirmed appointments");
+        System.out.println("2. View canceled appointments");
+        System.out.println("3. View completed appointments");
+        System.out.println("4. View all appointments");
+        System.out.print("Choose an option: ");
+        int filterChoice = sc.nextInt();
+        sc.nextLine();
+
+        ApptStatus status = null;
+
+        switch (filterChoice) {
+            case 1:
+                status = ApptStatus.CONFIRMED;
+                break;
+            case 2:
+                status = ApptStatus.CANCELLED;
+                break;
+            case 3:
+                status = ApptStatus.COMPLETED;
+                break;
+            case 4:
+                status = null;
+                break;
+            default:
+                System.out.println("Invalid option.");
+                return;
+        }
+        if (status == null) {
+            List<ApptSlot> slots = ApptSlotRepository.load();
+            for (ApptSlot appointment : slots) {
+                appointment.view();
+                System.out.println("---------------------------");
+            }
+        } else {
+            appointmentManager.viewByFilter(status);
+        }
     }
+
+
 }

@@ -29,8 +29,8 @@ public class AORRepository {
                 String doctorID = data[2];
                 LocalDate date = LocalDate.parse(data[3]);
                 LocalTime time = LocalTime.parse(data[4]);
-                ApptStatus status = ApptStatus.valueOf(data[5]);
-                TypeOfService tos = TypeOfService.valueOf(data[6]);
+                ApptStatus status = ApptStatus.fromString(data[5]);
+                TypeOfService tos = TypeOfService.fromString(data[6]);
                 String consultationNotes = data[7];
 
                 List<ApptPrescription> prescriptions = new ArrayList<>();

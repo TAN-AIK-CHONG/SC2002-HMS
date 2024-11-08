@@ -1,19 +1,24 @@
 package userinterfaces;
 
+import controllers.AppointmentManager;
 import controllers.InventoryManager;
 import entities.Staff;
+import entities.appointments.AOR;
+import entities.appointments.ApptPrescription;
 import java.util.Scanner;
 
 public class PharmacistMenu implements IMenu {
     private Staff record;
     private InventoryManager inventoryManager;
+    private AppointmentManager appointmentManager;
 
-    public PharmacistMenu(Staff record, InventoryManager inventoryManager){
+    public PharmacistMenu(Staff record, InventoryManager inventoryManager, AppointmentManager appointmentManager) {
         this.record = record;
         this.inventoryManager = inventoryManager;
+        this.appointmentManager = appointmentManager;
     }
 
-    public void displayMenu(){
+    public void displayMenu() {
         System.out.println("Pharmacist Menu");
         System.out.println("1. View Appointment Outcome Record");
         System.out.println("2. Update Prescription Status ");
@@ -25,11 +30,13 @@ public class PharmacistMenu implements IMenu {
         int choice = sc.nextInt();
         sc.nextLine();
 
-        while(true){
+        while (true) {
             switch (choice) {
                 case 1:
+                    viewAppointmentOutcomeRecord(sc);
                     break;
                 case 2:
+                    updatePrescriptionStatus(sc);
                     break;
                 case 3:
                     inventoryManager.viewInventory();
@@ -52,14 +59,24 @@ public class PharmacistMenu implements IMenu {
     }
 
     //for admin to view
-    public void viewRecord(){
-        this.record.viewRecords();
+    private void viewAppointmentOutcomeRecord(Scanner sc) {
+        System.out.println("Enter appointment ID to view Appointment Outcome Record");
+        String apptID = sc.nextLine();
+        appointmentManager.viewAOR(apptID);
     }
-    
 
-    private void submitRequest(Scanner sc){
+
+    private void submitRequest(Scanner sc) {
         System.out.println("Enter Medicine to be updated");
         String name = sc.nextLine();
         inventoryManager.submitRequest(name);
+    }
+
+    private void updatePrescriptionStatus(Scanner sc) {
+        System.out.println("Enter Appointment ID to update status:");
+        String apptID = sc.nextLine();
+        System.out.println("Enter updated status of prescription : (PENDING / DISPENSED) : ");
+        String status = sc.nextLine();
+        appointmentManager.updatePStatus(apptID, status);
     }
 }
