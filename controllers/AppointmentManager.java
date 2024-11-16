@@ -69,13 +69,16 @@ public class AppointmentManager {
     }
 
     public void makeAOR(String apptID, String notes, String tos, List<ApptPrescription> prescription) {
-        //make AOR for that appt ID
-        //store aor in csv
+        // make AOR for that appt ID
+        // store aor in csv
         List<ApptSlot> slots = ApptSlotRepository.load();
 
         for (ApptSlot appointment : slots) {
-            if (appointment.getApptID().equals(apptID) && (appointment.getStatus() == ApptStatus.CONFIRMED || appointment.getStatus() == ApptStatus.COMPLETED)) {
-                AOR aor = new AOR(appointment.getApptID(), appointment.getPatientID(), appointment.getDoctorID(), appointment.getDate(), appointment.getTime(), appointment.getStatus(), TypeOfService.fromString(tos), notes, prescription);
+            if (appointment.getApptID().equals(apptID) && (appointment.getStatus() == ApptStatus.CONFIRMED
+                    || appointment.getStatus() == ApptStatus.COMPLETED)) {
+                AOR aor = new AOR(appointment.getApptID(), appointment.getPatientID(), appointment.getDoctorID(),
+                        appointment.getDate(), appointment.getTime(), appointment.getStatus(),
+                        TypeOfService.fromString(tos), notes, prescription);
                 List<AOR> aorList = AORRepository.load();
                 aorList.add(aor);
                 AORRepository.store(aorList);
@@ -85,7 +88,6 @@ public class AppointmentManager {
         }
         System.out.println("No such confirmed or completed appointment.");
     }
-
 
     // FOR PATIENTS
     public void schedule(String apptID, String patientID) {
@@ -108,7 +110,8 @@ public class AppointmentManager {
         for (int i = 0; i < slots.size(); i++) {
             ApptSlot appointment = slots.get(i);
             if (appointment.getApptID().equals(prevApptID) &&
-                    (appointment.getStatus() == ApptStatus.CONFIRMED || appointment.getStatus() == ApptStatus.PENDING)) {
+                    (appointment.getStatus() == ApptStatus.CONFIRMED
+                            || appointment.getStatus() == ApptStatus.PENDING)) {
                 appointment.setStatus(ApptStatus.AVAILABLE);
                 patientID = appointment.getPatientID();
                 appointment.setPatientID(null);
@@ -134,7 +137,7 @@ public class AppointmentManager {
     }
 
     public void viewAOR(String apptID) {
-        //view AOR for that appt ID
+        // view AOR for that appt ID
         List<AOR> aors = AORRepository.load();
 
         for (AOR aor : aors) {
@@ -153,6 +156,7 @@ public class AppointmentManager {
         }
         System.out.println("No Appointment Outcome Record found for Appointment ID: " + apptID);
     }
+
     public void updatePStatus(String apptID, String statusInput) {
         List<AOR> aors = AORRepository.load();
         for (AOR aor : aors) {
@@ -172,7 +176,8 @@ public class AppointmentManager {
                         System.out.println("Prescription status updated successfully.");
                         return;
                     } catch (IllegalArgumentException e) {
-                        System.out.println("Invalid status entered. Please enter a valid status: 'PENDING' or 'DISPENSED'.");
+                        System.out.println(
+                                "Invalid status entered. Please enter a valid status: 'PENDING' or 'DISPENSED'.");
                         return;
                     }
                 } else {
@@ -183,6 +188,5 @@ public class AppointmentManager {
         }
         System.out.println("Appointment not found with ID: " + apptID);
     }
-
 
 }
