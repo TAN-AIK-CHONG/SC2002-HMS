@@ -18,14 +18,15 @@ public class AdminMenu implements IMenu {
     private StaffManager staffManager;
     private AppointmentManager appointmentManager;
 
-    public AdminMenu(Admin admin, InventoryManager inventoryManager, StaffManager staffManager, AppointmentManager appointmentManager){
+    public AdminMenu(Admin admin, InventoryManager inventoryManager, StaffManager staffManager,
+            AppointmentManager appointmentManager) {
         this.admin = admin;
         this.inventoryManager = inventoryManager;
         this.staffManager = staffManager;
         this.appointmentManager = appointmentManager;
     }
 
-    public void displayMenu(){
+    public void displayMenu() {
         System.out.println("Administrator Menu");
         System.out.println("1. View and Manage Hospital Staff");
         System.out.println("2. View Appointments details");
@@ -37,7 +38,7 @@ public class AdminMenu implements IMenu {
         int choice = sc.nextInt();
         sc.nextLine();
 
-        while(true){
+        while (true) {
             switch (choice) {
                 case 1:
                     manageHospitalStaff(sc);
@@ -54,13 +55,13 @@ public class AdminMenu implements IMenu {
                     System.out.print("Choose an option: ");
                     int inventoryAction = sc.nextInt();
                     sc.nextLine();
-                    switch(inventoryAction){
+                    switch (inventoryAction) {
                         case 1:
                             System.out.print("Enter new medication: ");
-                            String medName = sc.nextLine();
+                            String medName = sc.nextLine().toUpperCase();
                             System.out.print("Enter initial stock quantity: ");
                             int quantity = sc.nextInt();
-                            sc.nextLine(); 
+                            sc.nextLine();
                             System.out.print("Enter low stock alert level: ");
                             int alert = sc.nextInt();
                             sc.nextLine();
@@ -69,17 +70,17 @@ public class AdminMenu implements IMenu {
                             sc.nextLine();
                             System.out.print("Enter Request: ");
                             boolean request = sc.nextBoolean();
-                            Medication newMed = new Medication(medName, quantity, alert , original , request );
+                            Medication newMed = new Medication(medName, quantity, alert, original, request);
                             inventoryManager.addInventory(newMed);
                             break;
                         case 2:
                             System.out.print("Enter medication to be removed: ");
-                            String removedMed = sc.nextLine();
+                            String removedMed = sc.nextLine().toUpperCase();
                             inventoryManager.removeInventory(removedMed);
                             break;
                         case 3:
                             System.out.print("Enter medication to be updated: ");
-                            String updatedMed = sc.nextLine();
+                            String updatedMed = sc.nextLine().toUpperCase();
                             System.out.print("Enter new stock level: ");
                             int newLevel = sc.nextInt();
                             sc.nextLine();
@@ -124,13 +125,13 @@ public class AdminMenu implements IMenu {
         switch (staffChoice) {
             case 1:
                 System.out.print("Enter User ID: ");
-                String staffID = sc.nextLine();
+                String staffID = sc.nextLine().toUpperCase();
                 System.out.print("Enter Password: ");
                 String password = sc.nextLine();
                 System.out.print("Enter Staff Name: ");
-                String name = sc.nextLine();
+                String name = sc.nextLine().toUpperCase();
                 System.out.print("Enter Role (Doctor/Pharmacist): ");
-                String role = sc.nextLine();
+                String role = sc.nextLine().toUpperCase();
                 System.out.print("Enter Gender (Male/Female): ");
                 Gender gender = Gender.valueOf(sc.nextLine().toUpperCase());
                 System.out.print("Enter Age: ");
@@ -143,14 +144,14 @@ public class AdminMenu implements IMenu {
 
             case 2:
                 System.out.print("Enter Staff ID to Update: ");
-                String staffIdToUpdate = sc.nextLine();
-        
+                String staffIdToUpdate = sc.nextLine().toUpperCase();
+
                 System.out.print("Enter Role: ");
-                String newRole = sc.nextLine();
-            
+                String newRole = sc.nextLine().toUpperCase();
+
                 System.out.print("Enter Gender (Male/Female): ");
-                String newGender = sc.nextLine();
-            
+                String newGender = sc.nextLine().toUpperCase();
+
                 System.out.print("Enter Age: ");
                 int newAge = sc.nextInt();
                 sc.nextLine();
@@ -158,11 +159,11 @@ public class AdminMenu implements IMenu {
                 staffManager.updateStaff(staffIdToUpdate, newRole, newGender, newAge);
 
                 System.out.println("Staff member " + staffIdToUpdate + " updated successfully.");
-                
+
                 break;
             case 3:
                 System.out.print("Enter Staff ID to Remove: ");
-                String staffIdToRemove = sc.nextLine();
+                String staffIdToRemove = sc.nextLine().toUpperCase();
                 staffManager.removeStaff(staffIdToRemove);
                 break;
             case 4:
@@ -176,10 +177,9 @@ public class AdminMenu implements IMenu {
         }
     }
 
-    public void approveRequest(Scanner sc)
-    {
+    public void approveRequest(Scanner sc) {
         System.out.print("Enter medication name to approve request: ");
-        String medName = sc.nextLine();
+        String medName = sc.nextLine().toUpperCase();
         inventoryManager.approveRequest(medName);
     }
 
@@ -224,6 +224,5 @@ public class AdminMenu implements IMenu {
             appointmentManager.viewByFilter(status);
         }
     }
-
 
 }

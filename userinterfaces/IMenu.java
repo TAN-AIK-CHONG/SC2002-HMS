@@ -1,5 +1,5 @@
 package userinterfaces;
 
-public interface IMenu{
+public interface IMenu {
     public void displayMenu();
 }
