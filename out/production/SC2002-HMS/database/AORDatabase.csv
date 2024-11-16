@@ -1,0 +1,2 @@
+apptID,patientID,doctorID,date,time,status,tos,consultationNotes,prescriptions
+ABCD1,P1001,D001,2024-11-06,15:30,Completed,Consultation,FEVER,

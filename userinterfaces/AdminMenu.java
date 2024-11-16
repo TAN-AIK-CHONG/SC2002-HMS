@@ -26,7 +26,6 @@ public class AdminMenu implements IMenu {
         this.appointmentManager = appointmentManager;
     }
 
-    // test dsfhsdkjf
     public void displayMenu() {
         System.out.println("Administrator Menu");
         System.out.println("1. View and Manage Hospital Staff");

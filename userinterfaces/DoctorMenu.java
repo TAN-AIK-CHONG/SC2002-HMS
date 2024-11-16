@@ -4,10 +4,18 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+import java.util.List;
+import java.util.ArrayList;
 
 import controllers.AppointmentManager;
 import controllers.PatientManager;
+import entities.appointments.AOR;
+import entities.appointments.ApptPrescription;
+import entities.appointments.TypeOfService;
+import entities.appointments.ApptSlot;
 import entities.appointments.ApptStatus;
+import filehandlers.AORRepository;
+import filehandlers.ApptSlotRepository;
 
 public class DoctorMenu implements IMenu {
     private String doctorID;
@@ -60,6 +68,7 @@ public class DoctorMenu implements IMenu {
                     break;
                 case 7:
                     System.out.println();
+                    recordAppointmentOutcome(sc);
                     System.out.println();
                     break;
                 case 8:
@@ -94,7 +103,7 @@ public class DoctorMenu implements IMenu {
         patientManager.viewAllPatients();
         System.out.println();
         System.out.print("Input PatientID: ");
-        String patientID = sc.nextLine();
+        String patientID = sc.nextLine().toUpperCase();
         System.out.println();
         patientManager.viewRecord(patientID);
     }
@@ -106,7 +115,7 @@ public class DoctorMenu implements IMenu {
         patientManager.viewAllPatients();
         System.out.println();
         System.out.print("Input PatientID: ");
-        String patientID = sc.nextLine();
+        String patientID = sc.nextLine().toUpperCase();
         System.out.println();
         System.out.println("1. Add a new diagnosis");
         System.out.println("2. Add a new prescription");
@@ -118,17 +127,17 @@ public class DoctorMenu implements IMenu {
         switch (choice) {
             case 1:
                 System.out.print("Diagnosis: ");
-                newInfo = sc.nextLine();
+                newInfo = sc.nextLine().toUpperCase();
                 patientManager.addDiagnosis(patientID, newInfo);
                 break;
             case 2:
                 System.out.print("Prescription: ");
-                newInfo = sc.nextLine();
+                newInfo = sc.nextLine().toUpperCase();
                 patientManager.addMedication(patientID, newInfo);
                 break;
             case 3:
                 System.out.print("Treatment Plan: ");
-                newInfo = sc.nextLine();
+                newInfo = sc.nextLine().toUpperCase();
                 patientManager.addTreatment(patientID, newInfo);
                 break;
             default:
@@ -159,7 +168,7 @@ public class DoctorMenu implements IMenu {
         apptManager.viewByFilterDoc(doctorID, ApptStatus.PENDING);
         System.out.println();
         System.out.print("Input Appointment ID ");
-        String apptID = sc.nextLine();
+        String apptID = sc.nextLine().toUpperCase();
         System.out.println("1. Accept Appointment");
         System.out.println("2. Decline Appointment");
         System.out.println();
@@ -179,4 +188,63 @@ public class DoctorMenu implements IMenu {
         }
 
     }
+
+    private void recordAppointmentOutcome(Scanner sc) {
+        System.out.print("Enter Appointment ID: ");
+        String apptID = sc.nextLine().toUpperCase();
+
+        List<ApptSlot> slots = ApptSlotRepository.load();
+        ApptSlot apptSlot = null;
+        for (ApptSlot slot : slots) {
+            if (slot.getApptID().equals(apptID) && slot.getStatus() == ApptStatus.CONFIRMED) {
+                apptSlot = slot;
+                break;
+            }
+        }
+
+        if (apptSlot == null) {
+            System.out.println("Appointment not found or not yet completed!");
+            return;
+        }
+
+        LocalDate date = apptSlot.getDate();
+        LocalTime time = apptSlot.getTime();
+        String doctorID = apptSlot.getDoctorID();
+        String patientID = apptSlot.getPatientID();
+
+        System.out.println("Appointment Information:");
+        System.out.println("Date: " + date);
+        System.out.println("Time: " + time);
+        System.out.println("Doctor ID: " + doctorID);
+        System.out.println("Patient ID: " + patientID);
+
+        System.out.print("Enter Type of Service (e.g., CONSULTATION, FOLLOW_UP): ");
+        String serviceTypeInput = sc.nextLine().toUpperCase();
+        TypeOfService serviceType = TypeOfService.valueOf(serviceTypeInput.toUpperCase());
+
+        System.out.print("Enter Consultation Notes: ");
+        String consultationNotes = sc.nextLine();
+
+        System.out.print("Enter Prescribed Medication (separate by ';' if multiple): ");
+        String prescribedMedicationInput = sc.nextLine().toUpperCase();
+        List<ApptPrescription> prescriptions = new ArrayList<>();
+        if (!prescribedMedicationInput.isEmpty()) {
+            String[] prescArray = prescribedMedicationInput.split(";");
+            for (String prescData : prescArray) {
+                prescriptions.add(new ApptPrescription(prescData));
+            }
+        }
+
+        ApptStatus status = ApptStatus.COMPLETED;
+
+        AOR aor = new AOR(apptID, patientID, doctorID, date, time, status, serviceType, consultationNotes,
+                prescriptions);
+
+        List<AOR> aorList = AORRepository.load();
+        aorList.add(aor);
+        AORRepository.store(aorList);
+
+        System.out.println("Appointment Outcome recorded successfully.");
+    }
+
 }

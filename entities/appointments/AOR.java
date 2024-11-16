@@ -5,7 +5,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 public class AOR {
-    private int apptID;
+    private String apptID;
     private String patientID;
     private String doctorID;
     private LocalDate date;
@@ -15,7 +15,7 @@ public class AOR {
     private String consultationNotes;
     private List<ApptPrescription> prescriptions;
 
-    public AOR(int apptID, String patientID, String doctorID, LocalDate date, LocalTime time, ApptStatus status,
+    public AOR(String apptID, String patientID, String doctorID, LocalDate date, LocalTime time, ApptStatus status,
             TypeOfService tos, String consultationNotes, List<ApptPrescription> prescriptions) {
         this.apptID = apptID;
         this.patientID = patientID;
@@ -28,11 +28,11 @@ public class AOR {
         this.prescriptions = prescriptions;
     }
 
-    public int getApptID() {
+    public String getApptID() {
         return apptID;
     }
 
-    public void setApptID(int apptID) {
+    public void setApptID(String apptID) {
         this.apptID = apptID;
     }
 
@@ -100,6 +100,4 @@ public class AOR {
         this.prescriptions = prescriptions;
     }
 
-    
-    
 }

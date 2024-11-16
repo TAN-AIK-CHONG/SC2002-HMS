@@ -1,5 +1,6 @@
 package filehandlers;
 
+import entities.Medication;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -8,11 +9,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import entities.Medication;
-
 public class InventoryRepository {
     // File path to medication inventory
-    private static final String MEDICINE_CSV_FILE = "database/MedicineDatabase.csv";
+    private static final String MEDICINE_CSV_FILE = "database\\MedicineDatabase.csv";
 
     // Load medication inventory from the CSV file
     public static List<Medication> load() {
@@ -28,8 +27,10 @@ public class InventoryRepository {
                 String medName = data[0];
                 int quantity = Integer.parseInt(data[1]);
                 int alertLevel = Integer.parseInt(data[2]);
+                int original = Integer.parseInt(data[3]);
+                boolean request = Boolean.parseBoolean(data[4]);
 
-                Medication med = new Medication(medName, quantity,alertLevel);
+                Medication med = new Medication(medName, quantity,alertLevel, original, request);
                 inventory.add(med);
             }
         } catch (IOException e) {
@@ -43,12 +44,13 @@ public class InventoryRepository {
     public static void store(List<Medication> inventory) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(MEDICINE_CSV_FILE))) {
             // Write header row
-            bw.write("Medicine Name,Current Stock,Low Stock Level Alert");
+            bw.write("Medicine Name,Current Stock,Low Stock Level Alert,Original,Request");
             bw.newLine();
 
             // Write each medication record to the CSV (overwrite)
             for (Medication med : inventory) {
-                String line = med.getName() + "," + med.getQuantity() + "," + med.getAlertLevel();
+                String line = med.getName() + "," + med.getQuantity() + "," + med.getAlertLevel()+ ","
+                             + med.getOriginal() + "," + med.getRequest();
                 bw.write(line);
                 bw.newLine();
             }

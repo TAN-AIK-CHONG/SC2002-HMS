@@ -1,5 +1,6 @@
 package userinterfaces;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import controllers.AppointmentManager;
@@ -22,51 +23,61 @@ public class PatientMenu implements IMenu {
         int choice;
         do {
             menuItems();
-            choice = sc.nextInt();
-            sc.nextLine();
-            switch (choice) {
-                case 1:
-                    System.out.println();
-                    viewRecord();
-                    System.out.println();
-                    break;
-                case 2:
-                    System.out.println();
-                    updatePersonalInformation(sc);
-                    System.out.println();
-                    break;
-                case 3:
-                    System.out.println();
-                    viewAvailable();
-                    System.out.println();
-                    break;
-                case 4:
-                    System.out.println();
-                    scheduleAppt(sc);
-                    System.out.println();
-                    break;
-                case 5:
-                    System.out.println();
-                    rescheduleAppt(sc);
-                    System.out.println();
-                    break;
-                case 6:
-                    System.out.println();
-                    cancelAppt(sc);
-                    System.out.println();
-                    break;
-                case 7:
-                    System.out.println();
-                    viewUpcoming();
-                    System.out.println();
-                    break;
-                case 9:
-                    sc.close();
-                    System.out.println("Logging out...");
-                    return;
-                default:
-                    System.out.println("Please choose a valid option instead (1-9)");
-                    break;
+            try {
+                choice = sc.nextInt();
+                sc.nextLine();
+                switch (choice) {
+                    case 1:
+                        System.out.println();
+                        viewRecord();
+                        System.out.println();
+                        break;
+                    case 2:
+                        System.out.println();
+                        updatePersonalInformation(sc);
+                        System.out.println();
+                        break;
+                    case 3:
+                        System.out.println();
+                        viewAvailable();
+                        System.out.println();
+                        break;
+                    case 4:
+                        System.out.println();
+                        scheduleAppt(sc);
+                        System.out.println();
+                        break;
+                    case 5:
+                        System.out.println();
+                        rescheduleAppt(sc);
+                        System.out.println();
+                        break;
+                    case 6:
+                        System.out.println();
+                        cancelAppt(sc);
+                        System.out.println();
+                        break;
+                    case 7:
+                        System.out.println();
+                        viewUpcoming();
+                        System.out.println();
+                        break;
+                    case 8:
+                        System.out.println();
+                        viewPastAOR(sc);
+                        System.out.println();
+                        break;
+                    case 9:
+                        sc.close();
+                        System.out.println("Logging out...");
+                        return;
+                    default:
+                        System.out.println("Please choose a valid option instead (1-9)");
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter an integer.");
+                sc.nextLine();
             }
         } while (true);
     }
@@ -127,23 +138,23 @@ public class PatientMenu implements IMenu {
 
     private void scheduleAppt(Scanner sc) {
         System.out.print("Appointment ID: ");
-        String apptID = sc.nextLine();
+        String apptID = sc.nextLine().toUpperCase();
         apptManager.schedule(apptID, patientID);
     }
 
     private void rescheduleAppt(Scanner sc) {
         System.out.println("Please input the appointment ID of the appointment you want to reschedule:");
         System.out.print("Appointment ID: ");
-        String prevApptID = sc.nextLine();
+        String prevApptID = sc.nextLine().toUpperCase();
         System.out.print("Please choose a new appointment slot: ");
-        String newApptID = sc.nextLine();
+        String newApptID = sc.nextLine().toUpperCase();
         apptManager.reschedule(prevApptID, newApptID);
     }
 
     private void cancelAppt(Scanner sc) {
         System.out.println("Please input the appointment you wish to cancel: ");
         System.out.print("Appointment ID: ");
-        String cancelledID = sc.nextLine();
+        String cancelledID = sc.nextLine().toUpperCase();
         apptManager.cancel(cancelledID);
     }
 
@@ -151,4 +162,10 @@ public class PatientMenu implements IMenu {
         apptManager.viewByFilterPatient(patientID, ApptStatus.CONFIRMED);
     }
 
+    private void viewPastAOR(Scanner sc) {
+        System.out.println("Enter the appointment ID to view past appointment outcome record: ");
+        String apptID = sc.nextLine().toUpperCase();
+        ;
+        apptManager.viewAOR(apptID);
+    }
 }
