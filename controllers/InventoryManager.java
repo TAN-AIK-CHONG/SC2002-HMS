@@ -7,7 +7,7 @@ import entities.Medication;
 import filehandlers.InventoryRepository;
 
 public class InventoryManager {
-    public void viewInventory(){
+    public void viewInventory() {
         List<Medication> inventory = new ArrayList<>(InventoryRepository.load());
         System.out.println("Medication Inventory:");
         for (Medication med : inventory) {
@@ -15,19 +15,19 @@ public class InventoryManager {
         }
     }
 
-    public void addInventory(Medication newMed){
+    public void addInventory(Medication newMed) {
         List<Medication> inventory = new ArrayList<>(InventoryRepository.load());
         inventory.add(newMed);
         InventoryRepository.store(inventory);
         System.out.println("Added new medication: " + newMed.getName());
     }
 
-    public void removeInventory(String medName){
+    public void removeInventory(String medName) {
         List<Medication> inventory = new ArrayList<>(InventoryRepository.load());
         for (int i = 0; i < inventory.size(); i++) {
             Medication med = inventory.get(i);
             if (med.getName().equalsIgnoreCase(medName)) {
-                inventory.remove(i); 
+                inventory.remove(i);
                 InventoryRepository.store(inventory);
                 System.out.println("Removed medication: " + medName);
                 return;
@@ -36,7 +36,7 @@ public class InventoryManager {
         System.out.println("No such medication found");
     }
 
-    public void updateInventory(String medName, int newLevel){
+    public void updateInventory(String medName, int newLevel) {
         List<Medication> inventory = new ArrayList<>(InventoryRepository.load());
         for (int i = 0; i < inventory.size(); i++) {
             Medication med = inventory.get(i);
@@ -48,7 +48,5 @@ public class InventoryManager {
         }
         System.out.println("No such medication found");
     }
-
-
 
 }
