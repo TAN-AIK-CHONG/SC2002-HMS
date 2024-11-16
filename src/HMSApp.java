@@ -98,11 +98,11 @@ public class HMSApp {
                 docMenu.displayMenu();
             } else if (staff instanceof Pharmacist) {
                 Pharmacist Pharma = (Pharmacist) staff;
-                PharmacistMenu pharmaMenu = new PharmacistMenu(Pharma, inventoryManager, appointmentManager);
+                PharmacistMenu pharmaMenu = new PharmacistMenu(Pharma.getUserID(), inventoryManager, appointmentManager);
                 pharmaMenu.displayMenu();
             } else if (staff instanceof Admin) {
                 Admin admin = (Admin) staff;
-                AdminMenu adminMenu = new AdminMenu(admin, inventoryManager, staffManager, appointmentManager);
+                AdminMenu adminMenu = new AdminMenu(admin.getUserID(), inventoryManager, staffManager, appointmentManager);
                 adminMenu.displayMenu();
             }
         }

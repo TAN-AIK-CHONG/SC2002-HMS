@@ -6,12 +6,12 @@ import entities.Staff;
 import java.util.Scanner;
 
 public class PharmacistMenu implements IMenu {
-    private Staff record;
+    private String pharmacistID;
     private InventoryManager inventoryManager;
     private AppointmentManager appointmentManager;
 
-    public PharmacistMenu(Staff record, InventoryManager inventoryManager, AppointmentManager appointmentManager) {
-        this.record = record;
+    public PharmacistMenu(String pharmacistID, InventoryManager inventoryManager, AppointmentManager appointmentManager) {
+        this.pharmacistID = pharmacistID;
         this.inventoryManager = inventoryManager;
         this.appointmentManager = appointmentManager;
     }
