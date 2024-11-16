@@ -2,7 +2,6 @@ package userinterfaces;
 
 import controllers.AppointmentManager;
 import controllers.InventoryManager;
-import entities.Staff;
 import java.util.Scanner;
 
 public class PharmacistMenu implements IMenu {

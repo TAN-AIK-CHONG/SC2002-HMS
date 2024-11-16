@@ -9,13 +9,9 @@ import java.util.ArrayList;
 
 import controllers.AppointmentManager;
 import controllers.PatientManager;
-import entities.appointments.AOR;
 import entities.appointments.ApptPrescription;
 import entities.appointments.TypeOfService;
-import entities.appointments.ApptSlot;
 import entities.appointments.ApptStatus;
-import filehandlers.AORRepository;
-import filehandlers.ApptSlotRepository;
 
 public class DoctorMenu implements IMenu {
     private String doctorID;
@@ -165,6 +161,7 @@ public class DoctorMenu implements IMenu {
     }
 
     private void chooseAppointment(Scanner sc) {
+        System.out.println("Pending appointments: ");
         apptManager.viewByFilterDoc(doctorID, ApptStatus.PENDING);
         System.out.println();
         System.out.print("Input Appointment ID ");
@@ -190,6 +187,9 @@ public class DoctorMenu implements IMenu {
     }
 
     private void recordAppointmentOutcome(Scanner sc) {
+        System.out.println("Confirmed appointments: ");
+        apptManager.viewByFilterDoc(doctorID, ApptStatus.CONFIRMED);
+        System.out.println();
         System.out.print("Enter Appointment ID: ");
         String apptID = sc.nextLine().toUpperCase();
 

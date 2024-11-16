@@ -1,7 +1,5 @@
 package entities;
 
-import java.util.zip.DeflaterInputStream;
-
 public enum PrescriptionStatus {
     PENDING, DISPENSED;
 
