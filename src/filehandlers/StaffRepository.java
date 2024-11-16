@@ -18,7 +18,7 @@ import entities.Staff;
 
 public class StaffRepository {
     // file path to the staff database
-    private static final String STAFF_CSV_FILE = "database\\StaffDatabase.csv";
+    private static final String STAFF_CSV_FILE = "src\\database\\StaffDatabase.csv";
 
     // load list of staff
     public static List<Staff> load() {

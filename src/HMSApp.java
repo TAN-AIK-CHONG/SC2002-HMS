@@ -22,8 +22,15 @@ public class HMSApp {
         System.out.println("Please log in to the Hospital Management System");
         System.out.println("----------------------------------------------");
 
-        System.out.print("Are you a patient or staff? (Enter P for Patient, S for Staff): ");
-        String userType = sc.nextLine().toUpperCase();
+        String userType = null;
+        while(true){
+            System.out.print("Are you a patient or staff? (Enter P for Patient, S for Staff): ");
+            userType = sc.nextLine().toUpperCase();
+            if (userType.equals("P") || userType.equals("S")){
+                break;
+            }
+            System.out.println("Invalid input.");
+        }
         boolean isPatient = userType.equals("P");
         String hospitalID = null;
         String password = null;
