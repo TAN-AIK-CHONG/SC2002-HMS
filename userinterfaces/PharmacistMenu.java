@@ -3,8 +3,6 @@ package userinterfaces;
 import controllers.AppointmentManager;
 import controllers.InventoryManager;
 import entities.Staff;
-import entities.appointments.AOR;
-import entities.appointments.ApptPrescription;
 import java.util.Scanner;
 
 public class PharmacistMenu implements IMenu {
