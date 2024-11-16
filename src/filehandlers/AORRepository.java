@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AORRepository {
-    private static final String AOR_CSV_FILE = "database\\AORDatabase.csv";
+    private static final String AOR_CSV_FILE = "src\\database\\AORDatabase.csv";
 
     public static List<AOR> load() {
         List<AOR> aorList = new ArrayList<>();

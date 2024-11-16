@@ -145,21 +145,36 @@ public class PatientMenu implements IMenu {
     }
 
     private void scheduleAppt(Scanner sc) {
+        System.out.println("All available slots: ");
+        apptManager.viewByFilter(ApptStatus.AVAILABLE);
+        System.out.println("");
         System.out.print("Appointment ID: ");
         String apptID = sc.nextLine().toUpperCase();
         apptManager.schedule(apptID, patientID);
     }
 
     private void rescheduleAppt(Scanner sc) {
-        System.out.println("Please input the appointment ID of the appointment you want to reschedule:");
-        System.out.print("Appointment ID: ");
+        System.out.println("Current pending slots: ");
+        apptManager.viewByFilterPatient(patientID, ApptStatus.PENDING);
+        System.out.println();
+        
+        System.out.print("Please input the appointment ID of the appointment you want to reschedule: ");
         String prevApptID = sc.nextLine().toUpperCase();
+        System.out.println();
+        System.out.println("Currently available slots:");
+        apptManager.viewByFilter(ApptStatus.AVAILABLE);
+        System.out.println();
+
         System.out.print("Please choose a new appointment slot: ");
         String newApptID = sc.nextLine().toUpperCase();
-        apptManager.reschedule(prevApptID, newApptID);
+        apptManager.reschedule(patientID, prevApptID, newApptID);
     }
 
     private void cancelAppt(Scanner sc) {
+        System.out.println("Current confirmed slots: ");
+        apptManager.viewByFilterPatient(patientID, ApptStatus.CONFIRMED);
+        System.out.println();
+
         System.out.println("Please input the appointment you wish to cancel: ");
         System.out.print("Appointment ID: ");
         String cancelledID = sc.nextLine().toUpperCase();
@@ -171,7 +186,11 @@ public class PatientMenu implements IMenu {
     }
 
     private void viewPastAOR(Scanner sc) {
-        System.out.println("Enter the appointment ID to view past appointment outcome record: ");
+        System.out.println("Past completed appoinntments: ");
+        apptManager.viewByFilterPatient(patientID, ApptStatus.COMPLETED);
+        System.out.println();
+
+        System.out.print("Enter the appointment ID to view past appointment outcome record: ");
         String apptID = sc.nextLine().toUpperCase();
         apptManager.viewAOR(apptID);
     }

@@ -15,7 +15,7 @@ import entities.appointments.ApptStatus;
 
 public class ApptSlotRepository {
     // File path to appointment schedules
-    private static final String APPT_CSV_FILE = "database\\AppointmentSchedulesDatabase.csv";
+    private static final String APPT_CSV_FILE = "src\\database\\AppointmentSchedulesDatabase.csv";
 
     // Load all appointments from the CSV file
     public static List<ApptSlot> load() {

@@ -107,14 +107,11 @@ public class AppointmentManager {
         System.out.println("No such appointment found");
     }
 
-    public void reschedule(String prevApptID, String newApptID) {
-        String patientID = null;
+    public void reschedule(String patientID, String prevApptID, String newApptID) {
         List<ApptSlot> slots = new ArrayList<>(ApptSlotRepository.load());
         for (int i = 0; i < slots.size(); i++) {
             ApptSlot appointment = slots.get(i);
-            if (appointment.getApptID().equals(prevApptID) &&
-                    (appointment.getStatus() == ApptStatus.CONFIRMED
-                            || appointment.getStatus() == ApptStatus.PENDING)) {
+            if (appointment.getApptID().equals(prevApptID) && (appointment.getStatus() == ApptStatus.PENDING)) {
                 appointment.setStatus(ApptStatus.AVAILABLE);
                 patientID = appointment.getPatientID();
                 appointment.setPatientID(null);
