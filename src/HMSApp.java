@@ -23,10 +23,10 @@ public class HMSApp {
         System.out.println("----------------------------------------------");
 
         String userType = null;
-        while(true){
+        while (true) {
             System.out.print("Are you a patient or staff? (Enter P for Patient, S for Staff): ");
             userType = sc.nextLine().toUpperCase();
-            if (userType.equals("P") || userType.equals("S")){
+            if (userType.equals("P") || userType.equals("S")) {
                 break;
             }
             System.out.println("Invalid input.");
@@ -93,7 +93,8 @@ public class HMSApp {
 
             if (staff instanceof Doctor) {
                 Doctor doctor = (Doctor) staff;
-                DoctorMenu docMenu = new DoctorMenu(doctor.getUserID(), patientManager, appointmentManager);
+                DoctorMenu docMenu = new DoctorMenu(doctor.getUserID(), patientManager, appointmentManager,
+                        inventoryManager);
                 docMenu.displayMenu();
             } else if (staff instanceof Pharmacist) {
                 Pharmacist Pharma = (Pharmacist) staff;

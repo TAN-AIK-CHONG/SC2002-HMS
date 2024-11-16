@@ -75,4 +75,13 @@ public class InventoryManager {
         System.out.println("No such medication found");
     }
 
+    public boolean doesMedicationExist(String medicationName) {
+        List<Medication> inventory = InventoryRepository.load();
+        for (Medication med : inventory) {
+            if (med.getName().equalsIgnoreCase(medicationName)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

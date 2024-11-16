@@ -1,4 +1,4 @@
 Patient ID,Name,Date of Birth,Gender,Blood Type,Contact Information,Phone Number,Diagnoses,Medications,Treatment,Password
-P1001,Alice Brown,1980-05-14,Female,A+,alicebrown@gmail.com,12345678,test,test;INSULIN,,5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
+P1001,Alice Brown,1980-05-14,Female,A+,alicebrown@gmail.com,12345678,test,test;PARACETAMOL,,5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
 P1002,Bob Stone,1975-11-22,Male,B+,bob.stone@example.com,,Osteoporosis;Cancer,,,5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
 P1003,Charlie White,1990-07-08,Male,O-,charlie.white@example.com,,,,,5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
