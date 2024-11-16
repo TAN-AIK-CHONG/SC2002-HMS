@@ -120,11 +120,19 @@ public class PatientMenu implements IMenu {
                 System.out.println("Email updated successfully.");
                 break;
             case 2:
-                System.out.print("New phone number: ");
-                String newNumber = sc.nextLine();
-                patientManager.updatePhoneNumber(patientID, newNumber);
-                System.out.println("Phone number updated successfully.");
-                break;
+                while(true){
+                    System.out.print("New phone number: ");
+                    String newNumber = sc.nextLine().trim();
+                    if (newNumber.matches("\\d{8}")){
+                        patientManager.updatePhoneNumber(patientID, newNumber);
+                        System.out.println("Phone number updated successfully.");
+                        break;
+                    }
+                    System.out.println("Invalid input! Phone number should be 8 digits.");
+                }
+                
+                
+                
             default:
                 System.out.println("Please choose a valid option (1-2)");
                 break;
