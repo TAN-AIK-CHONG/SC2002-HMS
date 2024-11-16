@@ -134,6 +134,8 @@ public class DoctorMenu implements IMenu {
                 patientManager.addDiagnosis(patientID, newInfo);
                 break;
             case 2:
+                inventoryManager.viewInventory();
+                System.out.println();
                 System.out.print("Prescription: ");
                 newInfo = sc.nextLine().toUpperCase();
                 if (inventoryManager.doesMedicationExist(newInfo)) {
@@ -210,6 +212,8 @@ public class DoctorMenu implements IMenu {
         List<ApptPrescription> prescriptions = new ArrayList<>();
         String prescriptionName;
 
+        inventoryManager.viewInventory();
+        System.out.println();
         while (true) {
             System.out.print("Enter prescription (-1 to cancel): ");
             prescriptionName = sc.nextLine();
