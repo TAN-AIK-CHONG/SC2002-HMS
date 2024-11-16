@@ -17,7 +17,7 @@ import entities.Patient;
 
 public class PatientRepository {
     // file path to the patient database
-    private static final String PATIENT_CSV_FILE = "database\\PatientDatabase.csv";
+    private static final String PATIENT_CSV_FILE = "src\\database\\PatientDatabase.csv";
 
     // load single patient
     public static Patient load(String patientID) {

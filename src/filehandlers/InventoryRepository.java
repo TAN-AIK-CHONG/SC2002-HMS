@@ -11,7 +11,7 @@ import java.util.List;
 
 public class InventoryRepository {
     // File path to medication inventory
-    private static final String MEDICINE_CSV_FILE = "database\\MedicineDatabase.csv";
+    private static final String MEDICINE_CSV_FILE = "src\\database\\MedicineDatabase.csv";
 
     // Load medication inventory from the CSV file
     public static List<Medication> load() {
