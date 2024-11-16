@@ -5,15 +5,10 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import entities.Gender;
-import entities.Staff;
 import entities.PrescriptionStatus;
 import entities.appointments.*;
 import filehandlers.ApptSlotRepository;
 import filehandlers.AORRepository;
-import filehandlers.StaffRepository;
-import controllers.InventoryManager;
-import utility.Hash;
 
 public class AppointmentManager {
     // FOR BOTH

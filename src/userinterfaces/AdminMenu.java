@@ -3,7 +3,6 @@ package userinterfaces;
 import controllers.AppointmentManager;
 import controllers.InventoryManager;
 import controllers.StaffManager;
-import entities.Admin;
 import entities.Gender;
 import entities.Medication;
 import entities.appointments.ApptStatus;
@@ -13,14 +12,14 @@ import java.util.Scanner;
 import java.util.List;
 
 public class AdminMenu implements IMenu {
-    private Admin admin;
+    private String adminID;
     private InventoryManager inventoryManager;
     private StaffManager staffManager;
     private AppointmentManager appointmentManager;
 
-    public AdminMenu(Admin admin, InventoryManager inventoryManager, StaffManager staffManager,
+    public AdminMenu(String adminID, InventoryManager inventoryManager, StaffManager staffManager,
             AppointmentManager appointmentManager) {
-        this.admin = admin;
+        this.adminID = adminID;
         this.inventoryManager = inventoryManager;
         this.staffManager = staffManager;
         this.appointmentManager = appointmentManager;
