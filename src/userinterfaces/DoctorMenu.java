@@ -203,8 +203,8 @@ public class DoctorMenu implements IMenu {
         System.out.print("Enter Appointment ID: ");
         String apptID = sc.nextLine().toUpperCase();
 
-        System.out.print("Enter Type of Service (e.g., CONSULTATION, FOLLOW_UP): ");
-        TypeOfService serviceTypeInput = TypeOfService.fromString(sc.nextLine());
+        System.out.print("Enter Type of Service (CONSULTATION, BLOODTEST, XRAY, PHYSICALTHERAPY, VACCINATION, EKG): ");
+        TypeOfService serviceTypeInput = TypeOfService.fromString(sc.nextLine().toUpperCase());
 
         System.out.print("Enter Consultation Notes: ");
         String consultationNotes = sc.nextLine();

@@ -120,19 +120,17 @@ public class PatientMenu implements IMenu {
                 System.out.println("Email updated successfully.");
                 break;
             case 2:
-                while(true){
+                while (true) {
                     System.out.print("New phone number: ");
                     String newNumber = sc.nextLine().trim();
-                    if (newNumber.matches("\\d{8}")){
+                    if (newNumber.matches("\\d{8}")) {
                         patientManager.updatePhoneNumber(patientID, newNumber);
                         System.out.println("Phone number updated successfully.");
                         break;
                     }
                     System.out.println("Invalid input! Phone number should be 8 digits.");
                 }
-                
-                
-                
+
             default:
                 System.out.println("Please choose a valid option (1-2)");
                 break;
@@ -157,7 +155,7 @@ public class PatientMenu implements IMenu {
         System.out.println("Current pending slots: ");
         apptManager.viewByFilterPatient(patientID, ApptStatus.PENDING);
         System.out.println();
-        
+
         System.out.print("Please input the appointment ID of the appointment you want to reschedule: ");
         String prevApptID = sc.nextLine().toUpperCase();
         System.out.println();

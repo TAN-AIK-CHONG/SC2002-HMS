@@ -75,7 +75,7 @@ public class AppointmentManager {
                 AOR aor = new AOR(appointment.getApptID(), appointment.getPatientID(), appointment.getDoctorID(),
                         appointment.getDate(), appointment.getTime(), appointment.getStatus(),
                         tos, notes, prescription);
-                
+
                 List<AOR> aorList = new ArrayList<>(AORRepository.load());
                 aorList.add(aor);
                 AORRepository.store(aorList);
@@ -150,6 +150,31 @@ public class AppointmentManager {
             }
         }
         System.out.println("No Appointment Outcome Record found for Appointment ID: " + apptID);
+    }
+
+    public void viewAORByPatient(String patientID) {
+        List<AOR> aors = AORRepository.load();
+        boolean found = false;
+
+        System.out.println("Appointment Outcome Records for Patient ID: " + patientID);
+        for (AOR aor : aors) {
+            if (aor.getPatientID().equalsIgnoreCase(patientID)) {
+                found = true;
+                System.out.println("-----------------------------------");
+                System.out.println("Appointment ID: " + aor.getApptID());
+                System.out.println("Doctor ID: " + aor.getDoctorID());
+                System.out.println("Date: " + aor.getDate());
+                System.out.println("Time: " + aor.getTime());
+                System.out.println("Status: " + aor.getStatus());
+                System.out.println("Type of Service: " + aor.getTos());
+                System.out.println("Consultation Notes: " + aor.getConsultationNotes());
+                System.out.println("Prescriptions: " + aor.getPrescriptions());
+                System.out.println("-----------------------------------");
+            }
+        }
+        if (!found) {
+            System.out.println("No Appointment Outcome Records found for Patient ID: " + patientID);
+        }
     }
 
     public void updatePStatus(String apptID, String statusInput) {

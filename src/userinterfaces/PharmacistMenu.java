@@ -9,13 +9,16 @@ public class PharmacistMenu implements IMenu {
     private InventoryManager inventoryManager;
     private AppointmentManager appointmentManager;
 
-    public PharmacistMenu(String pharmacistID, InventoryManager inventoryManager, AppointmentManager appointmentManager) {
+    public PharmacistMenu(String pharmacistID, InventoryManager inventoryManager,
+            AppointmentManager appointmentManager) {
         this.pharmacistID = pharmacistID;
         this.inventoryManager = inventoryManager;
         this.appointmentManager = appointmentManager;
     }
 
     public void displayMenu() {
+        System.out.println();
+        System.out.println("===================================");
         System.out.println("Pharmacist Menu");
         System.out.println("1. View Appointment Outcome Record");
         System.out.println("2. Update Prescription Status ");
@@ -59,9 +62,9 @@ public class PharmacistMenu implements IMenu {
 
     // for admin to view
     private void viewAppointmentOutcomeRecord(Scanner sc) {
-        System.out.println("Enter appointment ID to view Appointment Outcome Record");
-        String apptID = sc.nextLine().toUpperCase();
-        appointmentManager.viewAOR(apptID);
+        System.out.println("Enter Patient ID to view their Appointment Outcome Records: ");
+        String patientID = sc.nextLine().toUpperCase();
+        appointmentManager.viewAORByPatient(patientID);
     }
 
     private void submitRequest(Scanner sc) {
