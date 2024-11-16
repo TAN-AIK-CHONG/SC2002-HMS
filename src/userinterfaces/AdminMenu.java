@@ -26,12 +26,16 @@ public class AdminMenu implements IMenu {
     }
 
     public void displayMenu() {
+        System.out.println();
+        System.out.println("========================================");
         System.out.println("Administrator Menu");
         System.out.println("1. View and Manage Hospital Staff");
         System.out.println("2. View Appointments details");
         System.out.println("3. View and Manage Medication Inventory");
         System.out.println("4. Approve Replenishment Requests");
         System.out.println("5. Logout");
+        System.out.println("========================================");
+        System.out.println();
         System.out.print("Choose an option: ");
         Scanner sc = new Scanner(System.in);
         int choice = sc.nextInt();
@@ -111,11 +115,13 @@ public class AdminMenu implements IMenu {
 
     private void manageHospitalStaff(Scanner sc) {
         System.out.println();
+        System.out.println("=========================================");
         System.out.println("Manage Hospital Staff:");
         System.out.println("1. Add New Staff Member");
         System.out.println("2. Update Staff Member");
         System.out.println("3. Remove Staff Member");
         System.out.println("4. Display All Staff Members");
+        System.out.println("=========================================");
         System.out.println();
         System.out.print("Choose an option: ");
         int staffChoice = sc.nextInt();
@@ -183,13 +189,16 @@ public class AdminMenu implements IMenu {
     }
 
     public void viewAppointmentDetails(Scanner sc) {
+        System.out.println();
+        System.out.println("=========================================");
         System.out.println("View Appointment Details");
-
         System.out.println("Choose an option to filter appointments:");
         System.out.println("1. View confirmed appointments");
         System.out.println("2. View canceled appointments");
         System.out.println("3. View completed appointments");
         System.out.println("4. View all appointments");
+        System.out.println("=========================================");
+        System.out.println();
         System.out.print("Choose an option: ");
         int filterChoice = sc.nextInt();
         sc.nextLine();
