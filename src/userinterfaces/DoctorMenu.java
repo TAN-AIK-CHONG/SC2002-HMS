@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
-
+import controllers.InventoryManager;
 import controllers.AppointmentManager;
 import controllers.PatientManager;
 import entities.appointments.AOR;
@@ -21,11 +21,14 @@ public class DoctorMenu implements IMenu {
     private String doctorID;
     private PatientManager patientManager;
     private AppointmentManager apptManager;
+    private InventoryManager inventoryManager;
 
-    public DoctorMenu(String doctorID, PatientManager patientManager, AppointmentManager apptManager) {
+    public DoctorMenu(String doctorID, PatientManager patientManager, AppointmentManager apptManager,
+            InventoryManager inventoryManager) {
         this.doctorID = doctorID;
         this.patientManager = patientManager;
         this.apptManager = apptManager;
+        this.inventoryManager = inventoryManager;
     }
 
     public void displayMenu() {
@@ -133,7 +136,12 @@ public class DoctorMenu implements IMenu {
             case 2:
                 System.out.print("Prescription: ");
                 newInfo = sc.nextLine().toUpperCase();
-                patientManager.addMedication(patientID, newInfo);
+                if (inventoryManager.doesMedicationExist(newInfo)) {
+                    patientManager.addMedication(patientID, newInfo);
+                } else {
+                    System.out.println("Error: Medication does not exist in the database. Try again.");
+                }
+
                 break;
             case 3:
                 System.out.print("Treatment Plan: ");
@@ -202,17 +210,19 @@ public class DoctorMenu implements IMenu {
         List<ApptPrescription> prescriptions = new ArrayList<>();
         String prescriptionName;
 
-        while(true){
+        while (true) {
             System.out.print("Enter prescription (-1 to cancel): ");
             prescriptionName = sc.nextLine();
-            if (prescriptionName.equals("-1")){
+            if (prescriptionName.equals("-1")) {
                 break;
             }
-            //do try catch here to make sure prescription entered exists! need to check medicine data base
-            ApptPrescription currentPrescription = new ApptPrescription(prescriptionName);
-            prescriptions.add(currentPrescription);
+            if (inventoryManager.doesMedicationExist(prescriptionName)) {
+                ApptPrescription currentPrescription = new ApptPrescription(prescriptionName);
+                prescriptions.add(currentPrescription);
+            } else {
+                System.out.println("Error: Medication does not exist in the database. Try again.");
+            }
         }
-            
 
         apptManager.makeAOR(apptID, consultationNotes, serviceTypeInput, prescriptions);
 
