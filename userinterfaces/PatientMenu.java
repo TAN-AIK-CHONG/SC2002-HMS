@@ -165,7 +165,6 @@ public class PatientMenu implements IMenu {
     private void viewPastAOR(Scanner sc) {
         System.out.println("Enter the appointment ID to view past appointment outcome record: ");
         String apptID = sc.nextLine().toUpperCase();
-        ;
         apptManager.viewAOR(apptID);
     }
 }

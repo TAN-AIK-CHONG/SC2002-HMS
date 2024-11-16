@@ -7,7 +7,7 @@ import java.util.List;
 
 import entities.Gender;
 import entities.Staff;
-import entities.Prescription;
+import entities.PrescriptionStatus;
 import entities.appointments.*;
 import filehandlers.ApptSlotRepository;
 import filehandlers.AORRepository;
@@ -68,20 +68,23 @@ public class AppointmentManager {
         System.out.println("No such appointment found");
     }
 
-    public void makeAOR(String apptID, String notes, String tos, List<ApptPrescription> prescription) {
+    public void makeAOR(String apptID, String notes, TypeOfService tos, List<ApptPrescription> prescription) {
         // make AOR for that appt ID
         // store aor in csv
         List<ApptSlot> slots = ApptSlotRepository.load();
 
-        for (ApptSlot appointment : slots) {
-            if (appointment.getApptID().equals(apptID) && (appointment.getStatus() == ApptStatus.CONFIRMED
-                    || appointment.getStatus() == ApptStatus.COMPLETED)) {
+        for (int i = 0; i < slots.size(); i++) {
+            ApptSlot appointment = slots.get(i);
+            if (appointment.getApptID().equals(apptID) && (appointment.getStatus() == ApptStatus.CONFIRMED)) {
+                appointment.setStatus(ApptStatus.COMPLETED);
                 AOR aor = new AOR(appointment.getApptID(), appointment.getPatientID(), appointment.getDoctorID(),
                         appointment.getDate(), appointment.getTime(), appointment.getStatus(),
-                        TypeOfService.fromString(tos), notes, prescription);
-                List<AOR> aorList = AORRepository.load();
+                        tos, notes, prescription);
+                
+                List<AOR> aorList = new ArrayList<>(AORRepository.load());
                 aorList.add(aor);
                 AORRepository.store(aorList);
+                ApptSlotRepository.store(slots);
                 System.out.println("Appointment Outcome Record created and stored successfully.");
                 return;
             }
@@ -164,10 +167,10 @@ public class AppointmentManager {
                 List<ApptPrescription> prescriptions = aor.getPrescriptions();
                 if (prescriptions != null && !prescriptions.isEmpty()) {
                     try {
-                        Prescription newStatus = Prescription.fromString(statusInput);
+                        PrescriptionStatus newStatus = PrescriptionStatus.fromString(statusInput);
                         for (ApptPrescription prescription : prescriptions) {
                             prescription.setStatus(newStatus);
-                            if (newStatus == Prescription.DISPENSED) {
+                            if (newStatus == PrescriptionStatus.DISPENSED) {
                                 InventoryManager inventoryManager = new InventoryManager();
                                 inventoryManager.removeInventory(prescription.getMedicationName());
                             }

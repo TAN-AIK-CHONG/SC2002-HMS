@@ -193,58 +193,29 @@ public class DoctorMenu implements IMenu {
         System.out.print("Enter Appointment ID: ");
         String apptID = sc.nextLine().toUpperCase();
 
-        List<ApptSlot> slots = ApptSlotRepository.load();
-        ApptSlot apptSlot = null;
-        for (ApptSlot slot : slots) {
-            if (slot.getApptID().equals(apptID) && slot.getStatus() == ApptStatus.CONFIRMED) {
-                apptSlot = slot;
-                break;
-            }
-        }
-
-        if (apptSlot == null) {
-            System.out.println("Appointment not found or not yet completed!");
-            return;
-        }
-
-        LocalDate date = apptSlot.getDate();
-        LocalTime time = apptSlot.getTime();
-        String doctorID = apptSlot.getDoctorID();
-        String patientID = apptSlot.getPatientID();
-
-        System.out.println("Appointment Information:");
-        System.out.println("Date: " + date);
-        System.out.println("Time: " + time);
-        System.out.println("Doctor ID: " + doctorID);
-        System.out.println("Patient ID: " + patientID);
-
         System.out.print("Enter Type of Service (e.g., CONSULTATION, FOLLOW_UP): ");
-        String serviceTypeInput = sc.nextLine().toUpperCase();
-        TypeOfService serviceType = TypeOfService.valueOf(serviceTypeInput.toUpperCase());
+        TypeOfService serviceTypeInput = TypeOfService.fromString(sc.nextLine());
 
         System.out.print("Enter Consultation Notes: ");
         String consultationNotes = sc.nextLine();
 
-        System.out.print("Enter Prescribed Medication (separate by ';' if multiple): ");
-        String prescribedMedicationInput = sc.nextLine().toUpperCase();
         List<ApptPrescription> prescriptions = new ArrayList<>();
-        if (!prescribedMedicationInput.isEmpty()) {
-            String[] prescArray = prescribedMedicationInput.split(";");
-            for (String prescData : prescArray) {
-                prescriptions.add(new ApptPrescription(prescData));
+        String prescriptionName;
+
+        while(true){
+            System.out.print("Enter prescription (-1 to cancel): ");
+            prescriptionName = sc.nextLine();
+            if (prescriptionName.equals("-1")){
+                break;
             }
+            //do try catch here to make sure prescription entered exists! need to check medicine data base
+            ApptPrescription currentPrescription = new ApptPrescription(prescriptionName);
+            prescriptions.add(currentPrescription);
         }
+            
 
-        ApptStatus status = ApptStatus.COMPLETED;
+        apptManager.makeAOR(apptID, consultationNotes, serviceTypeInput, prescriptions);
 
-        AOR aor = new AOR(apptID, patientID, doctorID, date, time, status, serviceType, consultationNotes,
-                prescriptions);
-
-        List<AOR> aorList = AORRepository.load();
-        aorList.add(aor);
-        AORRepository.store(aorList);
-
-        System.out.println("Appointment Outcome recorded successfully.");
     }
 
 }

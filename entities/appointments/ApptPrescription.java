@@ -1,15 +1,21 @@
 package entities.appointments;
 
-import entities.Prescription;
+import entities.PrescriptionStatus;
 
 public class ApptPrescription {
     private String medicationName;
-    private Prescription status;
+    private PrescriptionStatus status;
 
     public ApptPrescription(String medicationName) {
         this.medicationName = medicationName;
-        this.status = Prescription.PENDING;
+        this.status = PrescriptionStatus.PENDING;
     }
+
+    public ApptPrescription(String medicationName, PrescriptionStatus status) {
+        this.medicationName = medicationName;
+        this.status = status;
+    }
+
 
     public String getMedicationName() {
         return medicationName;
@@ -19,7 +25,7 @@ public class ApptPrescription {
         return status.toString();
     }
 
-    public void setStatus(Prescription status) {
+    public void setStatus(PrescriptionStatus status) {
         this.status = status;
     }
 
