@@ -1,12 +1,13 @@
 package entities;
 
-import utility.Hash;
+import org.mindrot.jbcrypt.BCrypt;
 
 public abstract class User {
     private String userID;
     private String password;
     private String name;
     private Gender gender;
+    private static final String DEFAULT = "password";
 
     public User(String userID, String password, String name, Gender gender) {
         this.userID = userID;
@@ -16,11 +17,11 @@ public abstract class User {
     }
 
     public boolean authenticate(String InputPW){
-        return Hash.hashWith256(InputPW).equals(this.password);
+        return BCrypt.checkpw(InputPW, password);
     }
 
     public boolean isDefault(){
-        return Hash.hashWith256("password").equals(this.password);
+        return authenticate(DEFAULT);
     }
 
     public abstract void viewRecords();
@@ -39,7 +40,7 @@ public abstract class User {
     }
 
     public void setPassword(String password) {
-        this.password = Hash.hashWith256(password);
+        this.password = BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
     public String getName() {
