@@ -15,6 +15,14 @@ public class Medication {
         this.request = request;
     }
 
+    public Medication(String medicineName, int quantity, int alertLevel){
+        this.medicineName = medicineName;
+        this.quantity = quantity;
+        this.alertLevel = alertLevel;
+        this.original = quantity;
+        this.request = false;
+    }
+
     public void view(){
         String medicineInfo = String.format("%s, current stock = %d, alert level = %d", this.medicineName, this.quantity, this.alertLevel);
         System.out.println(medicineInfo);

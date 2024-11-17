@@ -1,4 +1,4 @@
-Patient ID,Name,Date of Birth,Gender,Blood Type,Contact Information,Phone Number,Diagnoses,Medications,Treatment,Password
-P1001,Alice Brown,1980-05-14,Female,A+,alicebrown@gmail.com,888888888,test,test,,5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
-P1002,Bob Stone,1975-11-22,Male,B+,bob.stone@example.com,,Osteoporosis;Cancer,,,5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
-P1003,Charlie White,1990-07-08,Male,O-,charlie.white@example.com,,,,,5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
+Patient ID,Name,Date of Birth,Gender,Blood Type,Contact Information,Phone Number,Diagnoses,Medications,Treatment,Password,Total Bill
+P1001,ALICE BROWN,1980-05-14,Female,A+,alice.brown@example.com,,,,,$2a$10$PuPB7mJKkpz92hWWjLILfuTAvWD0raVBHfCb1.6RDwuittUtRFpJy,180.0
+P1002,BOB STONE,1975-11-22,Male,B+,bob.stone@example.com,,,,,$2a$10$7gNl8rD0l9UfDemymWtuxeBk2jkYAb8DA4mZByRdk9z6gU9GPRo9W,0.0
+P1003,CHARLIE WHITE,1990-07-08,Male,O-,charlire.white@example.com,,,,,$2a$10$QVZe9GbYlIC/MNP4U1J6meqixgctW2eodHv5Xmw1TPtO28A3j7.pK,0.0

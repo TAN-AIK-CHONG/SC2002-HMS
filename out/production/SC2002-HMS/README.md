@@ -1,31 +1,59 @@
-# General Idea
-- Every user contains its own records and display its own menu
-- As such, there is a need to read / write from the database, which is managed by DBManagers
-- Logging in is done through checking the database directly with the help of the DBManagers
-  
-# What has been implemented already?
-1. Loggin in for ALL classes (future proof)
-2. Patients can view and also update their own records
-3. Doctors can view and update patient information
-4. Pharmacist can view inventory
-5. Admin can view and update inventory
+# Hospital Management System 🏥
 
-# What's next?
-1. ~Doctors must be able to view and update patient information~
-2. ~Admin / Pharmacist~
-3. Appointment system
-   - Interacted with by Patient, Doctor and Admin
-4. Past Appointment Outcome Records
-   - Needs a separate database
-   - Interacted with by Patient, Doctor and Pharmacist
-5. ~Inventory Manager~
-   - Allows Admin to update actual DB, same category as other DBManagers
-   - Admin approves Pharmacist request, only needs to call DBManager
-6. Allow Pharmacist to ask for replenishment, and allow Admin to approve
+The Hospital Management System is a Command-Line-Interface application built in Java that allows patients, doctors, pharmacists, and administrators to interact with each other and perform tasks that a hospital may require, such as viewing medical records, scheduling appointments, and maintaining a billing system.
 
-# Minor fixes
-1. all the different (custom) I/O exceptions to be added
-2. fix the adding of new diagnosis etc, it is appending into empty list
-3. nicer display for the diagnosis etc
-4. hashing of passwords
-5. allowing first time log in users to change password
+## Features
+
+- View and manage medical records
+- Schedule and reschedule appointments
+- Manage billing and payments
+- Manage inventory of medications
+- Secure authentication for patients and staff
+- Role-based access control for administrators, doctors, pharmacists, and patients
+
+## Libraries Used
+
+### jBCrypt
+
+We used **jBCrypt** for secure password hashing and verification in our application. jBCrypt provides an implementation of the BCrypt hashing algorithm in Java, enhancing security by incorporating a salt and a computational cost factor to protect against brute-force attacks.
+
+#### Installation
+
+Since we didn't use Maven or any build automation tools, jBCrypt was added manually to the project.
+
+**Download the Library**
+
+- Download the `jbcrypt-0.4.jar` file from the official repository:
+  - [Download jBCrypt 0.4](https://repo1.maven.org/maven2/org/mindrot/jbcrypt/0.4/jbcrypt-0.4.jar)
+
+## Set-up Instructions
+
+### Prerequisites
+
+- **Java Development Kit (JDK) 8 or higher**: Ensure that the JDK is installed on your system.
+  - [Download JDK](https://www.oracle.com/java/technologies/javase-downloads.html)
+- **Git**: For cloning the repository.
+  - [Download Git](https://git-scm.com/downloads)
+
+### Installation
+
+1. **Clone the Repository**
+
+   Clone the repository from GitHub to your local machine using the following command:
+
+   ```bash
+   git clone https://github.com/TAN-AIK-CHONG/SC2002-HMS
+   ```
+   
+2. **Navigate to Build Directory**
+   
+   ```bash
+   cd out\production\SC2002-HMS
+   ```
+
+3. **Run the Main class**
+
+   ```bash
+   java HMSApp
+   ```
+   
