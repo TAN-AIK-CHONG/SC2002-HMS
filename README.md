@@ -73,12 +73,11 @@ Since we didn't use Maven or any build automation tools, jBCrypt was added manua
    ```
 
 ## Documentation
-The application includes a comprehensive set of Javadocs to help developers understand the structure and functionality of the code. 
+The application includes a comprehensive set of [Javadocs](docs) to help developers understand the structure and functionality of the code. 
 
 **Viewing the Javadocs**
-
-1. Click the link below to download the file containing the Javadocs for the project:
-  - [Download Javadocs](docs)
+1. Clone the repository
 2. Open the `index.html` file in your web browser.
 3. Navigate through the Javadocs to explore the documentation for each class and method in the project.
+
    
