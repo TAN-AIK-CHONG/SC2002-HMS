@@ -76,8 +76,15 @@ public class PharmacistMenu implements IMenu {
         System.out.println("Enter Patient ID to view their Appointment Outcome Records: ");
         patientManager.viewAllPatients();
         String patientID = sc.nextLine().toUpperCase();
+
         System.out.println("Existing Appointment IDs for Patient ID " + patientID + ":");
-        appointmentManager.viewByFilterPatient(patientID, ApptStatus.COMPLETED);
+        boolean hasAppointments = appointmentManager.viewByFilterPatient(patientID, ApptStatus.COMPLETED);
+
+        if (!hasAppointments) {
+            System.out.println("No appointments found for Patient ID: " + patientID);
+            return;
+        }
+
         System.out.println("Enter an Appointment ID from the above list to view its details:");
         String selectedApptID = sc.nextLine().toUpperCase();
         appointmentManager.viewAOR(selectedApptID, patientID);
