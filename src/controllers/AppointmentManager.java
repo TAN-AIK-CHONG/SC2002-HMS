@@ -103,17 +103,51 @@ public class AppointmentManager {
 
     public void reschedule(String patientID, String prevApptID, String newApptID) {
         List<ApptSlot> slots = new ArrayList<>(ApptSlotRepository.load());
-        for (int i = 0; i < slots.size(); i++) {
-            ApptSlot appointment = slots.get(i);
-            if (appointment.getApptID().equals(prevApptID) && (appointment.getStatus() == ApptStatus.PENDING)) {
-                appointment.setStatus(ApptStatus.AVAILABLE);
-                patientID = appointment.getPatientID();
-                appointment.setPatientID(null);
-            } else if (appointment.getApptID().equals(newApptID) && appointment.getStatus() == ApptStatus.AVAILABLE) {
-                appointment.setStatus(ApptStatus.PENDING);
-                appointment.setPatientID(patientID);
+        
+        ApptSlot prevAppt = null;
+        ApptSlot newAppt = null;
+        
+        // Find the previous and new appointments
+        for (ApptSlot appointment : slots) {
+            if (appointment.getApptID().equals(prevApptID)) {
+                if (appointment.getStatus() == ApptStatus.PENDING) {
+                    prevAppt = appointment;
+                } else {
+                    System.err.println("Error: Previous appointment is not in PENDING status.");
+                    return;
+                }
+            }
+            if (appointment.getApptID().equals(newApptID)) {
+                if (appointment.getStatus() == ApptStatus.AVAILABLE) {
+                    newAppt = appointment;
+                } else {
+                    System.err.println("Error: New appointment is not AVAILABLE.");
+                    return;
+                }
             }
         }
+        
+        // Check if both appointments were found
+        if (prevAppt == null || newAppt == null) {
+            System.err.println("Error: One or both appointment IDs are invalid.");
+            return;
+        }
+        
+        // Ensure the previous appointment belongs to the patient
+        if (!prevAppt.getPatientID().equals(patientID)) {
+            System.err.println("Error: Previous appointment does not belong to the patient.");
+            return;
+        }
+        
+        // Proceed to reschedule
+        // Release the previous appointment
+        prevAppt.setStatus(ApptStatus.AVAILABLE);
+        prevAppt.setPatientID(null);
+        
+        // Assign the new appointment
+        newAppt.setStatus(ApptStatus.PENDING);
+        newAppt.setPatientID(patientID);
+        
         ApptSlotRepository.store(slots);
     }
 
