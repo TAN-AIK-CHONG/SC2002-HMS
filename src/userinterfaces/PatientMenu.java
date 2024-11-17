@@ -139,7 +139,7 @@ public class PatientMenu implements IMenu {
                     }
                     System.out.println("Invalid input! Phone number should be 8 digits.");
                 }
-
+                break;
             default:
                 System.out.println("Please choose a valid option (1-2)");
                 break;
