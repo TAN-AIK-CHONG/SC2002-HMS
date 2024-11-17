@@ -67,6 +67,10 @@ public class PatientMenu implements IMenu {
                         System.out.println();
                         break;
                     case 9:
+                        System.out.println();
+                        payOutstandingBills();
+                        break;
+                    case 10:
                         sc.close();
                         System.out.println("Logging out...");
                         return;
@@ -93,7 +97,8 @@ public class PatientMenu implements IMenu {
         System.out.println("6. Cancel an Appointment");
         System.out.println("7. View Scheduled Appointments");
         System.out.println("8. View Past Appointment Outcome Records");
-        System.out.println("9. Logout");
+        System.out.println("9: Pay Outstanding Medical Fees");
+        System.out.println("10. Logout");
         System.out.println("=========================================");
         System.out.println();
         System.out.print("Choose an option: ");
@@ -190,5 +195,10 @@ public class PatientMenu implements IMenu {
         System.out.print("Enter the appointment ID to view past appointment outcome record: ");
         String apptID = sc.nextLine().toUpperCase();
         apptManager.viewAOR(apptID);
+    }
+
+    private void payOutstandingBills(){
+        System.out.println("Your outstanding bills have been paid!");
+        patientManager.payBill(patientID);
     }
 }

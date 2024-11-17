@@ -106,4 +106,15 @@ public class PatientManager {
         }
         
     }
+
+    public void payBill(String patientID){
+        List<Patient> patientList = new ArrayList<>(PatientRepository.load());
+        for (Patient patient : patientList){
+            if (patient.getUserID().equals(patientID)){
+                patient.setTotalCost(0);
+                PatientRepository.store(patientList);
+                return;
+            }
+        }
+    }
 }
