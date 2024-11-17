@@ -2,6 +2,7 @@
 
 The Hospital Management System is a Command-Line-Interface application built in Java that allows patients, doctors, pharmacists, and administrators to interact with each other and perform tasks that a hospital may require, such as viewing medical records, scheduling appointments, and maintaining a billing system.
 
+![UML Diagram](SC2002_HMS_SCE4_GRP4.jpg)
 ## Features
 
 - View and manage medical records
