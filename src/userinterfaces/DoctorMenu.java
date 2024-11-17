@@ -1,19 +1,18 @@
 package userinterfaces;
 
+import controllers.AppointmentManager;
+import controllers.InventoryManager;
+import controllers.PatientManager;
+import entities.appointments.ApptPrescription;
+import entities.appointments.ApptStatus;
+import entities.appointments.TypeOfService;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Scanner;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
-
-import controllers.InventoryManager;
-import controllers.AppointmentManager;
-import controllers.PatientManager;
-import entities.appointments.ApptPrescription;
-import entities.appointments.TypeOfService;
-import entities.appointments.ApptStatus;
+import java.util.List;
+import java.util.Scanner;
 
 public class DoctorMenu implements IMenu {
     private String doctorID;
@@ -74,7 +73,12 @@ public class DoctorMenu implements IMenu {
                         recordAppointmentOutcome(sc);
                         System.out.println();
                         break;
+                    
                     case 8:
+                        System.out.println();
+                        UpdateAorCost(sc);
+                        System.out.println();
+                    case 9:
                         sc.close();
                         System.out.println("Logging out...");
                         return;
@@ -100,7 +104,8 @@ public class DoctorMenu implements IMenu {
         System.out.println("5. Accept or Decline Appointment Requests");
         System.out.println("6. View Upcoming Appointments");
         System.out.println("7. Record Appointment Outcome");
-        System.out.println("8: Logout");
+        System.out.println("8. Update Patient Aor Bill");
+        System.out.println("9: Logout");
         System.out.println("=========================================");
         System.out.println();
         System.out.print("Choose an option: ");
@@ -215,7 +220,7 @@ public class DoctorMenu implements IMenu {
         TypeOfService serviceTypeInput = TypeOfService.fromString(sc.nextLine().toUpperCase());
 
         System.out.print("Enter Consultation Notes: ");
-        String consultationNotes = sc.nextLine();
+        String consultationNotes = sc.nextLine().toUpperCase();
 
         List<ApptPrescription> prescriptions = new ArrayList<>();
         String prescriptionName;
@@ -239,5 +244,19 @@ public class DoctorMenu implements IMenu {
         apptManager.makeAOR(apptID, consultationNotes, serviceTypeInput, prescriptions);
 
     }
+
+    private void UpdateAorCost(Scanner sc)
+    {
+        System.out.println("Enter the Appointment ID:");
+        String appointmentID = sc.nextLine().toUpperCase();;
+        patientManager.viewRecord(appointmentID);
+        System.out.println("Enter the cost of this Appointment Outcome Record (AOR):");
+        double cost = sc.nextDouble();
+
+
+
+
+
+    } 
 
 }

@@ -14,9 +14,12 @@ public class AOR {
     private TypeOfService tos;
     private String consultationNotes;
     private List<ApptPrescription> prescriptions;
+    private double AORcost;
+    private double TotalCost;
+
 
     public AOR(String apptID, String patientID, String doctorID, LocalDate date, LocalTime time, ApptStatus status,
-            TypeOfService tos, String consultationNotes, List<ApptPrescription> prescriptions) {
+            TypeOfService tos, String consultationNotes, List<ApptPrescription> prescriptions,double AORcost , double TotalCost) {
         this.apptID = apptID;
         this.patientID = patientID;
         this.doctorID = doctorID;
@@ -26,7 +29,28 @@ public class AOR {
         this.tos = tos;
         this.consultationNotes = consultationNotes;
         this.prescriptions = prescriptions;
+        this.AORcost = AORcost;
+        this.TotalCost = TotalCost + AORcost;
     }
+
+    public double getAorcost()
+    {
+        return AORcost;
+    }
+    public double getTotalcost()
+    {
+        return TotalCost;
+    }
+
+    public void setAorcost(double AORcost)
+    {
+        this.AORcost = AORcost;
+    }
+    public void setTotalcost(double TotalCost)
+    {
+        this.TotalCost = TotalCost;
+    }
+
 
     public String getApptID() {
         return apptID;
