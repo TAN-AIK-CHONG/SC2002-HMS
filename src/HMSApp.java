@@ -80,7 +80,7 @@ public class HMSApp {
                     System.out.println("This is your first login. Please update your password.");
                     System.out.print("New password: ");
                     String newPW = sc.nextLine();
-                    PatientManager.updatePassword(patient, newPW);
+                    patientManager.updatePassword(patient, newPW);
                 }
                 PatientMenu patientMenu = new PatientMenu(patient.getUserID(), patientManager, appointmentManager);
                 patientMenu.displayMenu();
@@ -90,7 +90,7 @@ public class HMSApp {
                     System.out.println("This is your first login. Please update your password.");
                     System.out.print("New password: ");
                     String newPW = sc.nextLine();
-                    StaffManager.updatePassword(staff, newPW);
+                    staffManager.updatePassword(staff, newPW);
                 }
 
                 if (staff instanceof Doctor) {

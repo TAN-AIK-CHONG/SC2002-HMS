@@ -8,7 +8,7 @@ import filehandlers.PatientRepository;
 
 public class PatientManager {
     // MOVE THIS METHOD TO LOGIN MANAGER
-    public static void updatePassword(Patient patient, String newPW) {
+    public void updatePassword(Patient patient, String newPW) {
         List<Patient> patientList = PatientRepository.load();
         for (Patient currentPatient : patientList) {
             if (currentPatient.getUserID().equals(patient.getUserID())) {
