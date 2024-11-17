@@ -1,11 +1,10 @@
 package userinterfaces;
 
-import java.util.InputMismatchException;
-import java.util.Scanner;
-
 import controllers.AppointmentManager;
 import controllers.PatientManager;
 import entities.appointments.ApptStatus;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class PatientMenu implements IMenu {
     private String patientID;
@@ -115,7 +114,7 @@ public class PatientMenu implements IMenu {
         switch (newInfoChoice) {
             case 1:
                 System.out.print("New email address: ");
-                String newAddress = sc.nextLine();
+                String newAddress = sc.nextLine().toUpperCase();;
                 patientManager.updateEmail(patientID, newAddress);
                 System.out.println("Email updated successfully.");
                 break;

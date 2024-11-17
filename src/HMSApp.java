@@ -77,7 +77,7 @@ public class HMSApp {
             if (patient.isDefault()) {
                 System.out.println("This is your first login. Please update your password.");
                 System.out.print("New password: ");
-                String newPW = sc.nextLine();
+                String newPW = sc.nextLine().toUpperCase();
                 PatientManager.updatePassword(patient, newPW);
             }
             PatientMenu patientMenu = new PatientMenu(patient.getUserID(), patientManager, appointmentManager);
@@ -87,7 +87,7 @@ public class HMSApp {
             if (staff.isDefault()) {
                 System.out.println("This is your first login. Please update your password.");
                 System.out.print("New password: ");
-                String newPW = sc.nextLine();
+                String newPW = sc.nextLine().toUpperCase();
                 StaffManager.updatePassword(staff, newPW);
             }
 

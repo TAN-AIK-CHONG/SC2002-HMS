@@ -9,6 +9,7 @@ import entities.appointments.ApptStatus;
 import entities.appointments.ApptSlot;
 import filehandlers.ApptSlotRepository;
 import java.util.Scanner;
+import java.util.InputMismatchException;
 import java.util.List;
 
 public class AdminMenu implements IMenu {
@@ -28,79 +29,39 @@ public class AdminMenu implements IMenu {
     public void displayMenu() {
         
         Scanner sc = new Scanner(System.in);
-        int choice = sc.nextInt();
-        sc.nextLine();
-
-        while (true) {
-            switch (choice) {
-                case 1:
-                    manageHospitalStaff(sc);
-                    break;
-                case 2:
-                    viewAppointmentDetails(sc);
-                    break;
-                case 3:
-                    inventoryManager.viewInventory();
-                    System.out.println("1. Add new medication");
-                    System.out.println("2. Remove a medication");
-                    System.out.println("3. Update stock level of medication");
-                    System.out.println("4. No further action");
-                    System.out.print("Choose an option: ");
-                    int inventoryAction = sc.nextInt();
-                    sc.nextLine();
-                    switch (inventoryAction) {
-                        case 1:
-                            System.out.print("Enter new medication: ");
-                            String medName = sc.nextLine().toUpperCase();
-                            System.out.print("Enter initial stock quantity: ");
-                            int quantity = sc.nextInt();
-                            sc.nextLine();
-                            System.out.print("Enter low stock alert level: ");
-                            int alert = sc.nextInt();
-                            sc.nextLine();
-                            System.out.print("Enter Original level: ");
-                            int original = sc.nextInt();
-                            sc.nextLine();
-                            System.out.print("Enter Request: ");
-                            boolean request = sc.nextBoolean();
-                            Medication newMed = new Medication(medName, quantity, alert, original, request);
-                            inventoryManager.addInventory(newMed);
-                            break;
-                        case 2:
-                            System.out.print("Enter medication to be removed: ");
-                            String removedMed = sc.nextLine().toUpperCase();
-                            inventoryManager.removeInventory(removedMed);
-                            break;
-                        case 3:
-                            System.out.print("Enter medication to be updated: ");
-                            String updatedMed = sc.nextLine().toUpperCase();
-                            System.out.print("Enter new stock level: ");
-                            int newLevel = sc.nextInt();
-                            sc.nextLine();
-                            inventoryManager.updateInventory(updatedMed, newLevel);
-                            break;
-                        case 4:
-                            break;
-                        default:
-                            System.out.println("Please choose a valid option (1-3)");
-                            break;
-                    }
-                    break;
-                case 4:
-                    approveRequest(sc);
-                    break;
-                case 5:
-                    sc.close();
-                    System.out.println("Logging out...");
-                    return;
-                default:
-                    System.out.println("Please choose a valid option instead");
-                    break;
+        int choice;
+        
+        do {
+            menuItems();
+            try{
+                choice = sc.nextInt();
+                sc.nextLine();
+                switch (choice) {
+                    case 1:
+                        manageHospitalStaff(sc);
+                        break;
+                    case 2:
+                        viewAppointmentDetails(sc);
+                        break;
+                    case 3:
+                        manageMedication(sc);
+                        break;
+                    case 4:
+                        approveRequest(sc);
+                        break;
+                    case 5:
+                        sc.close();
+                        System.out.println("Logging out...");
+                        return;
+                    default:
+                        System.out.println("Please choose a valid option  (1-5)");
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter an integer.");
+                sc.nextLine();
             }
-            System.out.print("Choose another option: ");
-            choice = sc.nextInt();
-            sc.nextLine();
-        }
+        } while (true);        
     }
 
     private void menuItems(){
@@ -139,10 +100,10 @@ public class AdminMenu implements IMenu {
                 String password = sc.nextLine();
                 System.out.print("Enter Staff Name: ");
                 String name = sc.nextLine().toUpperCase();
-                System.out.print("Enter Role (Doctor/Pharmacist): ");
+                System.out.print("Enter Role: ");
                 String role = sc.nextLine().toUpperCase();
                 System.out.print("Enter Gender (Male/Female): ");
-                Gender gender = Gender.valueOf(sc.nextLine().toUpperCase());
+                Gender gender = Gender.fromString(sc.nextLine());
                 System.out.print("Enter Age: ");
                 int age = sc.nextInt();
                 sc.nextLine();
@@ -152,6 +113,7 @@ public class AdminMenu implements IMenu {
                 break;
 
             case 2:
+                staffManager.viewStaffList();
                 System.out.print("Enter Staff ID to Update: ");
                 String staffIdToUpdate = sc.nextLine().toUpperCase();
 
@@ -168,9 +130,9 @@ public class AdminMenu implements IMenu {
                 staffManager.updateStaff(staffIdToUpdate, newRole, newGender, newAge);
 
                 System.out.println("Staff member " + staffIdToUpdate + " updated successfully.");
-
                 break;
             case 3:
+                staffManager.viewStaffList();
                 System.out.print("Enter Staff ID to Remove: ");
                 String staffIdToRemove = sc.nextLine().toUpperCase();
                 staffManager.removeStaff(staffIdToRemove);
@@ -178,7 +140,7 @@ public class AdminMenu implements IMenu {
             case 4:
                 System.out.println();
                 System.out.println("Staff List:");
-                staffManager.viewAllStaff();
+                staffManager.viewAllStaffDetails();
                 break;
             default:
                 System.out.println("Invalid option.");
@@ -187,6 +149,8 @@ public class AdminMenu implements IMenu {
     }
 
     public void approveRequest(Scanner sc) {
+        inventoryManager.viewRequests();
+        System.out.println();
         System.out.print("Enter medication name to approve request: ");
         String medName = sc.nextLine().toUpperCase();
         inventoryManager.approveRequest(medName);
@@ -198,7 +162,7 @@ public class AdminMenu implements IMenu {
         System.out.println("View Appointment Details");
         System.out.println("Choose an option to filter appointments:");
         System.out.println("1. View confirmed appointments");
-        System.out.println("2. View canceled appointments");
+        System.out.println("2. View cancelled appointments");
         System.out.println("3. View completed appointments");
         System.out.println("4. View all appointments");
         System.out.println("=========================================");
@@ -237,4 +201,54 @@ public class AdminMenu implements IMenu {
         }
     }
 
+    private void manageMedication(Scanner sc){
+        System.out.println();
+        inventoryManager.viewInventory();
+        System.out.println();
+        System.out.println("1. Add new medication");
+        System.out.println("2. Remove a medication");
+        System.out.println("3. Update stock level of medication");
+        System.out.println("4. No further action");
+        System.out.println();
+        System.out.print("Choose an option: ");
+        int inventoryAction = sc.nextInt();
+        sc.nextLine();
+        switch (inventoryAction) {
+            case 1:
+                System.out.print("Enter new medication: ");
+                String medName = sc.nextLine().toUpperCase();
+                System.out.print("Enter initial stock quantity: ");
+                int quantity = sc.nextInt();
+                sc.nextLine();
+                System.out.print("Enter low stock alert level: ");
+                int alert = sc.nextInt();
+                sc.nextLine();
+                System.out.print("Enter Original level: ");
+                int original = sc.nextInt();
+                sc.nextLine();
+                System.out.print("Enter Request: ");
+                boolean request = sc.nextBoolean();
+                Medication newMed = new Medication(medName, quantity, alert, original, request);
+                inventoryManager.addInventory(newMed);
+                break;
+            case 2:
+                System.out.print("Enter medication to be removed: ");
+                String removedMed = sc.nextLine().toUpperCase();
+                inventoryManager.removeInventory(removedMed);
+                break;
+            case 3:
+                System.out.print("Enter medication to be updated: ");
+                String updatedMed = sc.nextLine().toUpperCase();
+                System.out.print("Enter new stock level: ");
+                int newLevel = sc.nextInt();
+                sc.nextLine();
+                inventoryManager.updateInventory(updatedMed, newLevel);
+                break;
+            case 4:
+                break;
+            default:
+                System.out.println("Please choose a valid option (1-3)");
+                break;
+        }
+    }
 }

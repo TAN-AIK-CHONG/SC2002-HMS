@@ -10,11 +10,11 @@ public class Staff extends User {
     }
 
     public void viewRecords(){
-        System.out.println("Staff ID: " + super.getUserID());
-        System.out.println("Name: " + super.getName());
-        System.out.println("Gender: " + super.getGender().toString());
-        System.out.println("Age: " + this.age);
-        System.out.println("Role: " + this.role);
+        System.out.print("Staff ID: " + super.getUserID());
+        System.out.print(", Name: " + super.getName());
+        System.out.print(", Gender: " + super.getGender().toString());
+        System.out.print(", Age: " + this.age);
+        System.out.print(", Role: " + this.role);
     }
 
     //setters and getters
