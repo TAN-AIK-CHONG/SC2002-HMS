@@ -44,7 +44,6 @@ public class PharmacistMenu implements IMenu {
                         submitRequest(sc);
                         break;
                     case 5:
-                        sc.close();
                         System.out.println("Logging out...");
                         return;
                     default:

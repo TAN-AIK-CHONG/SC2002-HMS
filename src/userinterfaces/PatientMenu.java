@@ -71,7 +71,6 @@ public class PatientMenu implements IMenu {
                         payOutstandingBills();
                         break;
                     case 10:
-                        sc.close();
                         System.out.println("Logging out...");
                         return;
                     default:

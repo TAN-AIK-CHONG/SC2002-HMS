@@ -74,7 +74,6 @@ public class DoctorMenu implements IMenu {
                         System.out.println();
                         break;
                     case 8:
-                        sc.close();
                         System.out.println("Logging out...");
                         return;
                     default:

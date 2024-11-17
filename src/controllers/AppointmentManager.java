@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class AppointmentManager {
     // FOR BOTH
@@ -123,7 +122,8 @@ public class AppointmentManager {
         for (int i = 0; i < slots.size(); i++) {
             ApptSlot appointment = slots.get(i);
             if (appointment.getApptID().equals(apptID) && appointment.getStatus() == ApptStatus.CONFIRMED) {
-                appointment.setStatus(ApptStatus.CANCELLED);
+                appointment.setStatus(ApptStatus.AVAILABLE);
+                appointment.setPatientID(null);
                 ApptSlotRepository.store(slots);
                 return;
             }

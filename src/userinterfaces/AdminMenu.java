@@ -2,11 +2,9 @@ package userinterfaces;
 
 import controllers.AppointmentManager;
 import controllers.InventoryManager;
-import controllers.PatientManager;
 import controllers.StaffManager;
 import entities.Gender;
 import entities.Medication;
-import entities.Patient;
 import entities.appointments.ApptSlot;
 import entities.appointments.ApptStatus;
 import filehandlers.ApptSlotRepository;
@@ -52,7 +50,6 @@ public class AdminMenu implements IMenu {
                         approveRequest(sc);
                         break;
                     case 5:
-                        sc.close();
                         System.out.println("Logging out...");
                         return;
                     default:
