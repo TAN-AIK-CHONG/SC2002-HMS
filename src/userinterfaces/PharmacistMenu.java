@@ -2,6 +2,8 @@ package userinterfaces;
 
 import controllers.AppointmentManager;
 import controllers.InventoryManager;
+
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class PharmacistMenu implements IMenu {
@@ -17,6 +19,42 @@ public class PharmacistMenu implements IMenu {
     }
 
     public void displayMenu() {
+        Scanner sc = new Scanner(System.in);
+        int choice;
+        do {
+            menuItems();
+            try {
+                choice = sc.nextInt();
+                sc.nextLine();
+                switch (choice) {
+                    case 1:
+                       viewAppointmentOutcomeRecord(sc);
+                       break;
+                    case 2:
+                        updatePrescriptionStatus(sc);
+                        break;
+                    case 3:
+                        inventoryManager.viewInventory();
+                        break;
+                    case 4:
+                        submitRequest(sc);
+                        break;
+                    case 5:
+                        sc.close();
+                        System.out.println("Logging out...");
+                        return;
+                    default:
+                        System.out.println("Please choose a valid option instead (1-5)");
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter an integer.");
+                sc.nextLine();
+            }
+        } while (true);
+    }
+
+    private void menuItems(){
         System.out.println();
         System.out.println("===================================");
         System.out.println("Pharmacist Menu");
@@ -28,39 +66,8 @@ public class PharmacistMenu implements IMenu {
         System.out.println("===================================");
         System.out.println();
         System.out.print("Choose an option: ");
-        Scanner sc = new Scanner(System.in);
-        int choice = sc.nextInt();
-        sc.nextLine();
-
-        while (true) {
-            switch (choice) {
-                case 1:
-                    viewAppointmentOutcomeRecord(sc);
-                    break;
-                case 2:
-                    updatePrescriptionStatus(sc);
-                    break;
-                case 3:
-                    inventoryManager.viewInventory();
-                    break;
-                case 4:
-                    submitRequest(sc);
-                    break;
-                case 5:
-                    sc.close();
-                    System.out.println("Logging out...");
-                    return;
-                default:
-                    System.out.println("Please choose a valid option instead");
-                    break;
-            }
-            System.out.print("Choose another option: ");
-            choice = sc.nextInt();
-            sc.nextLine();
-        }
     }
 
-    // for admin to view
     private void viewAppointmentOutcomeRecord(Scanner sc) {
         System.out.println("Enter Patient ID to view their Appointment Outcome Records: ");
         String patientID = sc.nextLine().toUpperCase();
@@ -80,4 +87,5 @@ public class PharmacistMenu implements IMenu {
         String status = sc.nextLine().toUpperCase();
         appointmentManager.updatePStatus(apptID, status);
     }
+
 }
