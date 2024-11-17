@@ -151,27 +151,32 @@ public class AppointmentManager {
         ApptSlotRepository.store(slots);
     }
 
-    public void cancel(String apptID) {
+    public void cancel(String apptID, String patientID) {
         List<ApptSlot> slots = new ArrayList<>(ApptSlotRepository.load());
-        for (int i = 0; i < slots.size(); i++) {
-            ApptSlot appointment = slots.get(i);
-            if (appointment.getApptID().equals(apptID) && appointment.getStatus() == ApptStatus.CONFIRMED ||
-                    appointment.getStatus() == ApptStatus.PENDING) {
-                appointment.setStatus(ApptStatus.AVAILABLE);
-                appointment.setPatientID(null);
-                ApptSlotRepository.store(slots);
-                return;
+        for (ApptSlot appointment : slots) {
+            if (appointment.getApptID().equals(apptID) && 
+               (appointment.getStatus() == ApptStatus.CONFIRMED || 
+                appointment.getStatus() == ApptStatus.PENDING)) {
+                if (appointment.getPatientID().equals(patientID)) {
+                    appointment.setStatus(ApptStatus.AVAILABLE);
+                    appointment.setPatientID(null);
+                    ApptSlotRepository.store(slots);
+                    return;
+                } else {
+                    System.out.println("You can only cancel your own appointment.");
+                    return;
+                }
             }
         }
-        System.out.println("No such appointment found");
+        System.out.println("No such appointment found.");
     }
 
-    public void viewAOR(String apptID) {
+    public void viewAOR(String apptID, String patientID) {
         // view AOR for that appt ID
         List<AOR> aors = AORRepository.load();
 
         for (AOR aor : aors) {
-            if (String.valueOf(aor.getApptID()).equals(apptID)) {
+            if (String.valueOf(aor.getApptID()).equals(apptID) && aor.getPatientID().equalsIgnoreCase(patientID)) {
                 System.out.println("Appointment Outcome Record for Appointment ID: " + apptID);
                 System.out.println("Patient ID: " + aor.getPatientID());
                 System.out.println("Doctor ID: " + aor.getDoctorID());
@@ -185,7 +190,7 @@ public class AppointmentManager {
                 return;
             }
         }
-        System.out.println("No Appointment Outcome Record found for Appointment ID " + apptID + ":");
+        System.out.println("No such appointment found");
     }
 
     public void updatePStatus(String apptID) {

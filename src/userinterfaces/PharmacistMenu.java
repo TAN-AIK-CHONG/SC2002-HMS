@@ -80,7 +80,7 @@ public class PharmacistMenu implements IMenu {
         appointmentManager.viewByFilterPatient(patientID, ApptStatus.COMPLETED);
         System.out.println("Enter an Appointment ID from the above list to view its details:");
         String selectedApptID = sc.nextLine().toUpperCase();
-        appointmentManager.viewAOR(selectedApptID);
+        appointmentManager.viewAOR(selectedApptID, patientID);
     }
 
     private void submitRequest(Scanner sc) {
