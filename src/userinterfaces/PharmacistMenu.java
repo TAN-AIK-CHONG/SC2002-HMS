@@ -7,6 +7,7 @@ import controllers.InventoryManager;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.List;
 
 public class PharmacistMenu implements IMenu {
     private String pharmacistID;
@@ -91,9 +92,11 @@ public class PharmacistMenu implements IMenu {
     private void updatePrescriptionStatus(Scanner sc) {
         System.out.println("Enter Appointment ID to update status:");
         String apptID = sc.nextLine().toUpperCase();
-        System.out.println("Enter updated status of prescription : (PENDING / DISPENSED) : ");
-        String status = sc.nextLine().toUpperCase();
-        appointmentManager.updatePStatus(apptID, status);
+        System.out.println("All Medications dispensed");
+        appointmentManager.updatePStatus(apptID);
+        List<String> prescriptions = appointmentManager.getPrescriptionsfromApptID(apptID);
+        System.out.println(prescriptions);
+        inventoryManager.dispenseMedicine(prescriptions);
     }
 
 }

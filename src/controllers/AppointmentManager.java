@@ -121,7 +121,8 @@ public class AppointmentManager {
         List<ApptSlot> slots = new ArrayList<>(ApptSlotRepository.load());
         for (int i = 0; i < slots.size(); i++) {
             ApptSlot appointment = slots.get(i);
-            if (appointment.getApptID().equals(apptID) && appointment.getStatus() == ApptStatus.CONFIRMED) {
+            if (appointment.getApptID().equals(apptID) && appointment.getStatus() == ApptStatus.CONFIRMED ||
+                    appointment.getStatus() == ApptStatus.PENDING) {
                 appointment.setStatus(ApptStatus.AVAILABLE);
                 appointment.setPatientID(null);
                 ApptSlotRepository.store(slots);
@@ -146,26 +147,22 @@ public class AppointmentManager {
                 System.out.println("Type of Service: " + aor.getTos());
                 System.out.println("Consultation Notes: " + aor.getConsultationNotes());
                 System.out.println("Prescriptions: " + aor.getPrescriptions());
+                System.out.println("Appointment Bill: " + aor.getAorcost());
                 return;
             }
         }
         System.out.println("No Appointment Outcome Record found for Appointment ID " + apptID + ":");
     }
 
-    public void updatePStatus(String apptID, String statusInput) {
+    public void updatePStatus(String apptID) {
         List<AOR> aors = AORRepository.load();
         for (AOR aor : aors) {
             if (aor.getApptID().equals(apptID)) {
                 List<ApptPrescription> prescriptions = aor.getPrescriptions();
-                if (prescriptions != null && !prescriptions.isEmpty()) {
+                if (!prescriptions.isEmpty()) {
                     try {
-                        PrescriptionStatus newStatus = PrescriptionStatus.fromString(statusInput);
                         for (ApptPrescription prescription : prescriptions) {
-                            prescription.setStatus(newStatus);
-                            if (newStatus == PrescriptionStatus.DISPENSED) {
-                                InventoryManager inventoryManager = new InventoryManager();
-                                inventoryManager.removeInventory(prescription.getMedicationName());
-                            }
+                            prescription.setStatus(PrescriptionStatus.DISPENSED);
                         }
                         AORRepository.store(aors);
                         System.out.println("Prescription status updated successfully.");
@@ -193,5 +190,19 @@ public class AppointmentManager {
             }
         }
         return returnID;
+    }
+
+    public List<String> getPrescriptionsfromApptID(String apptID){
+        List<AOR> aors = AORRepository.load();
+        List<String> medicineNames = new ArrayList<>();
+        for (AOR aor : aors) {
+            if (aor.getApptID().equals(apptID)) {
+                List<ApptPrescription> prescriptions = aor.getPrescriptions();
+                for (ApptPrescription prescription : prescriptions){
+                    medicineNames.add(prescription.getMedicationName());
+                }
+            }
+        }
+        return medicineNames;
     }
 }

@@ -48,6 +48,43 @@ public class InventoryManager {
         System.out.println("No such medication found");
     }
 
+    public void dispenseMedicine(List<String> medicines) {
+        List<Medication> inventory = new ArrayList<>(InventoryRepository.load());
+        boolean inventoryUpdated = false; 
+    
+        for (String medicineName : medicines) {
+            boolean found = false; 
+    
+            for (Medication med : inventory) {
+                if (med.getName().equalsIgnoreCase(medicineName)) {
+                    found = true;
+    
+                    // Check if the stock level is sufficient
+                    if (med.getQuantity() > 0) {
+                        med.setQuantity(med.getQuantity() - 1);
+                        System.out.println("Dispensed one unit of " + med.getName() + ". New quantity: " + med.getQuantity());
+                        inventoryUpdated = true; 
+                    } else {
+                        // Stock level is zero; cannot dispense
+                        System.out.println("Cannot dispense " + med.getName() + ": Out of stock.");
+                    }
+                    break;
+                }
+            }
+    
+            if (!found) {
+                // Medicine not found in the inventory
+                System.out.println("Medication " + medicineName + " not found in inventory.");
+            }
+        }
+    
+        // Save the updated inventory back to the repository if there were any changes
+        if (inventoryUpdated) {
+            InventoryRepository.store(inventory);
+        }
+    }
+    
+
     public void submitRequest(String medName) {
         List<Medication> inventory = new ArrayList<>(InventoryRepository.load());
         for (int i = 0; i < inventory.size(); i++) {

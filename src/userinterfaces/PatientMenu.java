@@ -174,6 +174,7 @@ public class PatientMenu implements IMenu {
     private void cancelAppt(Scanner sc) {
         System.out.println("Current confirmed slots: ");
         apptManager.viewByFilterPatient(patientID, ApptStatus.CONFIRMED);
+        apptManager.viewByFilterPatient(patientID, ApptStatus.PENDING);
         System.out.println();
 
         System.out.println("Please input the appointment you wish to cancel: ");
@@ -184,6 +185,7 @@ public class PatientMenu implements IMenu {
 
     private void viewUpcoming() {
         apptManager.viewByFilterPatient(patientID, ApptStatus.CONFIRMED);
+        apptManager.viewByFilterPatient(patientID, ApptStatus.PENDING);
     }
 
     private void viewPastAOR(Scanner sc) {

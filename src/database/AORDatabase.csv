@@ -1,2 +1,2 @@
 apptID,patientID,doctorID,date,time,status,tos,consultationNotes,prescriptions,bill
-ABCD1,P1001,D001,2024-11-06,15:30,Completed,Consultation,THIS IS SOME NOTES,ibuprofen|PENDING,100.0
+ABCD1,P1001,D001,2024-11-06,15:30,Completed,Consultation,NOTES,ibuprofen|DISPENSED,100.0

@@ -172,8 +172,9 @@ public class DoctorMenu implements IMenu {
     }
 
     private void viewPersonalSchedule() {
-        System.out.println("Here are the slots you have made available:");
+        System.out.println("Here is your schedule:");
         apptManager.viewByFilterDoc(doctorID, ApptStatus.AVAILABLE);
+        apptManager.viewByFilterDoc(doctorID, ApptStatus.CONFIRMED);
     }
 
     private void chooseAppointment(Scanner sc) {
