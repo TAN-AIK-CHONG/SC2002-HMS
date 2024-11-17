@@ -94,14 +94,14 @@ public class AdminMenu implements IMenu {
         switch (staffChoice) {
             case 1:
                 String staffID = null;
-                while (staffID==null) {
+                while (staffID == null) {
                     System.out.print("Enter User ID: ");
                     staffID = sc.nextLine().toUpperCase();
-                    if (staffID.matches("^[ADP]\\d{3}$")){
+                    if (staffID.matches("^[ADP]\\d{3}$")) {
                         break;
                     }
                     System.out.println("Invalid user ID format.");
-                    staffID=null;
+                    staffID = null;
                 }
                 System.out.print("Enter Password: ");
                 String password = sc.nextLine();
@@ -109,14 +109,14 @@ public class AdminMenu implements IMenu {
                 String name = sc.nextLine().toUpperCase();
                 System.out.print("Enter Role: ");
                 String role = sc.nextLine().toUpperCase();
-        
+
                 Gender gender = null;
                 while (gender == null) { // Loop until a valid gender is selected
                     System.out.println("Choose Gender:");
                     System.out.println("1. Male");
                     System.out.println("2. Female");
                     System.out.print("Enter your choice: ");
-        
+
                     try {
                         int genderChoice = sc.nextInt();
                         sc.nextLine();
@@ -133,7 +133,7 @@ public class AdminMenu implements IMenu {
                         }
                     } catch (Exception e) {
                         System.out.println("Invalid input. Please enter an integer.");
-                        sc.nextLine(); 
+                        sc.nextLine();
                     }
                 }
 
@@ -158,7 +158,7 @@ public class AdminMenu implements IMenu {
                     System.out.println("1. Male");
                     System.out.println("2. Female");
                     System.out.print("Enter your choice: ");
-        
+
                     try {
                         int genderChoice = sc.nextInt();
                         sc.nextLine();
@@ -175,7 +175,7 @@ public class AdminMenu implements IMenu {
                         }
                     } catch (Exception e) {
                         System.out.println("Invalid input. Please enter an integer.");
-                        sc.nextLine(); 
+                        sc.nextLine();
                     }
                 }
 
