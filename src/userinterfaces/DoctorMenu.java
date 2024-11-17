@@ -9,6 +9,7 @@ import entities.appointments.TypeOfService;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -31,10 +32,10 @@ public class DoctorMenu implements IMenu {
     public void displayMenu() {
         Scanner sc = new Scanner(System.in);
         int choice;
-        
+
         do {
             menuItems();
-            try{
+            try {
                 choice = sc.nextInt();
                 sc.nextLine();
                 switch (choice) {
@@ -159,11 +160,21 @@ public class DoctorMenu implements IMenu {
     }
 
     private void setAvailableAppts(Scanner sc) {
-        System.out.print("Please input the available date (YYYY-MM-DD): ");
-        LocalDate date = LocalDate.parse(sc.nextLine());
-        System.out.print("Please choose the time slot (HH:MM): ");
-        LocalTime time = LocalTime.parse(sc.nextLine(), DateTimeFormatter.ofPattern("HH:mm"));
-        apptManager.setAvailable(doctorID, date, time);
+        try {
+            System.out.print("Please input the available date (YYYY-MM-DD): ");
+            String dateInput = sc.nextLine().trim();
+            LocalDate date = LocalDate.parse(dateInput);
+
+            System.out.print("Please choose the time slot (HH:MM): ");
+            String timeInput = sc.nextLine().trim();
+            LocalTime time = LocalTime.parse(timeInput, DateTimeFormatter.ofPattern("HH:mm"));
+
+            apptManager.setAvailable(doctorID, date, time);
+            System.out.println("Appointment slot set successfully for " + date + " at " + time);
+        } catch (DateTimeParseException e) {
+            System.out.println(
+                    "Invalid format. Please use the format YYYY-MM-DD for date and HH:MM for time.");
+        }
     }
 
     private void viewUpcomingAppts() {

@@ -27,13 +27,13 @@ public class AdminMenu implements IMenu {
     }
 
     public void displayMenu() {
-        
+
         Scanner sc = new Scanner(System.in);
         int choice;
-        
+
         do {
             menuItems();
-            try{
+            try {
                 choice = sc.nextInt();
                 sc.nextLine();
                 switch (choice) {
@@ -60,10 +60,10 @@ public class AdminMenu implements IMenu {
                 System.out.println("Invalid input. Please enter an integer.");
                 sc.nextLine();
             }
-        } while (true);        
+        } while (true);
     }
 
-    private void menuItems(){
+    private void menuItems() {
         System.out.println();
         System.out.println("========================================");
         System.out.println("Administrator Menu");
@@ -200,7 +200,7 @@ public class AdminMenu implements IMenu {
         }
     }
 
-    private void manageMedication(Scanner sc){
+    private void manageMedication(Scanner sc) {
         System.out.println();
         inventoryManager.viewInventory();
         System.out.println();
