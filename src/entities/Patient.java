@@ -3,17 +3,19 @@ import java.util.List;
 
 public class Patient extends User{
     private String dateOfBirth;
+    private String PatientID;
     private String emailAddress;
     private String phoneNumber;
     private BloodType bloodType;
     private List<String> diagnoses;
     private List<String> prescribedMedications;
     private List<String> treatmentPlans;
+    private double TotalCost;
 
     public Patient(String patientID, String name, String dateOfBirth, Gender gender, 
                           BloodType bloodType, String emailAddress, String phoneNumber,  
                           List<String> pastDiagnoses, List<String> prescribedMedications, 
-                          List<String> treatmentPlans, String password) {
+                          List<String> treatmentPlans, String password , double TotaLCost , String PatientID) {
         super(patientID, password, name, gender);
         this.dateOfBirth = dateOfBirth;
         this.emailAddress = emailAddress;
@@ -22,6 +24,8 @@ public class Patient extends User{
         this.diagnoses = pastDiagnoses;
         this.prescribedMedications = prescribedMedications;
         this.treatmentPlans = treatmentPlans;
+        this.TotalCost = TotaLCost;
+        this.PatientID = PatientID;
     }
 
     public void viewRecords(){
@@ -92,6 +96,16 @@ public class Patient extends User{
 
     public void setTreatmentPlans(List<String> treatmentPlans) {
         this.treatmentPlans = treatmentPlans;
+    }
+
+    public double getTotalcost()
+    {
+        return TotalCost;
+    }
+
+    public String getPatientID()
+    {
+        return PatientID;
     }
 
     

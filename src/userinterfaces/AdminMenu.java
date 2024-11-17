@@ -2,28 +2,33 @@ package userinterfaces;
 
 import controllers.AppointmentManager;
 import controllers.InventoryManager;
+import controllers.PatientManager;
 import controllers.StaffManager;
 import entities.Gender;
 import entities.Medication;
-import entities.appointments.ApptStatus;
+import entities.Patient;
 import entities.appointments.ApptSlot;
+import entities.appointments.ApptStatus;
 import filehandlers.ApptSlotRepository;
-import java.util.Scanner;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Scanner;
 
 public class AdminMenu implements IMenu {
     private String adminID;
     private InventoryManager inventoryManager;
     private StaffManager staffManager;
     private AppointmentManager appointmentManager;
+    private PatientManager patientmanager;
 
     public AdminMenu(String adminID, InventoryManager inventoryManager, StaffManager staffManager,
-            AppointmentManager appointmentManager) {
+            AppointmentManager appointmentManager , PatientManager patientmanager) {
         this.adminID = adminID;
         this.inventoryManager = inventoryManager;
         this.staffManager = staffManager;
         this.appointmentManager = appointmentManager;
+        this.patientmanager = patientmanager;
+
     }
 
     public void displayMenu() {
@@ -50,6 +55,9 @@ public class AdminMenu implements IMenu {
                         approveRequest(sc);
                         break;
                     case 5:
+                        viewPatientRecord(sc);
+                        break;
+                    case 6:
                         sc.close();
                         System.out.println("Logging out...");
                         return;
@@ -72,7 +80,8 @@ public class AdminMenu implements IMenu {
         System.out.println("2. View Appointments details");
         System.out.println("3. View and Manage Medication Inventory");
         System.out.println("4. Approve Replenishment Requests");
-        System.out.println("5. Logout");
+        System.out.println("5. View Patient Record");
+        System.out.println("6. Logout");
         System.out.println("========================================");
         System.out.println();
         System.out.print("Choose an option: ");
@@ -251,4 +260,9 @@ public class AdminMenu implements IMenu {
                 break;
         }
     }
+
+private void viewPatientRecord(Scanner sc) {
+    System.out.print("Enter the Patient ID to view details: ");
+    String patientID = sc.nextLine().toUpperCase();
+
 }

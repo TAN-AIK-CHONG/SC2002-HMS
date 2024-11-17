@@ -2,6 +2,9 @@
 
 package filehandlers;
 
+import entities.BloodType;
+import entities.Gender;
+import entities.Patient;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -10,10 +13,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import entities.BloodType;
-import entities.Gender;
-import entities.Patient;
 
 public class PatientRepository {
     // file path to the patient database
@@ -41,10 +40,11 @@ public class PatientRepository {
                     List<String> medications = Arrays.asList(data[8].split(";"));
                     List<String> treatmentPlans = Arrays.asList(data[9].split(";"));
                     String password = data[10];
+                    double TotalCost = Double.parseDouble(data[11]);
 
                     // Create new patient
                     Patient patient = new Patient(patientID, name, dateOfBirth, gender, bloodType,
-                            emailAddress, phoneNumber, diagnoses, medications, treatmentPlans, password);
+                            emailAddress, phoneNumber, diagnoses, medications, treatmentPlans, password , TotalCost);
 
                     return patient;
 
@@ -79,10 +79,12 @@ public class PatientRepository {
                 List<String> medications = Arrays.asList(data[8].split(";"));
                 List<String> treatmentPlans = Arrays.asList(data[9].split(";"));
                 String password = data[10];
+                double TotalCost = Double.parseDouble(data[11]);
+
 
                 // Create new patient
                 Patient patient = new Patient(patientID, name, dateOfBirth, gender, bloodType,
-                        emailAddress, phoneNumber, diagnoses, medications, treatmentPlans, password);
+                        emailAddress, phoneNumber, diagnoses, medications, treatmentPlans, password , TotalCost);
 
                 patientList.add(patient);
             }
@@ -99,7 +101,7 @@ public class PatientRepository {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(PATIENT_CSV_FILE))) {
             // Write header row
             bw.write(
-                    "Patient ID,Name,Date of Birth,Gender,Blood Type,Contact Information,Phone Number,Diagnoses,Medications,Treatment,Password");
+                    "Patient ID,Name,Date of Birth,Gender,Blood Type,Contact Information,Phone Number,Diagnoses,Medications,Treatment,Password , TotalCost");
             bw.newLine();
 
             // Write each patient record to the CSV (overwrite)
@@ -109,7 +111,8 @@ public class PatientRepository {
                         + patient.getEmailAddress() + "," + patient.getPhoneNumber() + ","
                         + String.join(";", patient.getDiagnoses()) + ","
                         + String.join(";", patient.getPrescribedMedications())
-                        + "," + String.join(";", patient.getTreatmentPlans()) + "," + patient.getPassword();
+                        + "," + String.join(";", patient.getTreatmentPlans()) + "," + patient.getPassword()
+                        + "," + patient.getTotalcost();
                 bw.write(line);
                 bw.newLine();
             }

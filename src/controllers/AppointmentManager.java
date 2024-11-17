@@ -1,14 +1,13 @@
 package controllers;
 
+import entities.PrescriptionStatus;
+import entities.appointments.*;
+import filehandlers.AORRepository;
+import filehandlers.ApptSlotRepository;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import entities.PrescriptionStatus;
-import entities.appointments.*;
-import filehandlers.ApptSlotRepository;
-import filehandlers.AORRepository;
 
 public class AppointmentManager {
     // FOR BOTH

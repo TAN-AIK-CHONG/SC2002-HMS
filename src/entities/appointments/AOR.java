@@ -30,7 +30,7 @@ public class AOR {
         this.consultationNotes = consultationNotes;
         this.prescriptions = prescriptions;
         this.AORcost = AORcost;
-        this.TotalCost = TotalCost + AORcost;
+        this.TotalCost = TotalCost;
     }
 
     public double getAorcost()

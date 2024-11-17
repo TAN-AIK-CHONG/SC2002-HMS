@@ -12,6 +12,18 @@ public class PatientManager {
         patient.setPassword(newPW);
     }
 
+    public void getPatientByID(String patientID) 
+    {
+        List<Patient> patientList = PatientRepository.load(); // Load all patients
+        for (Patient patient : patientList) 
+        {
+            if (patient.getPatientID().equalsIgnoreCase(patientID)) 
+            {
+                return patient; 
+            }
+        }
+    }
+
     public void viewAllPatients(){
         List<Patient> patientList = PatientRepository.load();
         for (Patient patient : patientList){

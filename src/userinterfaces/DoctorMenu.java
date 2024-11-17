@@ -249,7 +249,7 @@ public class DoctorMenu implements IMenu {
     {
         System.out.println("Enter the Appointment ID:");
         String appointmentID = sc.nextLine().toUpperCase();;
-        patientManager.viewRecord(appointmentID);
+        
         System.out.println("Enter the cost of this Appointment Outcome Record (AOR):");
         double cost = sc.nextDouble();
 
