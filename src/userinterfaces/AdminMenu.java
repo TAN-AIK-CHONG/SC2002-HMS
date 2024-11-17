@@ -202,7 +202,7 @@ public class AdminMenu implements IMenu {
         }
     }
 
-    public void approveRequest(Scanner sc) {
+    private void approveRequest(Scanner sc) {
         inventoryManager.viewRequests();
         System.out.println();
         System.out.print("Enter medication name to approve request: ");
@@ -210,7 +210,7 @@ public class AdminMenu implements IMenu {
         inventoryManager.approveRequest(medName);
     }
 
-    public void viewAppointmentDetails(Scanner sc) {
+    private void viewAppointmentDetails(Scanner sc) {
         System.out.println();
         System.out.println("=========================================");
         System.out.println("View Appointment Details");
