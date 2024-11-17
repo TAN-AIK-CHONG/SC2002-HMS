@@ -1,4 +1,2 @@
-apptID,patientID,doctorID,date,time,status,tos,consultationNotes,prescriptions
-ABCD1,P1001,D001,2024-11-06,15:30,Completed,Consultation,,Ibuprofen|PENDING
-UH132,P1003,D001,2024-11-23,14:15,Completed,Consultation,,Ibuprofen|PENDING
-HII12,P1001,D002,2024-11-12,12:30,Completed,Vaccination,,Amoxicillin|PENDING
+apptID,patientID,doctorID,date,time,status,tos,consultationNotes,prescriptions,bill
+ABCD1,P1001,D001,2024-11-06,15:30,Completed,Consultation,THIS IS SOME NOTES,ibuprofen|PENDING,100.0

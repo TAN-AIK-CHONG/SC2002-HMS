@@ -63,7 +63,7 @@ public class AppointmentManager {
         System.out.println("No such appointment found");
     }
 
-    public void makeAOR(String apptID, String notes, TypeOfService tos, List<ApptPrescription> prescription) {
+    public void makeAOR(String apptID, String notes, TypeOfService tos, List<ApptPrescription> prescription, double apptBill) {
         // make AOR for that appt ID
         // store aor in csv
         List<ApptSlot> slots = ApptSlotRepository.load();
@@ -74,7 +74,7 @@ public class AppointmentManager {
                 appointment.setStatus(ApptStatus.COMPLETED);
                 AOR aor = new AOR(appointment.getApptID(), appointment.getPatientID(), appointment.getDoctorID(),
                         appointment.getDate(), appointment.getTime(), appointment.getStatus(),
-                        tos, notes, prescription);
+                        tos, notes, prescription, apptBill);
 
                 List<AOR> aorList = new ArrayList<>(AORRepository.load());
                 aorList.add(aor);
@@ -184,4 +184,14 @@ public class AppointmentManager {
         System.out.println("Appointment not found with ID: " + apptID);
     }
 
+    public String getPatientIDfromApptID(String apptID){
+        List<AOR> aors = AORRepository.load();
+        String returnID=null;
+        for (AOR aor : aors) {
+            if (aor.getApptID().equals(apptID)) {
+                 returnID = aor.getPatientID();
+            }
+        }
+        return returnID;
+    }
 }

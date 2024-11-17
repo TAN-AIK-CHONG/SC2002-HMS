@@ -73,12 +73,7 @@ public class DoctorMenu implements IMenu {
                         recordAppointmentOutcome(sc);
                         System.out.println();
                         break;
-                    
                     case 8:
-                        System.out.println();
-                        UpdateAorCost(sc);
-                        System.out.println();
-                    case 9:
                         sc.close();
                         System.out.println("Logging out...");
                         return;
@@ -104,8 +99,7 @@ public class DoctorMenu implements IMenu {
         System.out.println("5. Accept or Decline Appointment Requests");
         System.out.println("6. View Upcoming Appointments");
         System.out.println("7. Record Appointment Outcome");
-        System.out.println("8. Update Patient Aor Bill");
-        System.out.println("9: Logout");
+        System.out.println("8: Logout");
         System.out.println("=========================================");
         System.out.println();
         System.out.print("Choose an option: ");
@@ -222,6 +216,10 @@ public class DoctorMenu implements IMenu {
         System.out.print("Enter Consultation Notes: ");
         String consultationNotes = sc.nextLine().toUpperCase();
 
+        System.out.println("Enter bill for appointment: ");
+        Double apptBill = sc.nextDouble();
+        sc.nextLine();
+
         List<ApptPrescription> prescriptions = new ArrayList<>();
         String prescriptionName;
 
@@ -241,22 +239,8 @@ public class DoctorMenu implements IMenu {
             }
         }
 
-        apptManager.makeAOR(apptID, consultationNotes, serviceTypeInput, prescriptions);
-
+        apptManager.makeAOR(apptID, consultationNotes, serviceTypeInput, prescriptions, apptBill);
+        String patientID = apptManager.getPatientIDfromApptID(apptID);
+        patientManager.updateBill(patientID, apptBill);
     }
-
-    private void UpdateAorCost(Scanner sc)
-    {
-        System.out.println("Enter the Appointment ID:");
-        String appointmentID = sc.nextLine().toUpperCase();;
-        
-        System.out.println("Enter the cost of this Appointment Outcome Record (AOR):");
-        double cost = sc.nextDouble();
-
-
-
-
-
-    } 
-
 }

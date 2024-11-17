@@ -34,12 +34,10 @@ public class AORRepository {
                 ApptStatus status = ApptStatus.fromString(data[5]);
                 TypeOfService tos = TypeOfService.fromString(data[6]);
                 String consultationNotes = data[7];
-                double AORcost = Double.parseDouble(data[7]);
-                double TotalCost = Double.parseDouble(data[8]);
-    
+
                 // Parse the prescriptions field
                 List<ApptPrescription> prescriptions = new ArrayList<>();
-                if (data.length > 8 && !data[8].isEmpty()) { // Check if prescriptions field exists and is not empty
+                if (!data[8].isEmpty()) { // Check if prescriptions field exists and is not empty
                     String[] prescriptionEntries = data[8].split(";");
                     for (String entry : prescriptionEntries) {
                         String[] parts = entry.split("\\|");
@@ -51,9 +49,11 @@ public class AORRepository {
                         }
                     }
                 }
+
+                double AORcost = Double.parseDouble(data[9]);
     
                 // Create the AOR object
-                AOR aor = new AOR(apptID, patientID, doctorID, date, time, status, tos, consultationNotes, prescriptions , AORcost , TotalCost);
+                AOR aor = new AOR(apptID, patientID, doctorID, date, time, status, tos, consultationNotes, prescriptions , AORcost);
                 aorList.add(aor);
             }
     
@@ -70,7 +70,7 @@ public class AORRepository {
 
     public static void store(List<AOR> aorList) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(AOR_CSV_FILE))) {
-            bw.write("apptID,patientID,doctorID,date,time,status,tos,consultationNotes,prescriptions , AorCost , TotaLCost");
+            bw.write("apptID,patientID,doctorID,date,time,status,tos,consultationNotes,prescriptions,bill");
             bw.newLine();
 
             for (AOR aor : aorList) {
@@ -91,9 +91,8 @@ public class AORRepository {
                         + aor.getStatus().toString() + ","
                         + aor.getTos().toString() + ","
                         + aor.getConsultationNotes() + ","
-                        + prescriptionString
-                        + aor.getAorcost() + "," 
-                        + aor.getTotalcost();
+                        + prescriptionString + ","
+                        + aor.getAorcost();
 
                 /*if (aor.getPrescriptions() != null && !aor.getPrescriptions().isEmpty()) {
                     String prescriptions = String.join(";", aor.getPrescriptions().stream()

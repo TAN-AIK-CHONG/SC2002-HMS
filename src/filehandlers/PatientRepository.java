@@ -40,14 +40,13 @@ public class PatientRepository {
                     List<String> medications = Arrays.asList(data[8].split(";"));
                     List<String> treatmentPlans = Arrays.asList(data[9].split(";"));
                     String password = data[10];
-                    double TotalCost = Double.parseDouble(data[11]);
+                    double totalCost = Double.parseDouble(data[11]);
 
                     // Create new patient
                     Patient patient = new Patient(patientID, name, dateOfBirth, gender, bloodType,
-                            emailAddress, phoneNumber, diagnoses, medications, treatmentPlans, password , TotalCost);
+                            emailAddress, phoneNumber, diagnoses, medications, treatmentPlans, password , totalCost);
 
                     return patient;
-
                 }
 
             }
@@ -100,8 +99,7 @@ public class PatientRepository {
     public static void store(List<Patient> patientList) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(PATIENT_CSV_FILE))) {
             // Write header row
-            bw.write(
-                    "Patient ID,Name,Date of Birth,Gender,Blood Type,Contact Information,Phone Number,Diagnoses,Medications,Treatment,Password , TotalCost");
+            bw.write("Patient ID,Name,Date of Birth,Gender,Blood Type,Contact Information,Phone Number,Diagnoses,Medications,Treatment,Password,Total Bill");
             bw.newLine();
 
             // Write each patient record to the CSV (overwrite)

@@ -3,19 +3,18 @@ import java.util.List;
 
 public class Patient extends User{
     private String dateOfBirth;
-    private String PatientID;
     private String emailAddress;
     private String phoneNumber;
     private BloodType bloodType;
     private List<String> diagnoses;
     private List<String> prescribedMedications;
     private List<String> treatmentPlans;
-    private double TotalCost;
+    private double totalCost;
 
     public Patient(String patientID, String name, String dateOfBirth, Gender gender, 
                           BloodType bloodType, String emailAddress, String phoneNumber,  
                           List<String> pastDiagnoses, List<String> prescribedMedications, 
-                          List<String> treatmentPlans, String password , double TotaLCost , String PatientID) {
+                          List<String> treatmentPlans, String password , double totalCost) {
         super(patientID, password, name, gender);
         this.dateOfBirth = dateOfBirth;
         this.emailAddress = emailAddress;
@@ -24,8 +23,7 @@ public class Patient extends User{
         this.diagnoses = pastDiagnoses;
         this.prescribedMedications = prescribedMedications;
         this.treatmentPlans = treatmentPlans;
-        this.TotalCost = TotaLCost;
-        this.PatientID = PatientID;
+        this.totalCost = totalCost;
     }
 
     public void viewRecords(){
@@ -39,6 +37,7 @@ public class Patient extends User{
         System.out.println("Past Diagnoses: " + this.diagnoses);
         System.out.println("Prescribed Medications: " + this.prescribedMedications);
         System.out.println("Treatments: " + this.treatmentPlans);
+        System.out.println("Outstanding bill: " + this.totalCost);
     }
 
     //getters and setters
@@ -100,13 +99,11 @@ public class Patient extends User{
 
     public double getTotalcost()
     {
-        return TotalCost;
+        return totalCost;
     }
 
-    public String getPatientID()
-    {
-        return PatientID;
+    public void setTotalCost(double bill){
+        this.totalCost = bill;
     }
-
     
 }
