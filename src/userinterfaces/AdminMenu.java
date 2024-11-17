@@ -26,17 +26,7 @@ public class AdminMenu implements IMenu {
     }
 
     public void displayMenu() {
-        System.out.println();
-        System.out.println("========================================");
-        System.out.println("Administrator Menu");
-        System.out.println("1. View and Manage Hospital Staff");
-        System.out.println("2. View Appointments details");
-        System.out.println("3. View and Manage Medication Inventory");
-        System.out.println("4. Approve Replenishment Requests");
-        System.out.println("5. Logout");
-        System.out.println("========================================");
-        System.out.println();
-        System.out.print("Choose an option: ");
+        
         Scanner sc = new Scanner(System.in);
         int choice = sc.nextInt();
         sc.nextLine();
@@ -111,6 +101,20 @@ public class AdminMenu implements IMenu {
             choice = sc.nextInt();
             sc.nextLine();
         }
+    }
+
+    private void menuItems(){
+        System.out.println();
+        System.out.println("========================================");
+        System.out.println("Administrator Menu");
+        System.out.println("1. View and Manage Hospital Staff");
+        System.out.println("2. View Appointments details");
+        System.out.println("3. View and Manage Medication Inventory");
+        System.out.println("4. Approve Replenishment Requests");
+        System.out.println("5. Logout");
+        System.out.println("========================================");
+        System.out.println();
+        System.out.print("Choose an option: ");
     }
 
     private void manageHospitalStaff(Scanner sc) {

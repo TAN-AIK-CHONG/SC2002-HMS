@@ -1,5 +1,7 @@
 package controllers;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -7,7 +9,6 @@ import java.util.Iterator;
 import entities.Gender;
 import entities.Staff;
 import filehandlers.StaffRepository;
-import utility.Hash;
 
 public class StaffManager {
 
@@ -24,7 +25,7 @@ public class StaffManager {
 
     public void addStaff(String staffID, String password, String name, String role, Gender gender, int age) {
         List<Staff> staffList = new ArrayList<>(StaffRepository.load());
-        String HashedPW = Hash.hashWith256(password);
+        String HashedPW = BCrypt.hashpw(password, BCrypt.gensalt());
         Staff newStaff = new Staff(staffID, HashedPW, name, gender, age, role);
         staffList.add(newStaff);
         StaffRepository.store(staffList);

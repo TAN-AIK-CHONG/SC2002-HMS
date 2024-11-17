@@ -3,7 +3,7 @@ package entities.appointments;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import utility.IDGenerator;
+import utility.ApptIDGenerator;
 
 public class ApptSlot {
     private String apptID;
@@ -15,7 +15,7 @@ public class ApptSlot {
 
     //default constructor
     public ApptSlot(LocalDate date, LocalTime time, String doctorID) {
-        this.apptID = IDGenerator.generateID(5);
+        this.apptID = ApptIDGenerator.generateUniqueID(5);
         this.date = date;
         this.time = time;
         this.doctorID = doctorID;
