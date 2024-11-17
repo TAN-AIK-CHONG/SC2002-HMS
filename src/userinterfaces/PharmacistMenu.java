@@ -12,7 +12,7 @@ public class PharmacistMenu implements IMenu {
     private AppointmentManager appointmentManager;
 
     public PharmacistMenu(String pharmacistID, InventoryManager inventoryManager,
-            AppointmentManager appointmentManager) {
+        AppointmentManager appointmentManager) {
         this.pharmacistID = pharmacistID;
         this.inventoryManager = inventoryManager;
         this.appointmentManager = appointmentManager;
