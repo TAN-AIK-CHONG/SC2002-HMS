@@ -40,20 +40,28 @@ public class StaffManager {
 
     public void addStaff(String staffID, String password, String name, String role, Gender gender, int age) {
         List<Staff> staffList = new ArrayList<>(StaffRepository.load());
+        for (Staff staff : staffList){
+            if (staff.getUserID().equals(staffID)){
+                System.out.println("StaffID taken! Please choose another ID.");
+                return;
+            }
+        }
         String HashedPW = BCrypt.hashpw(password, BCrypt.gensalt());
         Staff newStaff = new Staff(staffID, HashedPW, name, gender, age, role);
         staffList.add(newStaff);
         StaffRepository.store(staffList);
+        System.out.println("Staff successfully added.");
     }
 
-    public void updateStaff(String staffID, String newRole, String newGender, int newAge) {
+    public void updateStaff(String staffID, String newRole, Gender gender, int newAge) {
         List<Staff> staffList = new ArrayList<>(StaffRepository.load());
         for (Staff staff : staffList) {
             if (staff.getUserID().equals(staffID)) {
                 staff.setRole(newRole);
-                staff.setGender(Gender.fromString(newGender));
+                staff.setGender(gender);
                 staff.setAge(newAge);
                 StaffRepository.store(staffList);
+                System.out.println("Staff member " +staff.getUserID()+ " updated succesfully");
                 return;
             }
         }
@@ -66,10 +74,12 @@ public class StaffManager {
         while (iterator.hasNext()) {
             Staff staff = iterator.next();
             if (staff.getUserID().equals(staffID)) {
+                System.out.println("Staff "+staff.getUserID()+" successfully removed");
                 iterator.remove();
                 StaffRepository.store(staffList);
                 return;
             }
         }
+        System.out.println("No such staff member exists");
     }
 }

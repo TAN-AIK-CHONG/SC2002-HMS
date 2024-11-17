@@ -93,22 +93,55 @@ public class AdminMenu implements IMenu {
 
         switch (staffChoice) {
             case 1:
-                System.out.print("Enter User ID: ");
-                String staffID = sc.nextLine().toUpperCase();
+                String staffID = null;
+                while (staffID==null) {
+                    System.out.print("Enter User ID: ");
+                    staffID = sc.nextLine().toUpperCase();
+                    if (staffID.matches("^[ADP]\\d{3}$")){
+                        break;
+                    }
+                    System.out.println("Invalid user ID format.");
+                    staffID=null;
+                }
                 System.out.print("Enter Password: ");
                 String password = sc.nextLine();
                 System.out.print("Enter Staff Name: ");
                 String name = sc.nextLine().toUpperCase();
                 System.out.print("Enter Role: ");
                 String role = sc.nextLine().toUpperCase();
-                System.out.print("Enter Gender (Male/Female): ");
-                Gender gender = Gender.fromString(sc.nextLine());
+        
+                Gender gender = null;
+                while (gender == null) { // Loop until a valid gender is selected
+                    System.out.println("Choose Gender:");
+                    System.out.println("1. Male");
+                    System.out.println("2. Female");
+                    System.out.print("Enter your choice: ");
+        
+                    try {
+                        int genderChoice = sc.nextInt();
+                        sc.nextLine();
+                        switch (genderChoice) {
+                            case 1:
+                                gender = Gender.MALE;
+                                break;
+                            case 2:
+                                gender = Gender.FEMALE;
+                                break;
+                            default:
+                                System.out.println("Please choose a valid option (1-2).");
+                                break;
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Invalid input. Please enter an integer.");
+                        sc.nextLine(); 
+                    }
+                }
+
                 System.out.print("Enter Age: ");
                 int age = sc.nextInt();
                 sc.nextLine();
 
                 staffManager.addStaff(staffID, password, name, role, gender, age);
-                System.out.println("New staff member added.");
                 break;
 
             case 2:
@@ -119,16 +152,38 @@ public class AdminMenu implements IMenu {
                 System.out.print("Enter Role: ");
                 String newRole = sc.nextLine().toUpperCase();
 
-                System.out.print("Enter Gender (Male/Female): ");
-                String newGender = sc.nextLine().toUpperCase();
+                Gender genderUpdate = null;
+                while (genderUpdate == null) { // Loop until a valid gender is selected
+                    System.out.println("Choose Gender:");
+                    System.out.println("1. Male");
+                    System.out.println("2. Female");
+                    System.out.print("Enter your choice: ");
+        
+                    try {
+                        int genderChoice = sc.nextInt();
+                        sc.nextLine();
+                        switch (genderChoice) {
+                            case 1:
+                                genderUpdate = Gender.MALE;
+                                break;
+                            case 2:
+                                genderUpdate = Gender.FEMALE;
+                                break;
+                            default:
+                                System.out.println("Please choose a valid option (1-2).");
+                                break;
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Invalid input. Please enter an integer.");
+                        sc.nextLine(); 
+                    }
+                }
 
                 System.out.print("Enter Age: ");
                 int newAge = sc.nextInt();
                 sc.nextLine();
 
-                staffManager.updateStaff(staffIdToUpdate, newRole, newGender, newAge);
-
-                System.out.println("Staff member " + staffIdToUpdate + " updated successfully.");
+                staffManager.updateStaff(staffIdToUpdate, newRole, genderUpdate, newAge);
                 break;
             case 3:
                 staffManager.viewStaffList();
@@ -216,18 +271,13 @@ public class AdminMenu implements IMenu {
             case 1:
                 System.out.print("Enter new medication: ");
                 String medName = sc.nextLine().toUpperCase();
-                System.out.print("Enter initial stock quantity: ");
+                System.out.print("Enter original stock quantity: ");
                 int quantity = sc.nextInt();
                 sc.nextLine();
                 System.out.print("Enter low stock alert level: ");
                 int alert = sc.nextInt();
                 sc.nextLine();
-                System.out.print("Enter Original level: ");
-                int original = sc.nextInt();
-                sc.nextLine();
-                System.out.print("Enter Request: ");
-                boolean request = sc.nextBoolean();
-                Medication newMed = new Medication(medName, quantity, alert, original, request);
+                Medication newMed = new Medication(medName, quantity, alert);
                 inventoryManager.addInventory(newMed);
                 break;
             case 2:

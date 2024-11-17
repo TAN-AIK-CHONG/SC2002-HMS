@@ -112,14 +112,14 @@ public class InventoryManager {
         List<Medication> inventory = new ArrayList<>(InventoryRepository.load());
         for (int i = 0; i < inventory.size(); i++) {
             Medication med = inventory.get(i);
-            if (med.getName().equalsIgnoreCase(medName)) {
+            if (med.getName().equalsIgnoreCase(medName) && med.getRequest()) {
                 med.setRequest(false);
                 med.setQuantity(med.getOriginal());
                 InventoryRepository.store(inventory);
                 return;
             }
         }
-        System.out.println("No such medication found");
+        System.out.println("No such medication request found");
     }
 
     public boolean doesMedicationExist(String medicationName) {

@@ -1,4 +1,6 @@
 Medicine Name,Current Stock,Low Stock Level Alert,Original,Request
 PARACETAMOL,100,20,100,false
-IBUPROFEN,47,10,50,false
+IBUPROFEN,50,10,50,false
 AMOXICILLIN,75,15,100,false
+INSULIN,50,10,50,false
+ANTIDEPRESSANTS,70,15,70,false
