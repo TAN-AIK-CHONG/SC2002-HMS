@@ -117,10 +117,16 @@ public class PatientMenu implements IMenu {
         sc.nextLine();
         switch (newInfoChoice) {
             case 1:
-                System.out.print("New email address: ");
-                String newAddress = sc.nextLine().toUpperCase();;
-                patientManager.updateEmail(patientID, newAddress);
-                System.out.println("Email updated successfully.");
+                while (true) {
+                    System.out.print("New email address: ");
+                    String newAddress = sc.nextLine().trim();
+                    if (patientManager.isValidEmail(newAddress)) {
+                        patientManager.updateEmail(patientID, newAddress);
+                        System.out.println("Email updated successfully.");
+                        break;
+                    }
+                    System.out.println("Invalid email format! Please enter a valid email address.");
+                }
                 break;
             case 2:
                 while (true) {
@@ -198,7 +204,7 @@ public class PatientMenu implements IMenu {
         apptManager.viewAOR(apptID);
     }
 
-    private void payOutstandingBills(){
+    private void payOutstandingBills() {
         System.out.println("Your outstanding bills have been paid!");
         patientManager.payBill(patientID);
     }

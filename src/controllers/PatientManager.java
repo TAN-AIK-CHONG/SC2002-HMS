@@ -7,11 +7,11 @@ import entities.Patient;
 import filehandlers.PatientRepository;
 
 public class PatientManager {
-    //MOVE THIS METHOD TO LOGIN MANAGER
-    public static void updatePassword(Patient patient, String newPW){
+    // MOVE THIS METHOD TO LOGIN MANAGER
+    public static void updatePassword(Patient patient, String newPW) {
         List<Patient> patientList = PatientRepository.load();
-        for (Patient currentPatient : patientList){
-            if (currentPatient.getUserID().equals(patient.getUserID())){
+        for (Patient currentPatient : patientList) {
+            if (currentPatient.getUserID().equals(patient.getUserID())) {
                 currentPatient.setPassword(newPW);
                 PatientRepository.store(patientList);
                 return;
@@ -19,25 +19,26 @@ public class PatientManager {
         }
     }
 
-    public void viewAllPatients(){
+    public void viewAllPatients() {
         List<Patient> patientList = PatientRepository.load();
-        for (Patient patient : patientList){
+        for (Patient patient : patientList) {
             System.out.println(patient.getUserID() + " - " + patient.getName());
         }
     }
-    public void viewRecord(String patientID){
+
+    public void viewRecord(String patientID) {
         List<Patient> patientList = PatientRepository.load();
-        for (Patient patient : patientList){
-            if (patient.getUserID().equals(patientID)){
+        for (Patient patient : patientList) {
+            if (patient.getUserID().equals(patientID)) {
                 patient.viewRecords();
             }
         }
     }
 
-    public void updateEmail(String patientID, String newEmail){
+    public void updateEmail(String patientID, String newEmail) {
         List<Patient> patientList = new ArrayList<>(PatientRepository.load());
-        for (Patient patient : patientList){
-            if (patient.getUserID().equals(patientID)){
+        for (Patient patient : patientList) {
+            if (patient.getUserID().equals(patientID)) {
                 patient.setEmailAddress(newEmail);
                 PatientRepository.store(patientList);
                 return;
@@ -45,10 +46,10 @@ public class PatientManager {
         }
     }
 
-    public void updatePhoneNumber(String patientID, String newNumber){
+    public void updatePhoneNumber(String patientID, String newNumber) {
         List<Patient> patientList = new ArrayList<>(PatientRepository.load());
-        for (Patient patient : patientList){
-            if (patient.getUserID().equals(patientID)){
+        for (Patient patient : patientList) {
+            if (patient.getUserID().equals(patientID)) {
                 patient.setPhoneNumber(newNumber);
                 PatientRepository.store(patientList);
                 return;
@@ -56,10 +57,10 @@ public class PatientManager {
         }
     }
 
-    public void addDiagnosis(String patientID, String newDiagnosis){
+    public void addDiagnosis(String patientID, String newDiagnosis) {
         List<Patient> patientList = new ArrayList<>(PatientRepository.load());
-        for (Patient patient : patientList){
-            if (patient.getUserID().equals(patientID)){
+        for (Patient patient : patientList) {
+            if (patient.getUserID().equals(patientID)) {
                 List<String> diagnosisList = new ArrayList<>(patient.getDiagnoses());
                 diagnosisList.removeIf(String::isEmpty);
                 diagnosisList.add(newDiagnosis);
@@ -68,13 +69,13 @@ public class PatientManager {
                 return;
             }
         }
-        
+
     }
 
-    public void addMedication(String patientID, String newMedication){
+    public void addMedication(String patientID, String newMedication) {
         List<Patient> patientList = new ArrayList<>(PatientRepository.load());
-        for (Patient patient : patientList){
-            if (patient.getUserID().equals(patientID)){
+        for (Patient patient : patientList) {
+            if (patient.getUserID().equals(patientID)) {
                 List<String> medicationList = new ArrayList<>(patient.getPrescribedMedications());
                 medicationList.removeIf(String::isEmpty);
                 medicationList.add(newMedication);
@@ -83,13 +84,13 @@ public class PatientManager {
                 return;
             }
         }
-        
+
     }
 
-    public void addTreatment(String patientID, String newTreatment){
+    public void addTreatment(String patientID, String newTreatment) {
         List<Patient> patientList = new ArrayList<>(PatientRepository.load());
-        for (Patient patient : patientList){
-            if (patient.getUserID().equals(patientID)){
+        for (Patient patient : patientList) {
+            if (patient.getUserID().equals(patientID)) {
                 List<String> treatments = new ArrayList<>(patient.getTreatmentPlans());
                 treatments.removeIf(String::isEmpty);
                 treatments.add(newTreatment);
@@ -98,30 +99,34 @@ public class PatientManager {
                 return;
             }
         }
-        
-        
+
     }
 
-    public void updateBill(String patientID, double bill){
+    public void updateBill(String patientID, double bill) {
         List<Patient> patientList = new ArrayList<>(PatientRepository.load());
-        for (Patient patient : patientList){
-            if (patient.getUserID().equals(patientID)){
-                patient.setTotalCost(patient.getTotalcost()+bill);
+        for (Patient patient : patientList) {
+            if (patient.getUserID().equals(patientID)) {
+                patient.setTotalCost(patient.getTotalcost() + bill);
                 PatientRepository.store(patientList);
                 return;
             }
         }
-        
+
     }
 
-    public void payBill(String patientID){
+    public void payBill(String patientID) {
         List<Patient> patientList = new ArrayList<>(PatientRepository.load());
-        for (Patient patient : patientList){
-            if (patient.getUserID().equals(patientID)){
+        for (Patient patient : patientList) {
+            if (patient.getUserID().equals(patientID)) {
                 patient.setTotalCost(0);
                 PatientRepository.store(patientList);
                 return;
             }
         }
+    }
+
+    public boolean isValidEmail(String email) {
+        String emailRegex = "^[\\w-\\.]+@[\\w-]+\\.[a-zA-Z]{2,}$";
+        return email.matches(emailRegex);
     }
 }
