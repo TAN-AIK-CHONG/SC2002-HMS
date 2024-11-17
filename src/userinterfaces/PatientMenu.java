@@ -186,7 +186,7 @@ public class PatientMenu implements IMenu {
         System.out.println("Please input the appointment you wish to cancel: ");
         System.out.print("Appointment ID: ");
         String cancelledID = sc.nextLine().toUpperCase();
-        apptManager.cancel(cancelledID);
+        apptManager.cancel(cancelledID, patientID);
     }
 
     private void viewUpcoming() {
@@ -201,7 +201,7 @@ public class PatientMenu implements IMenu {
 
         System.out.print("Enter the appointment ID to view past appointment outcome record: ");
         String apptID = sc.nextLine().toUpperCase();
-        apptManager.viewAOR(apptID);
+        apptManager.viewAOR(apptID, patientID);
     }
 
     private void payOutstandingBills() {
