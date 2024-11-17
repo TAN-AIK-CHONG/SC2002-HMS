@@ -57,7 +57,7 @@ public class HMSApp {
                     System.out.println("Invalid selection. Please enter P for Patient or S for Staff.");
                 }
 
-                System.out.println("Password: ");
+                System.out.print("Password: ");
                 password = sc.nextLine();
 
                 if (LoginManager.authenticateUser(hospitalID, password, isPatient)) {

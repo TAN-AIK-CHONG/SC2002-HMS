@@ -143,9 +143,9 @@ public class DoctorMenu implements IMenu {
                 if (inventoryManager.doesMedicationExist(newInfo)) {
                     patientManager.addMedication(patientID, newInfo);
                 } else {
-                    System.out.println("Error: Medication does not exist in the database. Try again.");
+                    System.out.println("Error: Medication does not exist in the database.");
+                    break;
                 }
-
                 break;
             case 3:
                 System.out.print("Treatment Plan: ");
@@ -209,26 +209,74 @@ public class DoctorMenu implements IMenu {
         System.out.println();
         System.out.print("Enter Appointment ID: ");
         String apptID = sc.nextLine().toUpperCase();
-
-        System.out.print("Enter Type of Service (CONSULTATION, BLOODTEST, XRAY, PHYSICALTHERAPY, VACCINATION, EKG): ");
-        TypeOfService serviceTypeInput = TypeOfService.fromString(sc.nextLine().toUpperCase());
-
+    
+        System.out.println("Types of Service:");
+        System.out.println("1. Consultation");
+        System.out.println("2. Blood Test");
+        System.out.println("3. X-Ray");
+        System.out.println("4. Physical Therapy");
+        System.out.println("5. Vaccination");
+        System.out.println("6. EKG");
+        System.out.println();
+    
+        TypeOfService serviceTypeInput = null; 
+    
+        while (serviceTypeInput == null) {
+            try {
+                System.out.print("Choose service: ");
+                int tos = sc.nextInt();
+                sc.nextLine(); 
+                switch (tos) {
+                    case 1:
+                        serviceTypeInput = TypeOfService.CONSULTATION;
+                        break;
+                    case 2:
+                        serviceTypeInput = TypeOfService.BLOODTEST;
+                        break;
+                    case 3:
+                        serviceTypeInput = TypeOfService.XRAY;
+                        break;
+                    case 4:
+                        serviceTypeInput = TypeOfService.PHYSICALTHERAPY;
+                        break;
+                    case 5:
+                        serviceTypeInput = TypeOfService.VACCINATION;
+                        break;
+                    case 6:
+                        serviceTypeInput = TypeOfService.EKG;
+                        break;
+                    default:
+                        System.out.println("Please choose a valid option (1-6).");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter an integer.");
+                sc.nextLine();
+            }
+        }
+    
         System.out.print("Enter Consultation Notes: ");
         String consultationNotes = sc.nextLine().toUpperCase();
-
-        System.out.println("Enter bill for appointment: ");
-        Double apptBill = sc.nextDouble();
-        sc.nextLine();
-
+    
+        Double apptBill = null;
+        while (apptBill == null) {
+            System.out.println("Enter bill for appointment: ");
+            String input = sc.nextLine();
+            try {
+                apptBill = Double.parseDouble(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+            }
+        }
+    
         List<ApptPrescription> prescriptions = new ArrayList<>();
         String prescriptionName;
-
+    
         inventoryManager.viewInventory();
         System.out.println();
         while (true) {
-            System.out.print("Enter prescription (-1 to cancel): ");
+            System.out.print("Enter prescription (x to cancel): ");
             prescriptionName = sc.nextLine();
-            if (prescriptionName.equals("-1")) {
+            if (prescriptionName.equals("x")) {
                 break;
             }
             if (inventoryManager.doesMedicationExist(prescriptionName)) {
@@ -238,9 +286,10 @@ public class DoctorMenu implements IMenu {
                 System.out.println("Error: Medication does not exist in the database. Try again.");
             }
         }
-
+    
         apptManager.makeAOR(apptID, consultationNotes, serviceTypeInput, prescriptions, apptBill);
         String patientID = apptManager.getPatientIDfromApptID(apptID);
         patientManager.updateBill(patientID, apptBill);
     }
+    
 }
