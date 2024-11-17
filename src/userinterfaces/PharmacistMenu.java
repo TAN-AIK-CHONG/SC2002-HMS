@@ -1,5 +1,6 @@
 package userinterfaces;
 
+import controllers.PatientManager;
 import controllers.AppointmentManager;
 import controllers.InventoryManager;
 import java.util.Scanner;
@@ -8,12 +9,14 @@ public class PharmacistMenu implements IMenu {
     private String pharmacistID;
     private InventoryManager inventoryManager;
     private AppointmentManager appointmentManager;
+    private PatientManager patientManager;
 
     public PharmacistMenu(String pharmacistID, InventoryManager inventoryManager,
-            AppointmentManager appointmentManager) {
+            AppointmentManager appointmentManager, PatientManager patientManager) {
         this.pharmacistID = pharmacistID;
         this.inventoryManager = inventoryManager;
         this.appointmentManager = appointmentManager;
+        this.patientManager = patientManager;
     }
 
     public void displayMenu() {
@@ -62,6 +65,7 @@ public class PharmacistMenu implements IMenu {
 
     // for admin to view
     private void viewAppointmentOutcomeRecord(Scanner sc) {
+        patientManager.viewAllPatients();
         System.out.println("Enter Patient ID to view their Appointment Outcome Records: ");
         String patientID = sc.nextLine().toUpperCase();
         appointmentManager.viewAORByPatient(patientID);
