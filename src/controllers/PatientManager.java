@@ -1,10 +1,17 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
+import entities.BloodType;
 import entities.Patient;
+import entities.Staff;
+import entities.User;
+import entities.Gender;
 import filehandlers.PatientRepository;
+import filehandlers.StaffRepository;
 
 public class PatientManager {
     // MOVE THIS METHOD TO LOGIN MANAGER
@@ -130,5 +137,39 @@ public class PatientManager {
     public boolean isValidEmail(String email) {
         String emailRegex = "^[\\w-\\.]+@[\\w-]+\\.[a-zA-Z]{2,}$";
         return email.matches(emailRegex);
+    }
+
+    public void resetPassword(String patientID){
+        List<Patient> patientList = new ArrayList<>(PatientRepository.load());
+        for (Patient patient : patientList) {
+            if (patient.getUserID().equals(patientID)) {
+                patient.setPassword(User.DEFAULT);
+                PatientRepository.store(patientList);
+                return;
+            }
+        }
+        System.out.println("Patient does not exist!");
+    }
+
+    public void makePatient(String patientID, String name, String dateOfBirth, Gender gender, BloodType bloodType){
+        List<Patient> patientList = new ArrayList<>(PatientRepository.load());
+        Patient patient = new Patient(patientID, name, dateOfBirth, gender, bloodType, null, null, Arrays.asList(),Arrays.asList(),Arrays.asList(),User.DEFAULT,0);
+        patientList.add(patient);
+        PatientRepository.store(patientList);
+    }
+
+    public void removePatient(String patientID) {
+        List<Patient> patientList = new ArrayList<>(PatientRepository.load());
+        Iterator<Patient> iterator = patientList.iterator();
+        while (iterator.hasNext()) {
+            Patient patient = iterator.next();
+            if (patient.getUserID().equals(patientID)) {
+                System.out.println("Patient "+patient.getUserID()+" successfully removed");
+                iterator.remove();
+                PatientRepository.store(patientList);
+                return;
+            }
+        }
+        System.out.println("No such patient exists");
     }
 }

@@ -7,7 +7,7 @@ public abstract class User {
     private String password;
     private String name;
     private Gender gender;
-    private static final String DEFAULT = "password";
+    public static final String DEFAULT = "password";
 
     public User(String userID, String password, String name, Gender gender) {
         this.userID = userID;

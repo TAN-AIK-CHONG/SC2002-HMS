@@ -3,13 +3,17 @@ package userinterfaces;
 import controllers.AppointmentManager;
 import controllers.InventoryManager;
 import controllers.StaffManager;
+import controllers.PatientManager;
+import entities.BloodType;
 import entities.Gender;
 import entities.Medication;
-import entities.appointments.ApptSlot;
 import entities.appointments.ApptStatus;
-import filehandlers.ApptSlotRepository;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
 
 public class AdminMenu implements IMenu {
@@ -17,13 +21,15 @@ public class AdminMenu implements IMenu {
     private InventoryManager inventoryManager;
     private StaffManager staffManager;
     private AppointmentManager appointmentManager;
+    private PatientManager patientManager;
 
     public AdminMenu(String adminID, InventoryManager inventoryManager, StaffManager staffManager,
-            AppointmentManager appointmentManager) {
+            AppointmentManager appointmentManager, PatientManager patientManager) {
         this.adminID = adminID;
         this.inventoryManager = inventoryManager;
         this.staffManager = staffManager;
         this.appointmentManager = appointmentManager;
+        this.patientManager = patientManager;
     }
 
     public void displayMenu() {
@@ -50,6 +56,9 @@ public class AdminMenu implements IMenu {
                         approveRequest(sc);
                         break;
                     case 5:
+                        managePatients(sc);
+                        break;
+                    case 6:
                         System.out.println("Logging out...");
                         return;
                     default:
@@ -71,7 +80,8 @@ public class AdminMenu implements IMenu {
         System.out.println("2. View Appointments details");
         System.out.println("3. View and Manage Medication Inventory");
         System.out.println("4. Approve Replenishment Requests");
-        System.out.println("5. Logout");
+        System.out.println("5. View and Manage Patients");
+        System.out.println("6. Log out");
         System.out.println("========================================");
         System.out.println();
         System.out.print("Choose an option: ");
@@ -238,21 +248,13 @@ public class AdminMenu implements IMenu {
                 status = ApptStatus.COMPLETED;
                 break;
             case 4:
-                status = null;
-                break;
+                appointmentManager.viewAll();
+                return;
             default:
                 System.out.println("Invalid option.");
                 return;
         }
-        if (status == null) {
-            List<ApptSlot> slots = ApptSlotRepository.load();
-            for (ApptSlot appointment : slots) {
-                appointment.view();
-                System.out.println("---------------------------");
-            }
-        } else {
-            appointmentManager.viewByFilter(status);
-        }
+        appointmentManager.viewByFilter(status);
     }
 
     private void manageMedication(Scanner sc) {
@@ -299,6 +301,96 @@ public class AdminMenu implements IMenu {
                 System.out.println("Please choose a valid option (1-3)");
                 break;
         }
+    }
+
+    private void managePatients(Scanner sc){
+        System.out.println();
+        System.out.println("=========================================");
+        System.out.println("Manage Patients:");
+        System.out.println("1. Add New Patient");
+        System.out.println("2. Remove Patient");
+        System.out.println("3. Display All Patients");
+        System.out.println("4. Reset Patient Password");
+        System.out.println("=========================================");
+        System.out.println();
+        System.out.print("Choose an option: ");
+
+        int patientChoice = sc.nextInt();
+        sc.nextLine();
+        String patientID;
+
+        switch (patientChoice) {
+            case 1:
+                System.out.print("Input Patient ID: ");
+                patientID = sc.nextLine().toUpperCase();
+                System.out.print("Input Patient name: ");
+                String name = sc.nextLine();
+                String dateInput;
+                try {
+                    System.out.print("Input date of birth (YYYY-MM-DD): ");
+                    dateInput = sc.nextLine().trim();
+                    LocalDate date = LocalDate.parse(dateInput);
+                } catch (DateTimeParseException e) {
+                    System.out.println(
+                            "Invalid format. Please use the format YYYY-MM-DD for date.");
+                            break;
+                }
+                Gender genderUpdate = null;
+                while (genderUpdate == null) { // Loop until a valid gender is selected
+                    System.out.println("Choose Gender:");
+                    System.out.println("1. Male");
+                    System.out.println("2. Female");
+                    System.out.print("Enter your choice: ");
+
+                    try {
+                        int genderChoice = sc.nextInt();
+                        sc.nextLine();
+                        switch (genderChoice) {
+                            case 1:
+                                genderUpdate = Gender.MALE;
+                                break;
+                            case 2:
+                                genderUpdate = Gender.FEMALE;
+                                break;
+                            default:
+                                System.out.println("Please choose a valid option (1-2).");
+                                break;
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Invalid input. Please enter an integer.");
+                        sc.nextLine();
+                    }
+                }
+
+                System.out.print("Input blood type: ");
+                BloodType bloodtype;
+                try{
+                    bloodtype = BloodType.fromString(sc.nextLine().toUpperCase());
+                } catch(Exception e){
+                    System.out.println("Blood type does not exist!");
+                    break;
+                }
+                patientManager.makePatient(patientID, name, dateInput,genderUpdate, bloodtype);
+                break;
+            case 2:
+                System.out.print("Input Patient ID: ");
+                patientID = sc.nextLine();
+                patientManager.removePatient(patientID);
+                break;
+            case 3:
+                patientManager.viewAllPatients();
+                break;
+            case 4:
+                System.out.print("Input Patient ID: ");
+                patientID = sc.nextLine();
+                patientManager.resetPassword(patientID);
+                break;
+            default:
+                System.out.println("Please choose a valid option (1-4)");
+                break;
+        }
+
+
     }
 
 }

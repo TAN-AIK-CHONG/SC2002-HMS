@@ -12,7 +12,7 @@ import filehandlers.StaffRepository;
 
 public class StaffManager {
 
-    public static void updatePassword(Staff staff, String newPW) {
+    public void updatePassword(Staff staff, String newPW) {
         List<Staff> staffList = StaffRepository.load();
         for (Staff currentStaff : staffList){
             if (currentStaff.getUserID().equals(staff.getUserID())){

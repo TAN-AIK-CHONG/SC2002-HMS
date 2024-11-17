@@ -11,6 +11,12 @@ import java.util.List;
 
 public class AppointmentManager {
     // FOR BOTH
+    public void viewAll(){
+        List<ApptSlot> slots = ApptSlotRepository.load();
+        for (ApptSlot appointment : slots) {
+            appointment.view();
+        }
+    }
     public void viewByFilter(ApptStatus status) {
         List<ApptSlot> slots = ApptSlotRepository.load();
         for (ApptSlot appointment : slots) {

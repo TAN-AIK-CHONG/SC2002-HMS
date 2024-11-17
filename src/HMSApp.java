@@ -106,7 +106,7 @@ public class HMSApp {
                 } else if (staff instanceof Admin) {
                     Admin admin = (Admin) staff;
                     AdminMenu adminMenu = new AdminMenu(admin.getUserID(), inventoryManager, staffManager,
-                            appointmentManager);
+                            appointmentManager, patientManager);
                     adminMenu.displayMenu();
                 }
             }
