@@ -205,25 +205,20 @@ public class AppointmentManager {
             if (aor.getApptID().equals(apptID)) {
                 List<ApptPrescription> prescriptions = aor.getPrescriptions();
                 if (!prescriptions.isEmpty()) {
-                    try {
-                        for (ApptPrescription prescription : prescriptions) {
-                            prescription.setStatus(PrescriptionStatus.DISPENSED);
-                        }
-                        AORRepository.store(aors);
-                        System.out.println("Prescription status updated successfully.");
-                        return;
-                    } catch (IllegalArgumentException e) {
-                        System.out.println(
-                                "Invalid status entered. Please enter a valid status: 'PENDING' or 'DISPENSED'.");
-                        return;
+                    for (ApptPrescription prescription : prescriptions) {
+                        prescription.setStatus(PrescriptionStatus.DISPENSED);
                     }
+                    AORRepository.store(aors);
+                    System.out.println("Prescriptions dispensed.");
+                    return;
+                    
                 } else {
                     System.out.println("No prescriptions found for this appointment.");
                 }
                 return;
             }
         }
-        System.out.println("Appointment not found with ID: " + apptID);
+        System.out.println("No such appointment found");
     }
 
     public String getPatientIDfromApptID(String apptID) {
