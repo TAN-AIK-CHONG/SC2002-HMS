@@ -6,6 +6,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
+
 import controllers.InventoryManager;
 import controllers.AppointmentManager;
 import controllers.PatientManager;
@@ -30,53 +32,59 @@ public class DoctorMenu implements IMenu {
     public void displayMenu() {
         Scanner sc = new Scanner(System.in);
         int choice;
+        
         do {
             menuItems();
-            choice = sc.nextInt();
-            sc.nextLine();
-            switch (choice) {
-                case 1:
-                    System.out.println();
-                    viewPatientRecord(sc);
-                    System.out.println();
-                    break;
-                case 2:
-                    System.out.println();
-                    updatePatientRecord(sc);
-                    System.out.println();
-                    break;
-                case 3:
-                    System.out.println();
-                    viewPersonalSchedule();
-                    System.out.println();
-                    break;
-                case 4:
-                    System.out.println();
-                    setAvailableAppts(sc);
-                    System.out.println();
-                    break;
-                case 5:
-                    System.out.println();
-                    chooseAppointment(sc);
-                    System.out.println();
-                    break;
-                case 6:
-                    System.out.println();
-                    viewUpcomingAppts();
-                    System.out.println();
-                    break;
-                case 7:
-                    System.out.println();
-                    recordAppointmentOutcome(sc);
-                    System.out.println();
-                    break;
-                case 8:
-                    sc.close();
-                    System.out.println("Logging out...");
-                    return;
-                default:
-                    System.out.println("Please choose a valid option  (1-8)");
-                    break;
+            try{
+                choice = sc.nextInt();
+                sc.nextLine();
+                switch (choice) {
+                    case 1:
+                        System.out.println();
+                        viewPatientRecord(sc);
+                        System.out.println();
+                        break;
+                    case 2:
+                        System.out.println();
+                        updatePatientRecord(sc);
+                        System.out.println();
+                        break;
+                    case 3:
+                        System.out.println();
+                        viewPersonalSchedule();
+                        System.out.println();
+                        break;
+                    case 4:
+                        System.out.println();
+                        setAvailableAppts(sc);
+                        System.out.println();
+                        break;
+                    case 5:
+                        System.out.println();
+                        chooseAppointment(sc);
+                        System.out.println();
+                        break;
+                    case 6:
+                        System.out.println();
+                        viewUpcomingAppts();
+                        System.out.println();
+                        break;
+                    case 7:
+                        System.out.println();
+                        recordAppointmentOutcome(sc);
+                        System.out.println();
+                        break;
+                    case 8:
+                        sc.close();
+                        System.out.println("Logging out...");
+                        return;
+                    default:
+                        System.out.println("Please choose a valid option  (1-8)");
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter an integer.");
+                sc.nextLine();
             }
         } while (true);
     }
