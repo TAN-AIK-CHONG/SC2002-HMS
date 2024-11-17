@@ -69,6 +69,7 @@ public class PatientManager {
                 return;
             }
         }
+        System.out.println("Patient does not exist!");
 
     }
 
@@ -84,6 +85,7 @@ public class PatientManager {
                 return;
             }
         }
+        System.out.println("Patient does not exist!");
 
     }
 
@@ -99,7 +101,7 @@ public class PatientManager {
                 return;
             }
         }
-
+        System.out.println("Patient does not exist!");
     }
 
     public void updateBill(String patientID, double bill) {

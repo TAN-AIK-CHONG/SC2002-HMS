@@ -54,9 +54,6 @@ public class InventoryRepository {
                 bw.write(line);
                 bw.newLine();
             }
-
-            System.out.println("Medication inventory saved successfully.");
-
         } catch (IOException e) {
             System.out.println("An error occurred while writing to the file.");
             e.printStackTrace();

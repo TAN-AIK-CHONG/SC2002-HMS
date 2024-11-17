@@ -84,18 +84,18 @@ public class PharmacistMenu implements IMenu {
     }
 
     private void submitRequest(Scanner sc) {
-        System.out.println("Enter Medicine to be updated");
+        inventoryManager.viewInventory();
+        System.out.println();
+        System.out.print("Enter Medicine to be updated ");
         String name = sc.nextLine().toUpperCase();
         inventoryManager.submitRequest(name);
     }
 
     private void updatePrescriptionStatus(Scanner sc) {
-        System.out.println("Enter Appointment ID to update status:");
+        System.out.println("Enter Appointment ID to dispense medications:");
         String apptID = sc.nextLine().toUpperCase();
-        System.out.println("All Medications dispensed");
         appointmentManager.updatePStatus(apptID);
         List<String> prescriptions = appointmentManager.getPrescriptionsfromApptID(apptID);
-        System.out.println(prescriptions);
         inventoryManager.dispenseMedicine(prescriptions);
     }
 
