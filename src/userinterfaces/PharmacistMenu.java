@@ -1,5 +1,7 @@
 package userinterfaces;
 
+import controllers.PatientManager;
+import entities.appointments.ApptStatus;
 import controllers.AppointmentManager;
 import controllers.InventoryManager;
 
@@ -10,12 +12,14 @@ public class PharmacistMenu implements IMenu {
     private String pharmacistID;
     private InventoryManager inventoryManager;
     private AppointmentManager appointmentManager;
+    private PatientManager patientManager;
 
     public PharmacistMenu(String pharmacistID, InventoryManager inventoryManager,
-        AppointmentManager appointmentManager) {
+            AppointmentManager appointmentManager, PatientManager patientManager) {
         this.pharmacistID = pharmacistID;
         this.inventoryManager = inventoryManager;
         this.appointmentManager = appointmentManager;
+        this.patientManager = patientManager;
     }
 
     public void displayMenu() {
@@ -28,8 +32,8 @@ public class PharmacistMenu implements IMenu {
                 sc.nextLine();
                 switch (choice) {
                     case 1:
-                       viewAppointmentOutcomeRecord(sc);
-                       break;
+                        viewAppointmentOutcomeRecord(sc);
+                        break;
                     case 2:
                         updatePrescriptionStatus(sc);
                         break;
@@ -54,7 +58,7 @@ public class PharmacistMenu implements IMenu {
         } while (true);
     }
 
-    private void menuItems(){
+    private void menuItems() {
         System.out.println();
         System.out.println("===================================");
         System.out.println("Pharmacist Menu");
@@ -70,8 +74,13 @@ public class PharmacistMenu implements IMenu {
 
     private void viewAppointmentOutcomeRecord(Scanner sc) {
         System.out.println("Enter Patient ID to view their Appointment Outcome Records: ");
+        patientManager.viewAllPatients();
         String patientID = sc.nextLine().toUpperCase();
-        appointmentManager.viewAORByPatient(patientID);
+        System.out.println("Existing Appointment IDs for Patient ID " + patientID + ":");
+        appointmentManager.viewByFilterPatient(patientID, ApptStatus.COMPLETED);
+        System.out.println("Enter an Appointment ID from the above list to view its details:");
+        String selectedApptID = sc.nextLine().toUpperCase();
+        appointmentManager.viewAOR(selectedApptID);
     }
 
     private void submitRequest(Scanner sc) {
