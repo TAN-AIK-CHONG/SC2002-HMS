@@ -31,14 +31,19 @@ public class AppointmentManager {
         }
     }
 
-    public void viewByFilterPatient(String patientID, ApptStatus status) {
+    public boolean viewByFilterPatient(String patientID, ApptStatus status) {
         List<ApptSlot> slots = ApptSlotRepository.load();
+        boolean found = false;
+
         for (ApptSlot appointment : slots) {
-            if (patientID.equals(appointment.getPatientID()) && appointment.getStatus() == status) {
+            if (patientID.equalsIgnoreCase(appointment.getPatientID()) && appointment.getStatus() == status) {
                 appointment.view();
                 System.out.println();
+                found = true;
             }
         }
+
+        return found;
     }
 
     // FOR DOCTORS
@@ -62,7 +67,8 @@ public class AppointmentManager {
         System.out.println("No such appointment found");
     }
 
-    public void makeAOR(String apptID, String notes, TypeOfService tos, List<ApptPrescription> prescription, double apptBill) {
+    public void makeAOR(String apptID, String notes, TypeOfService tos, List<ApptPrescription> prescription,
+            double apptBill) {
         // make AOR for that appt ID
         // store aor in csv
         List<ApptSlot> slots = ApptSlotRepository.load();
@@ -103,10 +109,10 @@ public class AppointmentManager {
 
     public void reschedule(String patientID, String prevApptID, String newApptID) {
         List<ApptSlot> slots = new ArrayList<>(ApptSlotRepository.load());
-        
+
         ApptSlot prevAppt = null;
         ApptSlot newAppt = null;
-        
+
         // Find the previous and new appointments
         for (ApptSlot appointment : slots) {
             if (appointment.getApptID().equals(prevApptID)) {
@@ -126,37 +132,37 @@ public class AppointmentManager {
                 }
             }
         }
-        
+
         // Check if both appointments were found
         if (prevAppt == null || newAppt == null) {
             System.err.println("Error: One or both appointment IDs are invalid.");
             return;
         }
-        
+
         // Ensure the previous appointment belongs to the patient
         if (!prevAppt.getPatientID().equals(patientID)) {
             System.err.println("Error: Previous appointment does not belong to the patient.");
             return;
         }
-        
+
         // Proceed to reschedule
         // Release the previous appointment
         prevAppt.setStatus(ApptStatus.AVAILABLE);
         prevAppt.setPatientID(null);
-        
+
         // Assign the new appointment
         newAppt.setStatus(ApptStatus.PENDING);
         newAppt.setPatientID(patientID);
-        
+
         ApptSlotRepository.store(slots);
     }
 
     public void cancel(String apptID, String patientID) {
         List<ApptSlot> slots = new ArrayList<>(ApptSlotRepository.load());
         for (ApptSlot appointment : slots) {
-            if (appointment.getApptID().equals(apptID) && 
-               (appointment.getStatus() == ApptStatus.CONFIRMED || 
-                appointment.getStatus() == ApptStatus.PENDING)) {
+            if (appointment.getApptID().equals(apptID) &&
+                    (appointment.getStatus() == ApptStatus.CONFIRMED ||
+                            appointment.getStatus() == ApptStatus.PENDING)) {
                 if (appointment.getPatientID().equals(patientID)) {
                     appointment.setStatus(ApptStatus.AVAILABLE);
                     appointment.setPatientID(null);
@@ -215,24 +221,24 @@ public class AppointmentManager {
         System.out.println("No such appointment found");
     }
 
-    public String getPatientIDfromApptID(String apptID){
+    public String getPatientIDfromApptID(String apptID) {
         List<AOR> aors = AORRepository.load();
-        String returnID=null;
+        String returnID = null;
         for (AOR aor : aors) {
             if (aor.getApptID().equals(apptID)) {
-                 returnID = aor.getPatientID();
+                returnID = aor.getPatientID();
             }
         }
         return returnID;
     }
 
-    public List<String> getPrescriptionsfromApptID(String apptID){
+    public List<String> getPrescriptionsfromApptID(String apptID) {
         List<AOR> aors = AORRepository.load();
         List<String> medicineNames = new ArrayList<>();
         for (AOR aor : aors) {
             if (aor.getApptID().equals(apptID)) {
                 List<ApptPrescription> prescriptions = aor.getPrescriptions();
-                for (ApptPrescription prescription : prescriptions){
+                for (ApptPrescription prescription : prescriptions) {
                     medicineNames.add(prescription.getMedicationName());
                 }
             }
