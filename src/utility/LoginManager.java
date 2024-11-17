@@ -14,4 +14,5 @@ public class LoginManager {
         Staff staff = StaffRepository.load(hospitalID);
         return staff.authenticate(password);
     }
+    
 }
