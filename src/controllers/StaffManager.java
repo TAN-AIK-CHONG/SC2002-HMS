@@ -16,7 +16,15 @@ public class StaffManager {
         staff.setPassword(newPW);
     }
 
-    public void viewAllStaff() {
+    public void viewAllStaffDetails() {
+        List<Staff> staffList = StaffRepository.load();
+        for (Staff staff : staffList) {
+            staff.viewRecords();
+            System.out.println();
+        }
+    }
+
+    public void viewStaffList() {
         List<Staff> staffList = StaffRepository.load();
         for (Staff staff : staffList) {
             System.out.println(staff.getUserID() + " - " + staff.getName());

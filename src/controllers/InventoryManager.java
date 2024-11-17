@@ -61,6 +61,16 @@ public class InventoryManager {
         System.out.println("No such medication found");
     }
 
+    public void viewRequests(){
+        List<Medication> inventory = InventoryRepository.load();
+        for (int i = 0; i < inventory.size(); i++) {
+            Medication med = inventory.get(i);
+            if (med.getRequest()){
+                med.view();
+            }
+        }
+    }
+
     public void approveRequest(String medName) {
         List<Medication> inventory = new ArrayList<>(InventoryRepository.load());
         for (int i = 0; i < inventory.size(); i++) {
