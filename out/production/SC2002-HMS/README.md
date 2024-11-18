@@ -2,15 +2,30 @@
 
 The Hospital Management System is a Command-Line-Interface application built in Java that allows patients, doctors, pharmacists, and administrators to interact with each other and perform tasks that a hospital may require, such as viewing medical records, scheduling appointments, and maintaining a billing system.
 
+![UML Diagram](SC2002_HMS_SCE4_GRP4.jpg)
 ## Features
 
 - View and manage medical records
 - Schedule and reschedule appointments
-- Manage billing and payments
 - Manage inventory of medications
 - Secure authentication for patients and staff
 - Role-based access control for administrators, doctors, pharmacists, and patients
 
+## Additional Features
+
+1. **Billing System**
+   - Medical records automatically keep track of the total bill for each patient
+   - Each Appointment Outcome Record (AOR) includes an appointment bill
+   - The total bill for the respective patient is updated dynamically to reflect the charges from all appointments
+   - The Patient can pay off outstanding fees.
+
+2. **Secure Password Storage**
+   - Passwords are hashed securely with Bcrypt
+
+3. **Patient Management**
+   - Administrators given ability to view, add and remove patients
+   - Administrators can also reset passwords for patients
+     
 ## Libraries Used
 
 ### jBCrypt
@@ -56,4 +71,13 @@ Since we didn't use Maven or any build automation tools, jBCrypt was added manua
    ```bash
    java HMSApp
    ```
+
+## Documentation
+The application includes a comprehensive set of [Javadocs](docs) to help developers understand the structure and functionality of the code. 
+
+**Viewing the Javadocs**
+1. Clone the repository
+2. Open the `index.html` file in your web browser.
+3. Navigate through the Javadocs to explore the documentation for each class and method in the project.
+
    
